@@ -15,4 +15,4 @@ jobs:
               host: ftp.softwaredaybreak.com.br
               user: softwaredaybreak1
               password: v@fTrRZ2@3LgcV
-              localDir: "dist"
+              localDir: /home/softwaredaybreak1/
