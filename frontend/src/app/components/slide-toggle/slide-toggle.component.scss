@@ -1,0 +1,53 @@
+// $scroll: var(--scroll);
+
+.mat-slide-toggle {
+	margin-right: 15px;
+	font-size: 15px;
+}
+
+:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+	background-color: #1d8b58;
+}
+
+:host ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+	background-color: #1d8b58;
+}
+
+.aberto {
+	color: #1d8b58;
+
+
+}
+
+.fechado {
+	color: gray;
+}
+
+
+// @media screen and (max-width: 960px) {
+// 	.page-header {
+// 		&__left {
+// 			p {
+// 				display: none;
+// 			}
+// 		}
+// 	}
+// }
+
+// @keyframes test {
+// 	0% {
+// 		opacity: 0;
+// 		transform: translate(-50px);
+// 		color: #00000070;
+// 	}
+
+// 	80% {
+// 		opacity: 1;
+// 		transform: translate(0px);
+// 		color: #263238;
+// 	}
+
+// 	100% {
+// 		color: #00000030;
+// 	}
+// }

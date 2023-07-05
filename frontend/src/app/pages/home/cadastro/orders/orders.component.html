@@ -1,0 +1,175 @@
+<div class="orders-container">
+	<div class="loading" *ngIf="isLoading">
+		<mat-spinner> </mat-spinner>
+		<p>Carregando...</p>
+	</div>
+
+	<app-fab-button-menu *ngIf="breakPoint" [options]="FabOptions" (returnFunction)="getFuncFAB($event)">
+	</app-fab-button-menu>
+
+	<div class="header">
+		<mat-accordion>
+			<mat-expansion-panel class="no-shadow" [expanded]="!breakPoint">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						<mat-icon>filter_alt</mat-icon>
+						Clique aqui para pesquisar...
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<form [formGroup]="_form" class="form-grid" (ngSubmit)="getFilter()" autocomplete="off">
+					<mat-form-field class="grid-1">
+						<mat-label> Pesquisar... </mat-label>
+						<input matInput type="text" formControlName="search" />
+						<mat-icon matSuffix> search </mat-icon>
+					</mat-form-field>
+					<div style="display: flexbox;">
+						<mat-form-field class="grid-1" style="width: 50%">
+							<mat-label> Data Inicial </mat-label>
+							<input matInput [matDatepicker]="picker" formControlName="date_one" />
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker #picker></mat-datepicker>
+						</mat-form-field>
+						<mat-form-field class="grid-1" style="width: 50%">
+							<mat-label> Data Final </mat-label>
+							<input matInput [matDatepicker]="picker2" formControlName="date_two" />
+							<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+							<mat-datepicker #picker2></mat-datepicker>
+						</mat-form-field>
+					</div>
+					<div class="grid-1">
+						<mat-slide-toggle formControlName="intinerario" color="primary"
+							(change)="toggle($event, 'Bloquinho')" class="PREPARATION_STARTED">
+							Bloquinho
+						</mat-slide-toggle>
+						<mat-slide-toggle formControlName="intinerario" color="primary"
+							(change)="toggle($event, 'Coottara')" class="PLACED">
+							Coottara
+						</mat-slide-toggle>
+						<mat-slide-toggle formControlName="intinerario" color="primary"
+							(change)="toggle($event, 'Particular')" class="PREPARATION_STARTED">
+							Particular
+						</mat-slide-toggle>
+					</div>
+					<div class="grid-1 button-group">
+						<button mat-button color="primary" class="grid-1" (click)="clearFilter()">
+							Limpar filtro
+						</button>
+						<button type="submit" mat-raised-button color="primary" class="grid-1">
+							Pesquisar
+						</button>
+					</div>
+				</form>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</div>
+	<div class="table-container">
+		<div class="menu-actions" *ngIf="!breakPoint">
+			<span>
+				<svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+					<defs>
+						<style>
+							.cls-1 {
+								fill: #eee;
+							}
+						</style>
+					</defs>
+					<path class="cls-1" d="M0,20H20V0S20,20,0,20Z" />
+				</svg>
+			</span>
+			<button mat-button class="menu-item" color="primary" data-label="Baixar relatorio">
+				<mat-icon> download_for_offline </mat-icon>
+			</button>
+			<button mat-button class="menu-item" color="primary" data-label="Novo cadastro" (click)="register()">
+				<mat-icon> add_circle </mat-icon>
+			</button>
+		</div>
+		<div class="table" (scroll)="onScroll()">
+			<mat-table matSort matTableResponsive [dataSource]="_dataSource" class="mat-elevation-z8">
+				<ng-container matColumnDef="notify">
+					<mat-header-cell *matHeaderCellDef>
+						<span> Parceiro </span>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element" (click)="edit(element)">
+						<img src="{{
+							element.empresa === 'Coottara'
+								? '../../../../../../assets/img/coottara.png'
+								: '../../../../../../assets/img/tnt.png'
+						}}" alt="logo" class="imagem-logo" />
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="intinerario">
+					<mat-header-cell *matHeaderCellDef>
+						<span> Percurso </span>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element" data-label="percurso" (click)="edit(element)">
+						<span>{{element.intinerario}}</span>
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="status">
+					<mat-header-cell *matHeaderCellDef>
+						<span> Status </span>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element" data-label="status" (click)="edit(element)">
+						<span>{{element.status}}</span>
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="valor">
+					<mat-header-cell *matHeaderCellDef>
+						<span> Valor </span>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element" data-label="valor" (click)="edit(element)">
+						<span>{{element.valorCorrida}}</span>
+					</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="data">
+					<mat-header-cell mat-header-cell *matHeaderCellDef>
+						<span> Registro </span>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element" data-label="registro" (click)="edit(element)">
+						<span>{{element.created_at | date: 'dd/MM/yyyy - HH:mm'}}</span>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="Controls">
+					<mat-header-cell mat-header-cell *matHeaderCellDef> </mat-header-cell>
+					<mat-cell *matCellDef="let element" data-label="" class="controls">
+						<span id="vertical-menu">
+							<mat-icon [matMenuTriggerFor]="optionsMenu"> more_vert </mat-icon>
+							<mat-menu #optionsMenu="matMenu">
+								<button matRipple mat-menu-item classe="delete"
+									(click)="deleteOrder(element, element._id)">
+									<mat-icon> delete </mat-icon>
+									<span> Excluir </span>
+								</button>
+								<button classe="edit" matRipple mat-menu-item (click)="edit(element)">
+									<mat-icon> edit </mat-icon>
+									<span> Editar </span>
+								</button>
+							</mat-menu>
+						</span>
+						<span id="horizontal-menu">
+							<button mat-icon-button class="check" (click)="concludeOrder(element, element.id)">
+								<mat-icon class="check"> check </mat-icon>
+							</button>
+							<button mat-icon-button class="delete" (click)="deleteOrder(element, element.id)">
+								<mat-icon class="delete"> cancel </mat-icon>
+							</button>
+							<button mat-icon-button class="delete" (click)="edit(element)">
+								<mat-icon class="edit"> edit </mat-icon>
+							</button>
+						</span>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
+			</mat-table>
+		</div>
+		<p *ngIf="!breakPoint">
+			Total de registros: <b> {{ totalRegisters }} </b>
+		</p>
+		<!-- <app-paginator [currentPage]="currentPage" [pageCount]="pageCount" [isMobile]="breakPoint"
+			(returnPage)="onScroll()">
+		</app-paginator> -->
+	</div>
+</div>

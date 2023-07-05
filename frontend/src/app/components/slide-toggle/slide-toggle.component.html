@@ -1,0 +1,9 @@
+<div>
+    <mat-slide-toggle 
+    [(ngModel)]="isChecked" 
+    [ngClass]="{'aberto': isChecked, 'fechado': !isChecked}"
+    class="mat-slide-toggle"
+    [checked]="isChecked" 
+    (change)="onToggleChange($event)">{{isCheckedStatusName}}
+</mat-slide-toggle>
+</div>

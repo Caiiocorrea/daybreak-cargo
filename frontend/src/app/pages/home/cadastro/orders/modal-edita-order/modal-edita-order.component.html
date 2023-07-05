@@ -1,0 +1,87 @@
+<div class="modalEditar-container">
+	<div class="close-button" title="Fechar" mat-dialog-close>
+		<mat-icon>close</mat-icon>
+	</div>
+	<div class="container-controls">
+		<div class="side-nav">
+			<button mat-button (click)="toggleForm(1)" [ngClass]="{ active: activeForm === 1 }">
+				Detalhes da Viagem
+			</button>
+			<button mat-button (click)="toggleForm(2)" [ngClass]="{ active: activeForm === 2 }">
+				Passageiros
+			</button>
+		</div>
+		<div class="form-container">
+			<ng-container [ngSwitch]="activeForm">
+				<form class="form-grid" [formGroup]="_formOrder" [@changeAnim]="activeForm === 1 ? 'open' : 'close'"
+					*ngSwitchCase="1">
+					<mat-form-field class="grid-3">
+						<mat-label> Origem </mat-label>
+						<input matInput type="text" formControlName="origem" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-3">
+						<mat-label> Destino </mat-label>
+						<input matInput type="text" formControlName="destino" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-3">
+						<mat-label> Status </mat-label>
+						<input matInput type="text" formControlName="status" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-1">
+						<mat-label> Solicitante </mat-label>
+						<input matInput type="text" formControlName="empresa" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-2">
+						<mat-label> Bloquinho </mat-label>
+						<input matInput type="text" formControlName="bloquinho" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-2">
+						<mat-label> KM </mat-label>
+						<input matInput type="text" formControlName="kmCorrida" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-1">
+						<mat-label> Total </mat-label>
+						<input matInput type="text" formControlName="valorCorrida" />
+					</mat-form-field>
+				</form>
+
+				<form [formGroup]="_formOrder" [@changeAnim]="activeForm === 2 ? 'open' : 'close'" *ngSwitchCase="2">
+					<div class="timeline-container">
+						<ul class="timeline">
+							<li *ngFor="let item of dialogData.passageiros">
+								<div class="timeline-badge">
+									<mat-icon>person</mat-icon>
+								</div>
+								<div class="lineVertical"></div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title">{{ item.passageiro }}</h4>
+										<p>
+											<small class="text-muted">
+												Status: {{ item.status }}
+											</small>
+										</p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</ng-container>
+			<ng-container>
+				<div class="button-group">
+					<button mat-button (click)="deleteOrder()">Excluir cadastro</button>
+					<button mat-raised-button color="primary" (click)="saveEdit()">
+						Salvar alterações
+					</button>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</div>
