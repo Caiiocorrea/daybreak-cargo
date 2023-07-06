@@ -7,18 +7,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserUseCasesModule = void 0;
-const data_services_module_1 = require("../../services/data-services/data-services.module");
-const user_factory_service_1 = require("./user-factory.service");
+const passengers_provedores_1 = require("../../frameworks/data-services/mysql/passengers.provedores");
+const vehicles_provedores_1 = require("../../frameworks/data-services/mysql/vehicles.provedores");
+const users_provedores_1 = require("../../frameworks/data-services/mysql/users.provedores");
+const auth_use_cases_module_1 = require("../auth/auth-use-cases.module");
 const user_use_case_1 = require("./user.use-case");
 const common_1 = require("@nestjs/common");
-const auth_use_cases_module_1 = require("../auth/auth-use-cases.module");
 let UserUseCasesModule = class UserUseCasesModule {
 };
 UserUseCasesModule = __decorate([
     (0, common_1.Module)({
-        imports: [data_services_module_1.DataServicesModule, auth_use_cases_module_1.AuthUseCasesModule],
-        providers: [user_factory_service_1.UserFactoryService, user_use_case_1.UserUseCases],
-        exports: [user_factory_service_1.UserFactoryService, user_use_case_1.UserUseCases],
+        imports: [auth_use_cases_module_1.AuthUseCasesModule],
+        providers: [
+            user_use_case_1.UserUseCases,
+            ...users_provedores_1.usersProviders,
+            ...passengers_provedores_1.passengersProviders,
+            ...vehicles_provedores_1.vehiclesProviders
+        ],
+        exports: [user_use_case_1.UserUseCases],
     })
 ], UserUseCasesModule);
 exports.UserUseCasesModule = UserUseCasesModule;

@@ -1,9 +1,11 @@
 export declare class Vehicle {
-    _id?: string;
+    id?: number;
     fabricante: string;
     modelo: string;
     ano: number;
     cor: string;
     placa: string;
     tipo: string;
+    created_at?: string;
+    updated_at?: string;
 }

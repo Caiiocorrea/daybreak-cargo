@@ -1,57 +1,80 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import Passengers from '../../frameworks/data-services/mysql/model/passengers.model';
+import Vehicle from '../../frameworks/data-services/mysql/model/vehicles.model';
+import User from '../../frameworks/data-services/mysql/model/users.model';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '../../core/dtos';
-import { UserFactoryService } from './user-factory.service';
-import { User, Vehicle } from '../../core/entities/index';
-import { IDataServices } from '../../core/abstracts';
 import { AuthUseCases } from '../auth/auth.use-case';
 import { UserEnum } from 'src/core/enum/userEnum';
 
 @Injectable()
 export class UserUseCases {
   constructor(
-    private userFactoryService: UserFactoryService,
-    private dataServices: IDataServices,
+    @Inject('USERS_REPOSITORY') private userRepository: typeof User,
+    @Inject('VEHICLE_REPOSITORY') private vehicleRepository: typeof Vehicle,
     private authUseCases: AuthUseCases,
   ) { }
 
-  async getAllUsers(query: any, user: any): Promise<User[]> {
-    let users: User[] = []
-    users = await this.dataServices.users.getAll(query.page, query.limit, query, user);
-    users[0].veiculos = await this.dataServices.vehicles.getAll(query.page, query.limit, users[0].veiculos[0], {})
-    if (!users) throw new BadRequestException({ message: UserEnum.allnotFound })
-    return this.userFactoryService.getAllUser(users[0])
+  async getAllUsers(query: any, user: any) {
+    const regexFilter = {};
+    let result: any[] = [];
+
+    if (query._id) {
+      regexFilter['user_id'] = user.locals.user.user_id;
+      regexFilter['id'] = query._id;
+      result[0] = await this.userRepository.findByPk(regexFilter['id'])
+    }
+
+    if (!query._id) {
+      for (const key in query) {
+        if (query.hasOwnProperty(key)) {
+          regexFilter[key] = new RegExp(query[key], 'i');
+          delete regexFilter['offset'];
+          delete regexFilter['limit'];
+        }
+      }
+      result = await this.userRepository.findAll({
+        where: regexFilter,
+        offset: Number(query.offset),
+        limit: Number(query.limit),
+        include: [{ all: true, nested: true }],
+        attributes: { exclude: ['senha'] }
+      })
+    }
+
+    return result ?? [];
   }
 
-  // async getUserById(id: any): Promise<User> {
-  //   const user = await this.dataServices.users.get(id);
-  //   if (!user) throw new BadRequestException(UserEnum.notFound)
-  //   return user
-  // }
-
-  async getUserByEmailSenha(email: string, senha: string): Promise<User> {
-    const users = await this.dataServices.users.getOne(email, senha)
+  async getUserByEmailSenha(email: string, senha: string) {
+    const users = await this.userRepository.findOne({ where: { email, senha } })
     if (!users) throw new BadRequestException(UserEnum.notFound)
     return users
   }
 
-  async getUserByEmail(email: string): Promise<User> {
-    const users = await this.dataServices.users.getEmail(email)
+  async getUserByEmail(email: string) {
+    const users = await this.userRepository.findOne({ where: { email } })
     if (!users) throw new BadRequestException(UserEnum.notFound)
     return users
   }
 
-  async createUser(createUserDto: CreateUserDto) {
-    const userExists = await this.dataServices.users.getEmail(createUserDto.email);
+  async createUser(createUserDto: CreateUserDto, user: any) {
+    const userExists = await this.userRepository.findOne({ where: { email: createUserDto.email } });
     if (userExists) throw new BadRequestException(UserEnum.exist);
-    const hash = await this.authUseCases.hashData(createUserDto.senha);
-    const userParse: any = this.userFactoryService.createNewUser({ ...createUserDto, senha: hash });
-    const newVehicle: Vehicle = await this.dataServices.vehicles.create(userParse.veiculos[0]);
-    const newUser: User = await this.dataServices.users.create({ ...userParse, veiculos: [{ _id: newVehicle._id }] });
-    return this.authUseCases.getTokens(newUser)
+    await this.userRepository.create({
+      ...createUserDto,
+      senha: await this.authUseCases.hashData(createUserDto.senha)
+    }).then(async (newUser) => {
+      createUserDto.veiculos.map(async (dados: Vehicle) => {
+        await this.vehicleRepository.create({ ...dados, user_id: newUser.id })
+      })
+    }).catch((err) => { throw new BadRequestException(err) })
   }
 
-  updateUser(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = this.userFactoryService.updateUser(updateUserDto);
-    return this.dataServices.users.update(userId, user);
+  updateUser(userId: string, updateUserDto: UpdateUserDto, user: any) {
+    return this.userRepository.update(updateUserDto, { where: { id: userId } }).then(async (updatedUser) => {
+      if (updatedUser[0] === 0) throw new BadRequestException(UserEnum.notFound);
+      updateUserDto.veiculos.map(async (dados: Vehicle) => {
+        await this.vehicleRepository.update(dados, { where: { id: dados.id } })
+      })
+    }).catch((err) => { throw new BadRequestException(err) })
   }
 }

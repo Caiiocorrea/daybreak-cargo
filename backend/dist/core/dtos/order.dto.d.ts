@@ -1,5 +1,6 @@
+import { CreatePassengersDto, UpdatePassengersDto } from './passengers.dto';
 export declare class CreateOrderDto {
-    user_id: string;
+    user_id: number;
     motorista: string;
     bloquinho: string;
     origem: string;
@@ -8,26 +9,18 @@ export declare class CreateOrderDto {
     kmCorrida: string;
     valorCorrida: string;
     status: string;
-    passageiros: [
-        {
-            passageiro: string;
-            status: string;
-        }
-    ];
+    passageiros: CreatePassengersDto[];
 }
 export declare class UpdateOrderDto {
+    user_id: number;
+    motorista: string;
     bloquinho: string;
     destino: string;
     origem: string;
     empresa: string;
-    motorista: string;
     kmCorrida: string;
     valorCorrida: string;
     status: string;
-    passageiros: [
-        {
-            passageiro: string;
-            status: string;
-        }
-    ];
+    passageiros: UpdatePassengersDto[];
+    active: boolean;
 }

@@ -5,7 +5,7 @@ export declare class AppController {
     constructor(authService: AuthUseCases);
     getHello(): {};
     signIn(user: AuthDto): Promise<{
-        sub: string;
+        sub: number;
         nome: string;
         sobrenome: string;
         email: string;

@@ -14,14 +14,14 @@ let UserFactoryService = class UserFactoryService {
     getAllUser(user) {
         var _a;
         const newUser = new entities_1.User();
-        newUser._id = user._id;
+        newUser.id = user.id;
         newUser.nome = user.nome;
         newUser.sobrenome = user.sobrenome;
         newUser.email = user.email;
         newUser.senha = user.senha;
         newUser.veiculos = (_a = user.veiculos.map((dados) => {
             return {
-                _id: dados._id,
+                id: dados.id,
                 fabricante: dados.fabricante,
                 modelo: dados.modelo,
                 ano: dados.ano,

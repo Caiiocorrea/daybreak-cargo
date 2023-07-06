@@ -1,4 +1,4 @@
-import { DataServicesModule } from '../../services/data-services/data-services.module';
+import { DataServicesModule } from '../../frameworks/data-services/data-services.module';
 import { ReporGoogleSheetstUseCases } from './report.google.sheets.use-case';
 import { ReportMonthUseCases } from './report.month.use-case';
 import { Module } from '@nestjs/common';

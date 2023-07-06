@@ -1,28 +1,25 @@
 import { BadRequestException, UnauthorizedException } from '@nestjs/common/exceptions';
-import { IDataServices } from '../../core/abstracts';
+import User from 'src/frameworks/data-services/mysql/model/users.model';
+import { Inject, Injectable } from '@nestjs/common';
 import { AuthEnum } from 'src/core/enum/userEnum';
-import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
-import { User } from 'src/core';
-
-import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthUseCases {
   constructor(
-    private dataServices: IDataServices,
+    @Inject('USERS_REPOSITORY') private userRepository: typeof User,
     private jwtService: JwtService
 
   ) { }
 
   async validateUser(email: string, senha: string): Promise<any> {
-    let user = await this.dataServices.users.getOne(email, senha)
+    let user = await this.userRepository.findOne({ where: { email } });
     if (user && user.senha === senha) return user
   }
 
   async signIn(email: string, senha: string) {
-    let user: User = await this.dataServices.users.getEmail(email)
+    let user: User = await this.userRepository.findOne({ where: { email } });
     if (!user) throw new UnauthorizedException(AuthEnum.Unauthorized);
     const passwordMatches = await argon2.verify(user.senha, senha);
     if (!passwordMatches) throw new BadRequestException(AuthEnum.InvalidPassword);
@@ -31,18 +28,18 @@ export class AuthUseCases {
 
   async getTokens(payload: User) {
     return {
-      sub: payload._id,
+      sub: payload.id,
       nome: payload.nome,
       sobrenome: payload.sobrenome,
       email: payload.email,
       token: this.jwtService.sign({
-        user_id: payload._id.toString(),
+        user_id: payload.id,
         nome: payload.nome,
         sobrenome: payload.sobrenome,
         email: payload.email
       }),
       refreshToken: this.jwtService.sign({
-        user_id: payload._id.toString(),
+        user_id: payload.id,
         nome: payload.nome,
         sobrenome: payload.sobrenome,
         email: payload.email

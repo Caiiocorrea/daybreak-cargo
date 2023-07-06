@@ -18,4 +18,5 @@ export declare class UpdateUserDto {
     email: string;
     senha: string;
     veiculos: UpdateVehicleDto[];
+    active: boolean;
 }

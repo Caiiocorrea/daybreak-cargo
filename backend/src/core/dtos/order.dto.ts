@@ -1,8 +1,9 @@
-import { IsString, IsNotEmpty, IsArray } from 'class-validator';
+import { CreatePassengersDto, UpdatePassengersDto } from './passengers.dto';
+import { IsString, IsNotEmpty, IsArray, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateOrderDto {
-  user_id: string;
+  user_id: number;
   motorista: string;
 
   @IsString({ message: 'Bloquinho deve ser uma string' })
@@ -43,13 +44,13 @@ export class CreateOrderDto {
   @IsArray({ message: 'Passageiros deve ser um array' })
   @IsNotEmpty({ message: 'Passageiros é obrigatório' })
   @ApiProperty({ description: 'Passageiros da viagem' })
-  passageiros: [{
-    passageiro: string,
-    status: string
-  }];
+  passageiros: CreatePassengersDto[];
 }
 
 export class UpdateOrderDto {
+  user_id: number;
+  motorista: string;
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
@@ -73,11 +74,6 @@ export class UpdateOrderDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  motorista: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @ApiProperty()
   kmCorrida: string;
 
   @IsString()
@@ -93,8 +89,9 @@ export class UpdateOrderDto {
   @IsArray()
   @IsNotEmpty()
   @ApiProperty()
-  passageiros: [{
-    passageiro: string,
-    status: string
-  }];
+  passageiros: UpdatePassengersDto[];
+
+  @IsBoolean()
+  @ApiProperty()
+  active: boolean;
 }

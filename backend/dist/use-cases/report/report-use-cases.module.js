@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReportUseCasesModule = void 0;
-const data_services_module_1 = require("../../services/data-services/data-services.module");
+const data_services_module_1 = require("../../frameworks/data-services/data-services.module");
 const report_google_sheets_use_case_1 = require("./report.google.sheets.use-case");
 const report_month_use_case_1 = require("./report.month.use-case");
 const common_1 = require("@nestjs/common");

@@ -25,19 +25,20 @@ let OrderController = class OrderController {
         this.orderUseCases = orderUseCases;
     }
     async createOrder(orderDto, res) {
-        await this.orderUseCases.createOrder(orderDto, res);
+        await this.orderUseCases.createOrder(orderDto, res.locals.user);
         return res.status(201).send({ message: orderEnum_1.OrderEnum.created });
     }
     async getAll(query, res) {
-        const orders = await this.orderUseCases.getAllOrders(query, res);
+        const orders = await this.orderUseCases.getAllOrders(query, res.locals.user);
         return res.status(200).send(orders);
     }
     async getOrder(query, res) {
         const orders = await this.orderUseCases.getOrder(query, res.locals.user);
         return res.status(200).send(orders);
     }
-    async updateOrder(orderId, updateOrderDto) {
-        return await this.orderUseCases.updateOrder(orderId, updateOrderDto);
+    async updateOrder(orderId, updateOrderDto, res) {
+        const order = await this.orderUseCases.updateOrder(orderId, updateOrderDto, res.locals.user);
+        return res.status(201).send({ message: orderEnum_1.OrderEnum.updated });
     }
 };
 __decorate([
@@ -65,11 +66,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "getOrder", null);
 __decorate([
-    (0, common_1.Put)(':id'),
+    (0, common_1.Put)('/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, dtos_1.UpdateOrderDto]),
+    __metadata("design:paramtypes", [String, dtos_1.UpdateOrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "updateOrder", null);
 OrderController = __decorate([

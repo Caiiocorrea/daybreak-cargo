@@ -8,63 +8,88 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderUseCases = void 0;
 const common_1 = require("@nestjs/common");
-const order_factory_service_1 = require("./order-factory.service");
-const abstracts_1 = require("../../core/abstracts");
 const orderEnum_1 = require("../../core/enum/orderEnum");
+const sequelize_1 = require("sequelize");
 let OrderUseCases = class OrderUseCases {
-    constructor(dataServices, OrderFactoryService) {
-        this.dataServices = dataServices;
-        this.OrderFactoryService = OrderFactoryService;
+    constructor(passengersRepository, orderRepository) {
+        this.passengersRepository = passengersRepository;
+        this.orderRepository = orderRepository;
     }
-    async getOrder(query, user) {
-        try {
-            const order = await this.dataServices.orders.get(query, user);
-            if (!order)
-                throw new common_1.BadRequestException({ message: orderEnum_1.OrderEnum.notFound });
-            return order;
+    async getOrder(searchObject, user) {
+        const fields = Object.keys(this.orderRepository.rawAttributes);
+        console.log(fields);
+        fields.forEach((field) => {
+            if (searchObject[field] === '') {
+                delete searchObject[field];
+            }
+        });
+        const whereCondition = {};
+        for (const field in searchObject) {
+            if (fields.includes(field)) {
+                whereCondition[field] = {
+                    [sequelize_1.Op.like]: `%${searchObject[field]}%`,
+                };
+            }
         }
-        catch (error) {
-            throw new common_1.BadRequestException({ message: error.message });
-        }
+        console.log(whereCondition);
+        return this.orderRepository.findAll({
+            where: {
+                [sequelize_1.Op.or]: [whereCondition],
+            },
+            include: [{ model: this.passengersRepository }],
+        });
     }
     async getAllOrders(query, user) {
         var _a, _b, _c, _d;
-        try {
-            const orders = await this.dataServices.orders.getAll(query.page, query.limit, query, user);
-            if (!orders[0])
-                throw new common_1.BadRequestException({ message: orderEnum_1.OrderEnum.allnotFound });
-            return {
-                total_restante: Number(await this.dataServices.orders.count()) - Number((_a = query.page) !== null && _a !== void 0 ? _a : 0),
-                count: Number((_b = await this.dataServices.orders.count()) !== null && _b !== void 0 ? _b : 0),
-                page: Number((_c = query.page) !== null && _c !== void 0 ? _c : 0),
-                limit: Number((_d = query.limit) !== null && _d !== void 0 ? _d : 25),
-                data: orders
-            };
+        let offset = Number((_a = query.offset) !== null && _a !== void 0 ? _a : 0);
+        let limit = Number((_b = query.limit) !== null && _b !== void 0 ? _b : 25);
+        delete query.offset;
+        delete query.limit;
+        console.log(query);
+        const result = await this.orderRepository.findAndCountAll({
+            where: query,
+            offset, limit,
+            include: [{ model: this.passengersRepository }],
+        });
+        if (!result) {
+            throw new common_1.BadRequestException({ message: orderEnum_1.OrderEnum.notFound });
         }
-        catch (error) {
-            throw new common_1.BadRequestException({ message: error.message });
-        }
+        return {
+            count: (_c = result.count - 1) !== null && _c !== void 0 ? _c : 0,
+            offset,
+            limit,
+            data: (_d = result.rows) !== null && _d !== void 0 ? _d : []
+        };
     }
     async createOrder(createOrderDto, user) {
         try {
-            createOrderDto.user_id = user.locals.user.user_id;
-            createOrderDto.motorista = `${user.locals.user.nome} ${user.locals.user.sobrenome}`;
-            const order = this.OrderFactoryService.createNewOrder(createOrderDto);
-            return this.dataServices.orders.create(order);
+            createOrderDto.user_id = user.user_id;
+            createOrderDto.motorista = `${user.nome} ${user.sobrenome}`;
+            return await this.orderRepository.create(createOrderDto[0]).then(async (order) => {
+                createOrderDto.passageiros.map(async (passenger) => {
+                    passenger.order_id = order.id;
+                    await this.passengersRepository.create(passenger);
+                });
+            }).catch((error) => { throw error; });
         }
         catch (error) {
-            if (error.code === 11000)
-                throw new common_1.BadRequestException({ message: orderEnum_1.OrderEnum.duplicate });
             throw new common_1.InternalServerErrorException({ message: error.message });
         }
     }
-    async updateOrder(orderId, updateOrderDto) {
+    async updateOrder(orderId, updateOrderDto, user) {
         try {
-            const order = this.OrderFactoryService.updateOrder(updateOrderDto);
-            return await this.dataServices.orders.update(orderId, order);
+            return await this.orderRepository.update(updateOrderDto, { where: { id: orderId } })
+                .then(async (order) => {
+                updateOrderDto.passageiros.map(async (passenger) => {
+                    await this.passengersRepository.update(passenger, { where: { id: passenger.id } });
+                });
+            }).catch((error) => { throw error; });
         }
         catch (error) {
             throw new common_1.InternalServerErrorException({ message: error.message });
@@ -73,8 +98,9 @@ let OrderUseCases = class OrderUseCases {
 };
 OrderUseCases = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [abstracts_1.IDataServices,
-        order_factory_service_1.OrderFactoryService])
+    __param(0, (0, common_1.Inject)('PASSENGERS_REPOSITORY')),
+    __param(1, (0, common_1.Inject)('ORDERS_REPOSITORY')),
+    __metadata("design:paramtypes", [Object, Object])
 ], OrderUseCases);
 exports.OrderUseCases = OrderUseCases;
 //# sourceMappingURL=order.use-case.js.map

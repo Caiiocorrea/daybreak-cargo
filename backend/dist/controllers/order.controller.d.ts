@@ -6,5 +6,5 @@ export declare class OrderController {
     createOrder(orderDto: CreateOrderDto, res: any): Promise<any>;
     getAll(query: any, res: any): Promise<any>;
     getOrder(query: any, res: any): Promise<any>;
-    updateOrder(orderId: string, updateOrderDto: UpdateOrderDto): Promise<import("../core").Order>;
+    updateOrder(orderId: string, updateOrderDto: UpdateOrderDto, res: any): Promise<any>;
 }

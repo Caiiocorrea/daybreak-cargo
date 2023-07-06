@@ -1,11 +1,16 @@
-import { DataServicesModule } from '../../services/data-services/data-services.module';
-import { OrderFactoryService } from './order-factory.service';
+import { passengersProviders } from '../../frameworks/data-services/mysql/passengers.provedores';
+import { DataServicesModule } from '../../frameworks/data-services/data-services.module';
+import { ordesProviders } from 'src/frameworks/data-services/mysql/orders.provedores';
 import { OrderUseCases } from './order.use-case';
 import { Module } from '@nestjs/common';
 
 @Module({
   imports: [DataServicesModule],
-  providers: [OrderFactoryService, OrderUseCases],
-  exports: [OrderFactoryService, OrderUseCases],
+  providers: [
+    OrderUseCases,
+    ...ordesProviders,
+    ...passengersProviders
+  ],
+  exports: [OrderUseCases],
 })
-export class OrderUseCasesModule {}
+export class OrderUseCasesModule { }

@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController, UserController, OrderController } from './controllers/_index';
-import { DataServicesModule } from './services/data-services/data-services.module';
+import { DataServicesModule } from './frameworks/data-services/data-services.module';
 import { ReportUseCasesModule } from './use-cases/report/report-use-cases.module';
 import { OrderUseCasesModule } from './use-cases/order/order-use-cases.module';
 import { AuthUseCasesModule } from './use-cases/auth/auth-use-cases.module';

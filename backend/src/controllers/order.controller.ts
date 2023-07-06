@@ -16,28 +16,39 @@ export class OrderController {
   ) { }
 
   @Post()
-  async createOrder(@Body() orderDto: CreateOrderDto, @Res() res: any) {
-    await this.orderUseCases.createOrder(orderDto, res);
+  async createOrder(
+    @Body() orderDto: CreateOrderDto,
+    @Res() res: any
+  ) {
+    await this.orderUseCases.createOrder(orderDto, res.locals.user);
     return res.status(201).send({ message: OrderEnum.created });
   }
 
   @Get()
-  async getAll(@Query() query: any, @Res() res: any) {
-    const orders = await this.orderUseCases.getAllOrders(query, res);
+  async getAll(
+    @Query() query: any,
+    @Res() res: any
+  ) {
+    const orders = await this.orderUseCases.getAllOrders(query, res.locals.user);
     return res.status(200).send(orders);
   }
 
   @Get('/search')
-  async getOrder(@Query() query: any, @Res() res: any) {
+  async getOrder(
+    @Query() query: any,
+    @Res() res: any
+  ) {
     const orders = await this.orderUseCases.getOrder(query, res.locals.user);
     return res.status(200).send(orders);
   }
 
-  @Put(':id')
+  @Put('/:id')
   async updateOrder(
     @Param('id') orderId: string,
     @Body() updateOrderDto: UpdateOrderDto,
+    @Res () res: any
   ) {
-    return await this.orderUseCases.updateOrder(orderId, updateOrderDto);
+    const order = await this.orderUseCases.updateOrder(orderId, updateOrderDto, res.locals.user);
+    return res.status(201).send({ message: OrderEnum.updated });
   }
 }

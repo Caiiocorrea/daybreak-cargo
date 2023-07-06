@@ -1,5 +1,5 @@
 export declare class Order {
-    _id?: string;
+    id?: string;
     user_id?: string;
     bloquinho: string;
     destino: string;
@@ -14,6 +14,8 @@ export declare class Order {
     updated_at?: string;
 }
 export declare class Passageiros {
+    id?: string;
+    order_id: number;
     passageiro: string;
     status: string;
 }

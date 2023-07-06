@@ -1,4 +1,4 @@
-name: Deploy via ftp
+name: Deploy Backend
 on: push
 
 jobs:
@@ -15,4 +15,4 @@ jobs:
               host: ftp.softwaredaybreak1.hospedagemdesites.ws
               user: softwaredaybreak1
               password: v@fTrRZ2@3LgcV
-              localDir: "./frontend/dist/logz"
+              localDir: "./backend/dist"

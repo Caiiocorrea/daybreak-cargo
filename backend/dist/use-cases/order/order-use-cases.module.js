@@ -7,8 +7,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderUseCasesModule = void 0;
-const data_services_module_1 = require("../../services/data-services/data-services.module");
-const order_factory_service_1 = require("./order-factory.service");
+const passengers_provedores_1 = require("../../frameworks/data-services/mysql/passengers.provedores");
+const data_services_module_1 = require("../../frameworks/data-services/data-services.module");
+const orders_provedores_1 = require("../../frameworks/data-services/mysql/orders.provedores");
 const order_use_case_1 = require("./order.use-case");
 const common_1 = require("@nestjs/common");
 let OrderUseCasesModule = class OrderUseCasesModule {
@@ -16,8 +17,12 @@ let OrderUseCasesModule = class OrderUseCasesModule {
 OrderUseCasesModule = __decorate([
     (0, common_1.Module)({
         imports: [data_services_module_1.DataServicesModule],
-        providers: [order_factory_service_1.OrderFactoryService, order_use_case_1.OrderUseCases],
-        exports: [order_factory_service_1.OrderFactoryService, order_use_case_1.OrderUseCases],
+        providers: [
+            order_use_case_1.OrderUseCases,
+            ...orders_provedores_1.ordesProviders,
+            ...passengers_provedores_1.passengersProviders
+        ],
+        exports: [order_use_case_1.OrderUseCases],
     })
 ], OrderUseCasesModule);
 exports.OrderUseCasesModule = OrderUseCasesModule;

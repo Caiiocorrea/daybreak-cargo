@@ -7,7 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthUseCasesModule = void 0;
-const data_services_module_1 = require("../../services/data-services/data-services.module");
+const data_services_module_1 = require("../../frameworks/data-services/data-services.module");
+const users_provedores_1 = require("../../frameworks/data-services/mysql/users.provedores");
 const local_strategy_1 = require("./strategies/local.strategy");
 const jwt_strategy_1 = require("./strategies/jwt.strategy");
 const constants_1 = require("./constants");
@@ -27,7 +28,12 @@ AuthUseCasesModule = __decorate([
                 signOptions: { expiresIn: constants_1.JWT_CONFIGURATION.expiresIn },
             }),
         ],
-        providers: [auth_use_case_1.AuthUseCases, local_strategy_1.LocalStrategy, jwt_strategy_1.JwtStrategy],
+        providers: [
+            auth_use_case_1.AuthUseCases,
+            local_strategy_1.LocalStrategy,
+            jwt_strategy_1.JwtStrategy,
+            ...users_provedores_1.usersProviders,
+        ],
         exports: [auth_use_case_1.AuthUseCases, jwt_1.JwtModule],
     })
 ], AuthUseCasesModule);

@@ -1,10 +1,10 @@
-import { IsString, IsNotEmpty, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsBoolean } from 'class-validator';
 import { CreateVehicleDto, UpdateVehicleDto } from './index';
 import { ApiProperty } from '@nestjs/swagger';
 import * as Joi from 'joi';
 
 export const userSchema = Joi.object({
-  page: Joi.number().integer().messages({ 'number.base': 'O campo page deve ser do tipo inteiro' }),
+  offset: Joi.number().integer().messages({ 'number.base': 'O campo offset deve ser do tipo inteiro' }),
   limit: Joi.number().integer().messages({ 'number.base': 'O campo limit deve ser do tipo inteiro' }),
   _id: Joi.string().optional().messages({ 'string.base': 'O campo _id deve ser do tipo string' }),
   nome: Joi.string().optional().messages({ 'string.base': 'O campo nome deve ser do tipo string' }),
@@ -74,4 +74,9 @@ export class UpdateUserDto {
   @IsArray()
   @ApiProperty()
   veiculos: UpdateVehicleDto[];
+
+  @IsBoolean()
+  @IsNotEmpty()
+  @ApiProperty()
+  active: boolean;
 }

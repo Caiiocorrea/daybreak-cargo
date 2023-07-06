@@ -14,7 +14,7 @@ const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const Joi = require("joi");
 exports.userSchema = Joi.object({
-    page: Joi.number().integer().messages({ 'number.base': 'O campo page deve ser do tipo inteiro' }),
+    offset: Joi.number().integer().messages({ 'number.base': 'O campo offset deve ser do tipo inteiro' }),
     limit: Joi.number().integer().messages({ 'number.base': 'O campo limit deve ser do tipo inteiro' }),
     _id: Joi.string().optional().messages({ 'string.base': 'O campo _id deve ser do tipo string' }),
     nome: Joi.string().optional().messages({ 'string.base': 'O campo nome deve ser do tipo string' }),
@@ -99,5 +99,11 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", Array)
 ], UpdateUserDto.prototype, "veiculos", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Boolean)
+], UpdateUserDto.prototype, "active", void 0);
 exports.UpdateUserDto = UpdateUserDto;
 //# sourceMappingURL=user.dto.js.map

@@ -25,13 +25,16 @@ let UserController = class UserController {
         this.userUseCases = userUseCases;
     }
     async getAll(query, res) {
-        return await this.userUseCases.getAllUsers(query, res);
+        const users = await this.userUseCases.getAllUsers(query, res.locals.user);
+        return res.status(200).send(users);
     }
-    async createUser(userDto) {
-        return await this.userUseCases.createUser(userDto);
+    async createUser(userDto, res) {
+        const user = await this.userUseCases.createUser(userDto, res.locals.user);
+        return res.status(201).send(user);
     }
-    updateUser(userId, updateUserDto) {
-        return this.userUseCases.updateUser(userId, updateUserDto);
+    updateUser(userId, updateUserDto, res) {
+        const user = this.userUseCases.updateUser(userId, updateUserDto, res.locals.user);
+        return res.status(200).send(user);
     }
 };
 __decorate([
@@ -41,7 +44,7 @@ __decorate([
     (0, swagger_1.ApiQuery)({ name: 'email', type: String, required: false }),
     (0, swagger_1.ApiQuery)({ name: '_id', type: String, required: false }),
     (0, swagger_1.ApiQuery)({ name: 'limit', type: Number, required: false }),
-    (0, swagger_1.ApiQuery)({ name: 'page', type: Number, required: false }),
+    (0, swagger_1.ApiQuery)({ name: 'offset', type: Number, required: false }),
     (0, common_1.UsePipes)(new JoiValidationPipe_1.JoiValidationPipe(dtos_1.userSchema)),
     __param(0, (0, common_1.Query)()),
     __param(1, (0, common_1.Res)()),
@@ -52,16 +55,18 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [dtos_1.CreateUserDto]),
+    __metadata("design:paramtypes", [dtos_1.CreateUserDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createUser", null);
 __decorate([
     (0, common_1.Put)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, dtos_1.UpdateUserDto]),
+    __metadata("design:paramtypes", [String, dtos_1.UpdateUserDto, Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "updateUser", null);
 UserController = __decorate([

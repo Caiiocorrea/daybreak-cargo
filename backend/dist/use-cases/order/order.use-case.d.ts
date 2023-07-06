@@ -1,13 +1,17 @@
+import Passengers from '../../frameworks/data-services/mysql/model/passengers.model';
+import Order from 'src/frameworks/data-services/mysql/model/orders.model';
 import { CreateOrderDto, UpdateOrderDto } from '../../core/dtos';
-import { OrderFactoryService } from './order-factory.service';
-import { IDataServices } from '../../core/abstracts';
-import { Order, orderResponse } from '../../core';
 export declare class OrderUseCases {
-    private dataServices;
-    private OrderFactoryService;
-    constructor(dataServices: IDataServices, OrderFactoryService: OrderFactoryService);
-    getOrder(query: any, user: any): Promise<any>;
-    getAllOrders(query: any, user: any): Promise<orderResponse>;
-    createOrder(createOrderDto: CreateOrderDto, user: any): Promise<Order>;
-    updateOrder(orderId: string, updateOrderDto: UpdateOrderDto): Promise<Order>;
+    private passengersRepository;
+    private orderRepository;
+    constructor(passengersRepository: typeof Passengers, orderRepository: typeof Order);
+    getOrder(searchObject: any, user: any): Promise<Order[]>;
+    getAllOrders(query: any, user: any): Promise<{
+        count: number;
+        offset: number;
+        limit: number;
+        data: Order[];
+    }>;
+    createOrder(createOrderDto: CreateOrderDto, user: any): Promise<void>;
+    updateOrder(orderId: any, updateOrderDto: UpdateOrderDto, user: any): Promise<void>;
 }

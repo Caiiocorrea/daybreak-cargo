@@ -24,12 +24,6 @@ let OrderFactoryService = class OrderFactoryService {
         newOrder.status = createOrderDto.status;
         newOrder.created_at = `${moment().format("YYYY-MM-DD HH:mm:ss")}`;
         newOrder.updated_at = '';
-        newOrder.passageiros = createOrderDto.passageiros.map((dados) => {
-            return {
-                passageiro: dados.passageiro,
-                status: dados.status
-            };
-        });
         return newOrder;
     }
     updateOrder(updateOrderDto) {
@@ -43,12 +37,6 @@ let OrderFactoryService = class OrderFactoryService {
         newOrder.valorCorrida = updateOrderDto.valorCorrida;
         newOrder.status = updateOrderDto.status;
         newOrder.updated_at = `${moment().format("YYYY-MM-DD HH:mm:ss")}`;
-        newOrder.passageiros = updateOrderDto.passageiros.map((dados) => {
-            return {
-                passageiro: dados.passageiro,
-                status: dados.status
-            };
-        });
         return newOrder;
     }
 };

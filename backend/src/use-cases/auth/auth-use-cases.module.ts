@@ -1,4 +1,5 @@
-import { DataServicesModule } from '../../services/data-services/data-services.module';
+import { DataServicesModule } from '../../frameworks/data-services/data-services.module';
+import { usersProviders } from '../../frameworks/data-services/mysql/users.provedores';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JWT_CONFIGURATION } from './constants';
@@ -16,7 +17,12 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: JWT_CONFIGURATION.expiresIn },
     }),
   ],
-  providers: [AuthUseCases, LocalStrategy, JwtStrategy],
+  providers: [
+    AuthUseCases,
+    LocalStrategy,
+    JwtStrategy,
+    ...usersProviders,
+  ],
   exports: [AuthUseCases, JwtModule],
 })
 export class AuthUseCasesModule { }

@@ -1,13 +1,12 @@
-import { IDataServices } from '../../core/abstracts';
+import User from 'src/frameworks/data-services/mysql/model/users.model';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/core';
 export declare class AuthUseCases {
-    private dataServices;
+    private userRepository;
     private jwtService;
-    constructor(dataServices: IDataServices, jwtService: JwtService);
+    constructor(userRepository: typeof User, jwtService: JwtService);
     validateUser(email: string, senha: string): Promise<any>;
     signIn(email: string, senha: string): Promise<{
-        sub: string;
+        sub: number;
         nome: string;
         sobrenome: string;
         email: string;
@@ -15,7 +14,7 @@ export declare class AuthUseCases {
         refreshToken: string;
     }>;
     getTokens(payload: User): Promise<{
-        sub: string;
+        sub: number;
         nome: string;
         sobrenome: string;
         email: string;

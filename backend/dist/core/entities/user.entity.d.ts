@@ -1,6 +1,6 @@
 import { Vehicle } from "./vehicle.entity";
 export declare class User {
-    _id?: string;
+    id?: number;
     nome: string;
     sobrenome: string;
     email: string;

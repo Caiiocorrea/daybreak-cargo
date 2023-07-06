@@ -1,23 +1,15 @@
+import Vehicle from '../../frameworks/data-services/mysql/model/vehicles.model';
+import User from '../../frameworks/data-services/mysql/model/users.model';
 import { CreateUserDto, UpdateUserDto } from '../../core/dtos';
-import { UserFactoryService } from './user-factory.service';
-import { User } from '../../core/entities/index';
-import { IDataServices } from '../../core/abstracts';
 import { AuthUseCases } from '../auth/auth.use-case';
 export declare class UserUseCases {
-    private userFactoryService;
-    private dataServices;
+    private userRepository;
+    private vehicleRepository;
     private authUseCases;
-    constructor(userFactoryService: UserFactoryService, dataServices: IDataServices, authUseCases: AuthUseCases);
-    getAllUsers(query: any, user: any): Promise<User[]>;
+    constructor(userRepository: typeof User, vehicleRepository: typeof Vehicle, authUseCases: AuthUseCases);
+    getAllUsers(query: any, user: any): Promise<any[]>;
     getUserByEmailSenha(email: string, senha: string): Promise<User>;
     getUserByEmail(email: string): Promise<User>;
-    createUser(createUserDto: CreateUserDto): Promise<{
-        sub: string;
-        nome: string;
-        sobrenome: string;
-        email: string;
-        token: string;
-        refreshToken: string;
-    }>;
-    updateUser(userId: string, updateUserDto: UpdateUserDto): Promise<User>;
+    createUser(createUserDto: CreateUserDto, user: any): Promise<void>;
+    updateUser(userId: string, updateUserDto: UpdateUserDto, user: any): Promise<void>;
 }

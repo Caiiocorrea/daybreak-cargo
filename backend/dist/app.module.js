@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const _index_1 = require("./controllers/_index");
-const data_services_module_1 = require("./services/data-services/data-services.module");
+const data_services_module_1 = require("./frameworks/data-services/data-services.module");
 const report_use_cases_module_1 = require("./use-cases/report/report-use-cases.module");
 const order_use_cases_module_1 = require("./use-cases/order/order-use-cases.module");
 const auth_use_cases_module_1 = require("./use-cases/auth/auth-use-cases.module");

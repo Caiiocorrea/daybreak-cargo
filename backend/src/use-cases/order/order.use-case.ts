@@ -1,59 +1,96 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
+import Passengers from '../../frameworks/data-services/mysql/model/passengers.model';
+import Order from 'src/frameworks/data-services/mysql/model/orders.model';
 import { CreateOrderDto, UpdateOrderDto } from '../../core/dtos';
-import { OrderFactoryService } from './order-factory.service';
-import { IDataServices } from '../../core/abstracts';
 import { OrderEnum } from '../../core/enum/orderEnum';
-import { Order, orderResponse } from '../../core';
+import { Model, WhereOptions, Op } from 'sequelize';
+
 
 @Injectable()
 export class OrderUseCases {
   constructor(
-    private dataServices: IDataServices,
-    private OrderFactoryService: OrderFactoryService,
+    @Inject('PASSENGERS_REPOSITORY') private passengersRepository: typeof Passengers,
+    @Inject('ORDERS_REPOSITORY') private orderRepository: typeof Order,
   ) { }
 
-  async getOrder(query: any, user: any): Promise<any> {
-    try {
-      const order = await this.dataServices.orders.get(query, user);
-      if (!order) throw new BadRequestException({ message: OrderEnum.notFound })
-      return order;
-    } catch (error) {
-      throw new BadRequestException({ message: error.message })
-    }
-  }
+  async getOrder(searchObject: any, user: any) {
+    const fields = Object.keys(this.orderRepository.rawAttributes);
+    console.log(fields)
 
-  async getAllOrders(query: any, user: any): Promise<orderResponse> {
-    try {
-      const orders = await this.dataServices.orders.getAll(query.page, query.limit, query, user);
-      if (!orders[0]) throw new BadRequestException({ message: OrderEnum.allnotFound })
-      return {
-        total_restante: Number(await this.dataServices.orders.count()) - Number(query.page ?? 0),
-        count: Number(await this.dataServices.orders.count() ?? 0),
-        page: Number(query.page ?? 0),
-        limit: Number(query.limit ?? 25),
-        data: orders
+    fields.forEach((field) => {
+      if (searchObject[field] === '') {
+        delete searchObject[field];
       }
-    } catch (error) {
-      throw new BadRequestException({ message: error.message })
+    });
+
+    const whereCondition: WhereOptions = {};
+    for (const field in searchObject) {
+      if (fields.includes(field)) {
+        whereCondition[field] = {
+          [Op.like]: `%${searchObject[field]}%`,
+        };
+      }
     }
+
+    console.log(whereCondition)
+
+    return this.orderRepository.findAll({
+      where: {
+        [Op.or]: [whereCondition],
+      },
+      include: [{ model: this.passengersRepository }],
+    });
   }
 
-  async createOrder(createOrderDto: CreateOrderDto, user: any): Promise<Order> {
+  async getAllOrders(query: any, user: any) {
+    let offset: number = Number(query.offset ?? 0);
+    let limit: number = Number(query.limit ?? 25);
+    delete query.offset;
+    delete query.limit;
+
+    console.log(query)
+
+    const result = await this.orderRepository.findAndCountAll({
+      where: query,
+      offset, limit,
+      include: [{ model: this.passengersRepository }],
+    })
+
+    if (!result) {
+      throw new BadRequestException({ message: OrderEnum.notFound })
+    }
+
+    return {
+      count: result.count - 1 ?? 0,
+      offset,
+      limit,
+      data: result.rows ?? []
+    };
+  }
+
+  async createOrder(createOrderDto: CreateOrderDto, user: any) {
     try {
-      createOrderDto.user_id = user.locals.user.user_id;
-      createOrderDto.motorista = `${user.locals.user.nome} ${user.locals.user.sobrenome}`
-      const order = this.OrderFactoryService.createNewOrder(createOrderDto);
-      return this.dataServices.orders.create(order);
+      createOrderDto.user_id = user.user_id;
+      createOrderDto.motorista = `${user.nome} ${user.sobrenome}`
+      return await this.orderRepository.create(createOrderDto[0]).then(async (order) => {
+        createOrderDto.passageiros.map(async (passenger) => {
+          passenger.order_id = order.id;
+          await this.passengersRepository.create(passenger)
+        })
+      }).catch((error) => { throw error })
     } catch (error) {
-      if (error.code === 11000) throw new BadRequestException({ message: OrderEnum.duplicate })
       throw new InternalServerErrorException({ message: error.message })
     }
   }
 
-  async updateOrder(orderId: string, updateOrderDto: UpdateOrderDto): Promise<Order> {
+  async updateOrder(orderId: any, updateOrderDto: UpdateOrderDto, user: any) {
     try {
-      const order = this.OrderFactoryService.updateOrder(updateOrderDto);
-      return await this.dataServices.orders.update(orderId, order);
+      return await this.orderRepository.update(updateOrderDto, { where: { id: orderId } })
+        .then(async (order) => {
+          updateOrderDto.passageiros.map(async (passenger: any) => {
+            await this.passengersRepository.update(passenger, { where: { id: passenger.id } })
+          })
+        }).catch((error) => { throw error })
     } catch (error) {
       throw new InternalServerErrorException({ message: error.message })
     }

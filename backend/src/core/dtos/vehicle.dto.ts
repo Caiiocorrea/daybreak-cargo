@@ -1,5 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
+import { IsString, IsNotEmpty, IsNumber, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateVehicleDto {
@@ -32,6 +31,11 @@ export class CreateVehicleDto {
   @ApiProperty()
   @IsString()
   tipo: string
+
+  @IsBoolean()
+  @IsNotEmpty()
+  @ApiProperty()
+  active: boolean;
 }
 
 export class UpdateVehicleDto {
@@ -64,4 +68,9 @@ export class UpdateVehicleDto {
   @ApiProperty()
   @IsString()
   tipo: string
+
+  @IsBoolean()
+  @IsNotEmpty()
+  @ApiProperty()
+  active: boolean;
 }

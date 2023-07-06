@@ -8,26 +8,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthUseCases = void 0;
 const exceptions_1 = require("@nestjs/common/exceptions");
-const abstracts_1 = require("../../core/abstracts");
-const userEnum_1 = require("../../core/enum/userEnum");
 const common_1 = require("@nestjs/common");
+const userEnum_1 = require("../../core/enum/userEnum");
 const jwt_1 = require("@nestjs/jwt");
 const argon2 = require("argon2");
 let AuthUseCases = class AuthUseCases {
-    constructor(dataServices, jwtService) {
-        this.dataServices = dataServices;
+    constructor(userRepository, jwtService) {
+        this.userRepository = userRepository;
         this.jwtService = jwtService;
     }
     async validateUser(email, senha) {
-        let user = await this.dataServices.users.getOne(email, senha);
+        let user = await this.userRepository.findOne({ where: { email } });
         if (user && user.senha === senha)
             return user;
     }
     async signIn(email, senha) {
-        let user = await this.dataServices.users.getEmail(email);
+        let user = await this.userRepository.findOne({ where: { email } });
         if (!user)
             throw new exceptions_1.UnauthorizedException(userEnum_1.AuthEnum.Unauthorized);
         const passwordMatches = await argon2.verify(user.senha, senha);
@@ -37,18 +39,18 @@ let AuthUseCases = class AuthUseCases {
     }
     async getTokens(payload) {
         return {
-            sub: payload._id,
+            sub: payload.id,
             nome: payload.nome,
             sobrenome: payload.sobrenome,
             email: payload.email,
             token: this.jwtService.sign({
-                user_id: payload._id.toString(),
+                user_id: payload.id,
                 nome: payload.nome,
                 sobrenome: payload.sobrenome,
                 email: payload.email
             }),
             refreshToken: this.jwtService.sign({
-                user_id: payload._id.toString(),
+                user_id: payload.id,
                 nome: payload.nome,
                 sobrenome: payload.sobrenome,
                 email: payload.email
@@ -61,8 +63,8 @@ let AuthUseCases = class AuthUseCases {
 };
 AuthUseCases = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [abstracts_1.IDataServices,
-        jwt_1.JwtService])
+    __param(0, (0, common_1.Inject)('USERS_REPOSITORY')),
+    __metadata("design:paramtypes", [Object, jwt_1.JwtService])
 ], AuthUseCases);
 exports.AuthUseCases = AuthUseCases;
 //# sourceMappingURL=auth.use-case.js.map

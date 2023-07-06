@@ -50,6 +50,12 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateVehicleDto.prototype, "tipo", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Boolean)
+], CreateVehicleDto.prototype, "active", void 0);
 exports.CreateVehicleDto = CreateVehicleDto;
 class UpdateVehicleDto {
 }
@@ -89,5 +95,11 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], UpdateVehicleDto.prototype, "tipo", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", Boolean)
+], UpdateVehicleDto.prototype, "active", void 0);
 exports.UpdateVehicleDto = UpdateVehicleDto;
 //# sourceMappingURL=vehicle.dto.js.map

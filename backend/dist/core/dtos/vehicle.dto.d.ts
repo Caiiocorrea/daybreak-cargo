@@ -5,6 +5,7 @@ export declare class CreateVehicleDto {
     cor: string;
     placa: string;
     tipo: string;
+    active: boolean;
 }
 export declare class UpdateVehicleDto {
     fabricante: string;
@@ -13,4 +14,5 @@ export declare class UpdateVehicleDto {
     cor: string;
     placa: string;
     tipo: string;
+    active: boolean;
 }
