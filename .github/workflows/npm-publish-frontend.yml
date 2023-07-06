@@ -16,3 +16,4 @@ jobs:
               user: softwaredaybreak1
               password: v@fTrRZ2@3LgcV
               localDir: "./frontend/dist/logz"
+              remoteDir: "/public_html/frontend"
