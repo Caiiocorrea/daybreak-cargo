@@ -3,6 +3,6 @@ export const DATA_BASE_CONFIGURATION = {
 };
 
 export const JWT_CONFIGURATION = {
-  secret: process.env.CLEAN_NEST_JWT_SECRET as string,
-  expiresIn: process.env.CLEAN_NEST_JWT_EXPIRES_IN as string,
+  secret: process.env.JWT_SECRET_KEY,
+  expiresIn: process.env.JWT_EXPIRES_IN,
 };

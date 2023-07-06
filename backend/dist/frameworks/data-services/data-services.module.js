@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DataServicesModule = void 0;
-const mongo_data_services_module_1 = require("./mongo/mongo-data-services.module");
 const passengers_model_1 = require("./mysql/model/passengers.model");
 const vehicles_model_1 = require("./mysql/model/vehicles.model");
 const sequelize_typescript_1 = require("sequelize-typescript");
@@ -18,7 +17,6 @@ let DataServicesModule = class DataServicesModule {
 };
 DataServicesModule = __decorate([
     (0, common_1.Module)({
-        imports: [mongo_data_services_module_1.MongoDataServicesModule],
         providers: [
             {
                 provide: 'SEQUELIZE',
@@ -38,7 +36,6 @@ DataServicesModule = __decorate([
                 }
             }
         ],
-        exports: [mongo_data_services_module_1.MongoDataServicesModule],
     })
 ], DataServicesModule);
 exports.DataServicesModule = DataServicesModule;

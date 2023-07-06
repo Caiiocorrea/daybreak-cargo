@@ -1,4 +1,4 @@
-import { MongoDataServicesModule } from './mongo/mongo-data-services.module';
+// import { MongoDataServicesModule } from './mongo/mongo-data-services.module';
 import Passengers from './mysql/model/passengers.model';
 import Vehicle from './mysql/model/vehicles.model';
 import { Sequelize } from 'sequelize-typescript';
@@ -7,7 +7,7 @@ import User from './mysql/model/users.model';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [MongoDataServicesModule],
+  // imports: [MongoDataServicesModule],
   providers: [
     {
       provide: 'SEQUELIZE',
@@ -27,6 +27,6 @@ import { Module } from '@nestjs/common';
       }
     }
   ],
-  exports: [MongoDataServicesModule],
+  // exports: [MongoDataServicesModule],
 })
 export class DataServicesModule { }

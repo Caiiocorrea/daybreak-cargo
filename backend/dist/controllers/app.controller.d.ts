@@ -1,5 +1,5 @@
 import { AuthUseCases } from '..//use-cases/auth/auth.use-case';
-import { AuthDto } from 'src/core/dtos';
+import { AuthDto } from '../core/dtos';
 export declare class AppController {
     private authService;
     constructor(authService: AuthUseCases);

@@ -11,7 +11,6 @@ const data_services_module_1 = require("../../frameworks/data-services/data-serv
 const users_provedores_1 = require("../../frameworks/data-services/mysql/users.provedores");
 const local_strategy_1 = require("./strategies/local.strategy");
 const jwt_strategy_1 = require("./strategies/jwt.strategy");
-const constants_1 = require("./constants");
 const auth_use_case_1 = require("./auth.use-case");
 const config_1 = require("@nestjs/config");
 const common_1 = require("@nestjs/common");
@@ -24,15 +23,15 @@ AuthUseCasesModule = __decorate([
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             data_services_module_1.DataServicesModule,
             jwt_1.JwtModule.register({
-                privateKey: constants_1.JWT_CONFIGURATION.secret,
-                signOptions: { expiresIn: constants_1.JWT_CONFIGURATION.expiresIn },
+                privateKey: process.env.JWT_SECRET_KEY,
+                signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
             }),
         ],
         providers: [
             auth_use_case_1.AuthUseCases,
             local_strategy_1.LocalStrategy,
             jwt_strategy_1.JwtStrategy,
-            ...users_provedores_1.usersProviders,
+            ...users_provedores_1.usersProviders
         ],
         exports: [auth_use_case_1.AuthUseCases, jwt_1.JwtModule],
     })
