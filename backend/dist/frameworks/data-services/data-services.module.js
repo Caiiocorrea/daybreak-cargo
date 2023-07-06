@@ -7,11 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DataServicesModule = void 0;
-const mongo_data_services_module_1 = require("../../frameworks/data-services/mongo/mongo-data-services.module");
-const order_model_1 = require("../../frameworks/data-services/mysql/model/order.model");
-const vehicle_model_1 = require("../../frameworks/data-services/mysql/model/vehicle.model");
-const user_model_1 = require("../../frameworks/data-services/mysql/model/user.model");
+const mongo_data_services_module_1 = require("./mongo/mongo-data-services.module");
+const passengers_model_1 = require("./mysql/model/passengers.model");
+const vehicles_model_1 = require("./mysql/model/vehicles.model");
 const sequelize_typescript_1 = require("sequelize-typescript");
+const orders_model_1 = require("./mysql/model/orders.model");
+const users_model_1 = require("./mysql/model/users.model");
 const common_1 = require("@nestjs/common");
 let DataServicesModule = class DataServicesModule {
 };
@@ -31,10 +32,10 @@ DataServicesModule = __decorate([
                         database: process.env.MYSQL_DATABASE,
                         logging: false,
                     });
-                    sequelize.addModels([user_model_1.default, vehicle_model_1.default, order_model_1.default]);
+                    sequelize.addModels([users_model_1.default, passengers_model_1.default, vehicles_model_1.default, orders_model_1.default]);
                     await sequelize.sync();
                     return sequelize;
-                },
+                }
             }
         ],
         exports: [mongo_data_services_module_1.MongoDataServicesModule],
