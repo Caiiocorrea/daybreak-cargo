@@ -1,10 +1,9 @@
-import Passengers from '../../frameworks/data-services/mysql/model/passengers.model';
 import Vehicle from '../../frameworks/data-services/mysql/model/vehicles.model';
 import User from '../../frameworks/data-services/mysql/model/users.model';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '../../core/dtos';
 import { AuthUseCases } from '../auth/auth.use-case';
-import { UserEnum } from 'src/core/enum/userEnum';
+import { UserEnum } from '../../core/enum/userEnum';
 
 @Injectable()
 export class UserUseCases {

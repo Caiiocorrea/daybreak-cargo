@@ -1,7 +1,7 @@
 import { IDataServices } from '../../core/abstracts';
 import { Injectable } from '@nestjs/common';
 import { toExcel } from 'to-excel';
-import { Order } from 'src/core';
+import { Order } from '../../core';
 import { uuid } from 'uuidv4';
 
 @Injectable()

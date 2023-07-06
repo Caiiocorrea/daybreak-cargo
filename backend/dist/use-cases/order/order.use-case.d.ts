@@ -1,5 +1,5 @@
 import Passengers from '../../frameworks/data-services/mysql/model/passengers.model';
-import Order from 'src/frameworks/data-services/mysql/model/orders.model';
+import Order from '../../frameworks/data-services/mysql/model/orders.model';
 import { CreateOrderDto, UpdateOrderDto } from '../../core/dtos';
 export declare class OrderUseCases {
     private passengersRepository;

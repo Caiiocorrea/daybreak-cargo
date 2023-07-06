@@ -2,7 +2,7 @@ import { Controller, Get, Param, Post, Body, Put, UseGuards, Query, UsePipes, Re
 import { CreateUserDto, UpdateUserDto, userSchema } from '../core/dtos';
 import { JwtAuthGuard } from '../use-cases/auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { JoiValidationPipe } from 'src/pipes/JoiValidationPipe';
+import { JoiValidationPipe } from '../pipes/JoiValidationPipe';
 import { UserUseCases } from '../use-cases/user/user.use-case';
 import { AuthGuard } from '@nestjs/passport';
 

@@ -1,5 +1,5 @@
 import { IDataServices } from '../../core/abstracts';
-import { Order } from 'src/core';
+import { Order } from '../../core';
 export declare class ReportMonthUseCases {
     private dataServices;
     constructor(dataServices: IDataServices);

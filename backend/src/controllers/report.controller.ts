@@ -1,5 +1,5 @@
-import { ReporGoogleSheetstUseCases } from 'src/use-cases/report/report.google.sheets.use-case';
-import { ReportMonthUseCases } from 'src/use-cases/report/report.month.use-case';
+import { ReporGoogleSheetstUseCases } from '../use-cases/report/report.google.sheets.use-case';
+import { ReportMonthUseCases } from '../use-cases/report/report.month.use-case';
 import { JwtAuthGuard } from '../use-cases/auth/guards/jwt-auth.guard';
 import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';

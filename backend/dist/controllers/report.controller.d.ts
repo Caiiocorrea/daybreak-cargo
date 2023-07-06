@@ -1,5 +1,5 @@
-import { ReporGoogleSheetstUseCases } from 'src/use-cases/report/report.google.sheets.use-case';
-import { ReportMonthUseCases } from 'src/use-cases/report/report.month.use-case';
+import { ReporGoogleSheetstUseCases } from '../use-cases/report/report.google.sheets.use-case';
+import { ReportMonthUseCases } from '../use-cases/report/report.month.use-case';
 export declare class ReportController {
     private reportMonthUseCases;
     private reporGoogleSheetstUseCases;

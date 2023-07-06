@@ -13,7 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
-const auth_use_case_1 = require("../use-cases/auth/auth.use-case");
+const auth_use_case_1 = require("..//use-cases/auth/auth.use-case");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const dtos_1 = require("../core/dtos");

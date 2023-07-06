@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware, UnauthorizedException } from "@nestjs/common";
 import { NextFunction, Request, Response } from "express";
-import { TokenEnum } from "src/core/enum/tokenEnum";
+import { TokenEnum } from "../core/enum/tokenEnum";
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

@@ -1,4 +1,4 @@
-import { AuthUseCases } from 'src/use-cases/auth/auth.use-case';
+import { AuthUseCases } from '..//use-cases/auth/auth.use-case';
 import { AuthDto } from 'src/core/dtos';
 export declare class AppController {
     private authService;

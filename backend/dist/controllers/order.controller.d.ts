@@ -1,4 +1,4 @@
-import { OrderUseCases } from 'src/use-cases/order/order.use-case';
+import { OrderUseCases } from '../use-cases/order/order.use-case';
 import { CreateOrderDto, UpdateOrderDto } from '../core/dtos';
 export declare class OrderController {
     private orderUseCases;

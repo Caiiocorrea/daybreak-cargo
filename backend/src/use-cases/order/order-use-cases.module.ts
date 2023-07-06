@@ -1,6 +1,6 @@
 import { passengersProviders } from '../../frameworks/data-services/mysql/passengers.provedores';
 import { DataServicesModule } from '../../frameworks/data-services/data-services.module';
-import { ordesProviders } from 'src/frameworks/data-services/mysql/orders.provedores';
+import { ordesProviders } from '../../frameworks/data-services/mysql/orders.provedores';
 import { OrderUseCases } from './order.use-case';
 import { Module } from '@nestjs/common';
 

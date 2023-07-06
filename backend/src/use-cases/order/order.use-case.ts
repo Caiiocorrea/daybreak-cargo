@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import Passengers from '../../frameworks/data-services/mysql/model/passengers.model';
-import Order from 'src/frameworks/data-services/mysql/model/orders.model';
+import Order from '../../frameworks/data-services/mysql/model/orders.model';
 import { CreateOrderDto, UpdateOrderDto } from '../../core/dtos';
 import { OrderEnum } from '../../core/enum/orderEnum';
 import { Model, WhereOptions, Op } from 'sequelize';

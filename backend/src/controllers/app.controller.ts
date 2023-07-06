@@ -1,4 +1,4 @@
-import { AuthUseCases } from 'src/use-cases/auth/auth.use-case';
+import { AuthUseCases } from '..//use-cases/auth/auth.use-case';
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthDto } from 'src/core/dtos';

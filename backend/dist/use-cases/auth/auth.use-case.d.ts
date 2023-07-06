@@ -1,4 +1,4 @@
-import User from 'src/frameworks/data-services/mysql/model/users.model';
+import User from '../../frameworks/data-services/mysql/model/users.model';
 import { JwtService } from '@nestjs/jwt';
 export declare class AuthUseCases {
     private userRepository;

@@ -1,7 +1,7 @@
 import { BadRequestException, UnauthorizedException } from '@nestjs/common/exceptions';
-import User from 'src/frameworks/data-services/mysql/model/users.model';
+import User from '../../frameworks/data-services/mysql/model/users.model';
 import { Inject, Injectable } from '@nestjs/common';
-import { AuthEnum } from 'src/core/enum/userEnum';
+import { AuthEnum } from '../../core/enum/userEnum';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 

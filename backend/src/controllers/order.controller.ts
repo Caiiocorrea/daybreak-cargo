@@ -1,9 +1,9 @@
 import { Controller, Get, Param, Post, Body, Put, UseGuards, Query, Res } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/use-cases/auth/guards/jwt-auth.guard';
-import { OrderUseCases } from 'src/use-cases/order/order.use-case';
+import { JwtAuthGuard } from '../use-cases/auth/guards/jwt-auth.guard';
+import { OrderUseCases } from '../use-cases/order/order.use-case';
 import { CreateOrderDto, UpdateOrderDto } from '../core/dtos';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { OrderEnum } from 'src/core/enum/orderEnum';
+import { OrderEnum } from '../core/enum/orderEnum';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('order')
