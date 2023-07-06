@@ -16,4 +16,4 @@ jobs:
               user: api
               password: v@fTrRZ2@3LgcV
               localDir: "./backend/dist"
-              remoteDir: "/apps_nodejs/backend"
+              remoteDir: "/apps_nodejs/backend/dist"
