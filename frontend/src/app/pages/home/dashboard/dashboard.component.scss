@@ -15,7 +15,8 @@
 		width: calc(33.33% - 20px);
 		background-color: #fff;
 		margin-bottom: 20px;
-		padding: 20px;
+		border-radius: 8px;
+		padding: 10px;
 	}
 
 	.card-title {
@@ -40,19 +41,20 @@
 		}
 
 		.content {
-			justify-content: space-between;
+			justify-content: center;
 			flex-wrap: wrap;
 			display: flex;
 			padding: 20px;
 			flex: 1;
 		}
-
+		
 		.card {
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 			width: calc(33.33% - 20px);
 			background-color: #fff;
 			margin-bottom: 20px;
-			margin: 10px;
+			margin: 20px;
+			// width: 50%;
 		}
 
 		.card-title {

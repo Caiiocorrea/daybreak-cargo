@@ -1,9 +1,12 @@
 import { CreatePassengersDto, UpdatePassengersDto } from './passengers.dto';
-import { IsString, IsNotEmpty, IsArray, IsBoolean } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsBoolean, IsEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateOrderDto {
+  @IsEmpty()
   user_id: number;
+
+  @IsEmpty()
   motorista: string;
 
   @IsString({ message: 'Bloquinho deve ser uma string' })
@@ -48,7 +51,10 @@ export class CreateOrderDto {
 }
 
 export class UpdateOrderDto {
+  @IsEmpty()
   user_id: number;
+
+  @IsEmpty()
   motorista: string;
 
   @IsString()

@@ -14,7 +14,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 export interface PassageirosElement {
-	passageiro: string
+	nome: string
 	status: string
 }
 
@@ -30,7 +30,7 @@ export interface PeriodicElement {
 	origem: string
 	valorCorrida: string
 	status: string
-	passageiros: PassageirosElement[]
+	passengers: PassageirosElement[]
 	created_at: string
 	updated_at: string
 	Controls: any;
@@ -64,7 +64,7 @@ export class OrdersComponent implements OnInit {
 		origem: new FormControl(''),
 		valorCorrida: new FormControl(''),
 		status: new FormControl(''),
-		passageiros: new FormControl(''),
+		passengers: new FormControl(''),
 		created_at: new FormControl(''),
 
 		// filter
@@ -89,14 +89,14 @@ export class OrdersComponent implements OnInit {
 	_dataSource!: MatTableDataSource<any>;
 	pageCount!: number;
 	currentPage: number = 0;
-	rowsPage: number = 20;
+	rowsPage: number = 100;
 	totalRegisters: number = 0;
 
-	orders: Order = orders;
-	orderNames = Object.keys(orders);
+	// orders: Order = orders;
+	// orderNames = Object.keys(orders);
 
-	ordersStatus: Order = ordersStatus;
-	orderStatusNames = Object.keys(ordersStatus);
+	// ordersStatus: Order = ordersStatus;
+	// orderStatusNames = Object.keys(ordersStatus);
 
 	breakPoint: boolean = false;
 	isLoading: boolean = true;
@@ -118,27 +118,35 @@ export class OrdersComponent implements OnInit {
 			});
 	}
 
-	@HostListener('window:scroll', [])
-	onScroll() {
-		if (
-			!this.check &&
-			!this.isLoading &&
-			window.innerHeight + window.scrollY >= document.body.offsetHeight ||
-			this.breakPoint
-		) {
-			this.isLoading = true;
-			this.pageCount = parseInt((this.totalRegisters / this.rowsPage).toFixed(0));
-			if (this.currentPage <= this.pageCount) {
-				this.currentPage++;
-				this.getOrder(this.currentPage, this.rowsPage);
-			}
-			this.isLoading = false;
-		}
-	}
+	// @HostListener('window:scroll', [])
+	// onScroll() {
+	// 	if (
+	// 		!this.check &&
+	// 		!this.isLoading &&
+	// 		window.innerHeight + window.scrollY >= document.body.offsetHeight ||
+	// 		this.breakPoint
+	// 	) {
+	// 		this.isLoading = true;
+	// 		// this.pageCount = parseInt((this.totalRegisters / this.rowsPage).toFixed(0));
+	// 		// console.log(this.pageCount, this.currentPage)
+	// 		if (this.pageCount <= 50) {
+	// 			// console.log(this.currentPage, this.pageCount)
+	// 			this.getOrder(0, this.pageCount)
+	// 		}
+
+	// 		else if (this.pageCount > 50) {
+	// 			setTimeout(() => {
+	// 				this.currentPage += 1;
+	// 				this.getOrder(this.currentPage, this.rowsPage);
+	// 			}, 1500);
+	// 		}
+
+	// 		this.isLoading = false;
+	// 	}
+	// }
 
 	toggle(event: MatSlideToggleChange, search: string) {
 		this.check = event.checked;
-		console.log(event.checked, search)
 		if (event.checked) {
 			if (search === 'Bloquinho') {
 				this.dataSource(this._dataSource.data.filter((order: any) => order.bloquinho === 'Sim'))
@@ -150,15 +158,16 @@ export class OrdersComponent implements OnInit {
 		}
 	}
 
-	getOrder(skip?: number, limit?: number) {
+	getOrder(offset?: number, limit?: number) {
 		this.isLoading = true;
-		this.httpOrder.getOrders(skip, limit)
+		this.httpOrder.getOrders(offset, limit)
 			.subscribe((success: any) => {
+				// this.items.push(success.orders);
 				this.items.push(...success.data);
 				this.dataSource([...new Set(this.items)]);
-				this.pageCount = 0;
+				this.pageCount = success.count;
 				this.totalRegisters = success.count;
-				this.currentPage = success.page
+				this.currentPage = success.offset
 				this.isLoading = false;
 			}, (error: any) => {
 				const { status, message } = error;
@@ -198,13 +207,6 @@ export class OrdersComponent implements OnInit {
 		}
 	}
 
-	clearFilter() {
-		this._form.value.search = '';
-		this._form.value.date_one = '';
-		this._form.value.date_two = '';
-		this.getOrder();
-	}
-
 	register() {
 		const dialog = this.dialog.open(ModalCadastraOrderComponent, {
 			autoFocus: false,
@@ -233,23 +235,8 @@ export class OrdersComponent implements OnInit {
 		});
 	}
 
-	// relatorio() {
-	// 	const dialog = this.dialog.open(ModalRelatorioOrderComponent, {
-	// 		autoFocus: false,
-	// 		panelClass: 'modal-default',
-	// 		data: {}
-	// 	});
-
-	// 	// dialog.afterClosed().subscribe((modalResult: boolean) => {
-	// 	// 	if (modalResult) {
-	// 	// 		this.getOrder();
-	// 	// 	}
-	// 	// });
-	// }
-
 	concludeOrder(value: any, idOrder: number) {
 		value.status = 'Concluído';
-		console.log({ atualizado: value })
 		const dialog = this.dialog.open(ErrorMessageComponent, {
 			autoFocus: false,
 			panelClass: 'modal-erroMessage',
@@ -315,6 +302,17 @@ export class OrdersComponent implements OnInit {
 		// });
 	}
 
+	dataSource(data: any) {
+		this._dataSource = new MatTableDataSource([...data.map((order: any) => {
+			return {
+				...order,
+				intinerario: `${order.origem} x ${order.destino}`,
+				valorCorrida: `R$ ${parseFloat(order.valorCorrida).toFixed(2)}`
+			}
+		})
+		]);
+	}
+
 	getFuncFAB(idFunc: Number) {
 		switch (idFunc) {
 			case 1:
@@ -325,18 +323,24 @@ export class OrdersComponent implements OnInit {
 		}
 	}
 
-	dataSource(data: any) {
-		this._dataSource = new MatTableDataSource([...data.map((order: any) => {
-			return {
-				...order,
-				status: (
-					order.status === 'open' ? 'Aguardando' :
-						order.status === 'closed' ? 'Concluído' : 'Agendado'
-				),
-				intinerario: `${order.origem} x ${order.destino}`,
-				valorCorrida: `R$ ${parseFloat(order.valorCorrida).toFixed(2)}`
-			}
-		})
-		]);
+	clearFilter() {
+		this._form.value.search = '';
+		this._form.value.date_one = '';
+		this._form.value.date_two = '';
+		this.getOrder();
 	}
+
+	// relatorio() {
+	// 	const dialog = this.dialog.open(ModalRelatorioOrderComponent, {
+	// 		autoFocus: false,
+	// 		panelClass: 'modal-default',
+	// 		data: {}
+	// 	});
+
+	// 	// dialog.afterClosed().subscribe((modalResult: boolean) => {
+	// 	// 	if (modalResult) {
+	// 	// 		this.getOrder();
+	// 	// 	}
+	// 	// });
+	// }
 }

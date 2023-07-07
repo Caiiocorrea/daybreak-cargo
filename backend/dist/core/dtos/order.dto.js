@@ -15,6 +15,14 @@ const swagger_1 = require("@nestjs/swagger");
 class CreateOrderDto {
 }
 __decorate([
+    (0, class_validator_1.IsEmpty)(),
+    __metadata("design:type", Number)
+], CreateOrderDto.prototype, "user_id", void 0);
+__decorate([
+    (0, class_validator_1.IsEmpty)(),
+    __metadata("design:type", String)
+], CreateOrderDto.prototype, "motorista", void 0);
+__decorate([
     (0, class_validator_1.IsString)({ message: 'Bloquinho deve ser uma string' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'Bloquinho é obrigatório' }),
     (0, swagger_1.ApiProperty)({ description: 'Quando bloquinho preenchido' }),
@@ -63,6 +71,14 @@ __decorate([
 exports.CreateOrderDto = CreateOrderDto;
 class UpdateOrderDto {
 }
+__decorate([
+    (0, class_validator_1.IsEmpty)(),
+    __metadata("design:type", Number)
+], UpdateOrderDto.prototype, "user_id", void 0);
+__decorate([
+    (0, class_validator_1.IsEmpty)(),
+    __metadata("design:type", String)
+], UpdateOrderDto.prototype, "motorista", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),

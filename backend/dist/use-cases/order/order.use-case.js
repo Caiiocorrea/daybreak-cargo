@@ -23,7 +23,6 @@ let OrderUseCases = class OrderUseCases {
     }
     async getOrder(searchObject, user) {
         const fields = Object.keys(this.orderRepository.rawAttributes);
-        console.log(fields);
         fields.forEach((field) => {
             if (searchObject[field] === '') {
                 delete searchObject[field];
@@ -37,10 +36,10 @@ let OrderUseCases = class OrderUseCases {
                 };
             }
         }
-        console.log(whereCondition);
         return this.orderRepository.findAll({
             where: {
                 [sequelize_1.Op.or]: [whereCondition],
+                user_id: user.user_id
             },
             include: [{ model: this.passengersRepository }],
         });
@@ -51,9 +50,8 @@ let OrderUseCases = class OrderUseCases {
         let limit = Number((_b = query.limit) !== null && _b !== void 0 ? _b : 25);
         delete query.offset;
         delete query.limit;
-        console.log(query);
         const result = await this.orderRepository.findAndCountAll({
-            where: query,
+            where: Object.assign(Object.assign({}, query), { user_id: user.user_id }),
             offset, limit,
             include: [{ model: this.passengersRepository }],
         });
@@ -70,8 +68,8 @@ let OrderUseCases = class OrderUseCases {
     async createOrder(createOrderDto, user) {
         try {
             createOrderDto.user_id = user.user_id;
-            createOrderDto.motorista = `${user.nome} ${user.sobrenome}`;
-            return await this.orderRepository.create(createOrderDto[0]).then(async (order) => {
+            createOrderDto.motorista = user.nome + ' ' + user.sobrenome;
+            return await this.orderRepository.create(createOrderDto).then(async (order) => {
                 createOrderDto.passageiros.map(async (passenger) => {
                     passenger.order_id = order.id;
                     await this.passengersRepository.create(passenger);

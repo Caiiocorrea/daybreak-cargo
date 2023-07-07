@@ -6,17 +6,21 @@
 		[matMenuTriggerFor]="menuUser"
 	/>
 </div>
-<mat-menu #menuUser xPosition="before" yPosition="below">
+<mat-menu #menuUser xPosition="before" yPosition="below" ngForm="user">
 	<button mat-menu-item>
 		<mat-icon>account_circle</mat-icon>
-		<span> usuario </span>
+		<span> {{user.nome}} {{user.sobrenome}} </span>
+	</button>
+	<button mat-menu-item>
+		<mat-icon>email</mat-icon>
+		<span> {{user.email}} </span>
 	</button>
 	<mat-divider></mat-divider>
 
 	<mat-divider></mat-divider>
 	<button mat-menu-item (click)="logout()">
 		<mat-icon>exit_to_app</mat-icon>
-		<span>Sair</span>
+		<span routerLink="/">Sair</span>
 	</button>
 </mat-menu>
 <ng-template #noUserImage>

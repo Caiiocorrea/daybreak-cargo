@@ -15,29 +15,49 @@
 			<ng-container [ngSwitch]="activeForm">
 				<form class="form-grid" [formGroup]="_formOrder" [@changeAnim]="activeForm === 1 ? 'open' : 'close'"
 					*ngSwitchCase="1">
-					<mat-form-field class="grid-3">
-						<mat-label> Origem </mat-label>
-						<input matInput type="text" formControlName="origem" />
-					</mat-form-field>
-
-					<mat-form-field class="grid-3">
-						<mat-label> Destino </mat-label>
-						<input matInput type="text" formControlName="destino" />
-					</mat-form-field>
-
-					<mat-form-field class="grid-3">
-						<mat-label> Status </mat-label>
-						<input matInput type="text" formControlName="status" />
+					<mat-form-field class="grid-1">
+						<mat-label>Origem</mat-label>
+						<input matInput formControlName="origem" [matAutocomplete]="autoOrigem" required />
+						<mat-autocomplete #autoOrigem="matAutocomplete">
+							<mat-option *ngFor="let option of origem_destino" [value]="option">{{ option }}
+							</mat-option>
+						</mat-autocomplete>
 					</mat-form-field>
 
 					<mat-form-field class="grid-1">
-						<mat-label> Solicitante </mat-label>
-						<input matInput type="text" formControlName="empresa" />
+						<mat-label>Destino</mat-label>
+						<input matInput formControlName="destino" [matAutocomplete]="autoDestino" required />
+						<mat-autocomplete #autoDestino="matAutocomplete">
+							<mat-option *ngFor="let option of origem_destino" [value]="option">{{ option }}
+							</mat-option>
+						</mat-autocomplete>
 					</mat-form-field>
 
-					<mat-form-field class="grid-2">
-						<mat-label> Bloquinho </mat-label>
-						<input matInput type="text" formControlName="bloquinho" />
+					<mat-form-field class="grid-1">
+						<mat-label>Status</mat-label>
+						<input matInput formControlName="status" [matAutocomplete]="autoStatus" required />
+						<mat-autocomplete #autoStatus="matAutocomplete">
+							<mat-option *ngFor="let option of status" [value]="option">{{ option }}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+
+					<mat-form-field class="grid-1">
+						<mat-label>Solicitante</mat-label>
+						<input matInput formControlName="empresa" [matAutocomplete]="autoEmpresa" required />
+						<mat-autocomplete #autoEmpresa="matAutocomplete">
+							<mat-option *ngFor="let option of empresa" [value]="option">{{ option }}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+
+					<mat-form-field class="grid-1">
+						<mat-label>Bloquinho</mat-label>
+						<input matInput formControlName="bloquinho" [matAutocomplete]="autoBloquinho" required />
+						<mat-autocomplete #autoBloquinho="matAutocomplete">
+							<mat-option *ngFor="let option of bloquinho" [value]="option">{{ option }}
+							</mat-option>
+						</mat-autocomplete>
 					</mat-form-field>
 
 					<mat-form-field class="grid-2">
@@ -54,14 +74,14 @@
 				<form [formGroup]="_formOrder" [@changeAnim]="activeForm === 2 ? 'open' : 'close'" *ngSwitchCase="2">
 					<div class="timeline-container">
 						<ul class="timeline">
-							<li *ngFor="let item of dialogData.passageiros">
+							<li *ngFor="let item of dialogData.passengers">
 								<div class="timeline-badge">
 									<mat-icon>person</mat-icon>
 								</div>
 								<div class="lineVertical"></div>
 								<div class="timeline-panel">
 									<div class="timeline-heading">
-										<h4 class="timeline-title">{{ item.passageiro }}</h4>
+										<h4 class="timeline-title">{{ item.nome }}</h4>
 										<p>
 											<small class="text-muted">
 												Status: {{ item.status }}

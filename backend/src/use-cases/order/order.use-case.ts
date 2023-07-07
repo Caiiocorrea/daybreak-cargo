@@ -3,7 +3,7 @@ import Passengers from '../../frameworks/data-services/mysql/model/passengers.mo
 import Order from '../../frameworks/data-services/mysql/model/orders.model';
 import { CreateOrderDto, UpdateOrderDto } from '../../core/dtos';
 import { OrderEnum } from '../../core/enum/orderEnum';
-import { Model, WhereOptions, Op } from 'sequelize';
+import { WhereOptions, Op } from 'sequelize';
 
 
 @Injectable()
@@ -15,7 +15,6 @@ export class OrderUseCases {
 
   async getOrder(searchObject: any, user: any) {
     const fields = Object.keys(this.orderRepository.rawAttributes);
-    console.log(fields)
 
     fields.forEach((field) => {
       if (searchObject[field] === '') {
@@ -32,11 +31,10 @@ export class OrderUseCases {
       }
     }
 
-    console.log(whereCondition)
-
     return this.orderRepository.findAll({
       where: {
         [Op.or]: [whereCondition],
+        user_id: user.user_id
       },
       include: [{ model: this.passengersRepository }],
     });
@@ -48,10 +46,11 @@ export class OrderUseCases {
     delete query.offset;
     delete query.limit;
 
-    console.log(query)
-
     const result = await this.orderRepository.findAndCountAll({
-      where: query,
+      where: {
+        ...query,
+        user_id: user.user_id
+      },
       offset, limit,
       include: [{ model: this.passengersRepository }],
     })
@@ -71,8 +70,8 @@ export class OrderUseCases {
   async createOrder(createOrderDto: CreateOrderDto, user: any) {
     try {
       createOrderDto.user_id = user.user_id;
-      createOrderDto.motorista = `${user.nome} ${user.sobrenome}`
-      return await this.orderRepository.create(createOrderDto[0]).then(async (order) => {
+      createOrderDto.motorista = user.nome + ' ' + user.sobrenome;
+      return await this.orderRepository.create(createOrderDto).then(async (order) => {
         createOrderDto.passageiros.map(async (passenger) => {
           passenger.order_id = order.id;
           await this.passengersRepository.create(passenger)

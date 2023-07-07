@@ -8,12 +8,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface PassageirosElement {
-	passageiro: string
+	nome: string
 	status: string
 }
 
 export interface orderElement {
-	_id: any
+	id: any
 	intinerario: string
 	user_id: string
 	bloquinho: string
@@ -24,7 +24,8 @@ export interface orderElement {
 	origem: string
 	valorCorrida: string
 	status: string
-	passageiros: PassageirosElement[]
+	passengers: PassageirosElement[]
+	active: boolean
 	created_at: string
 	updated_at: string
 	Controls: any;
@@ -76,7 +77,7 @@ export interface orderElement {
 })
 export class ModalEditaOrderComponent implements OnInit {
 	_formOrder = new FormGroup({
-		_id: new FormControl('', Validators.required),
+		id: new FormControl('', Validators.required),
 		intinerario: new FormControl('', Validators.required),
 		bloquinho: new FormControl('', Validators.required),
 		destino: new FormControl('', Validators.required),
@@ -86,7 +87,8 @@ export class ModalEditaOrderComponent implements OnInit {
 		origem: new FormControl('', Validators.required),
 		valorCorrida: new FormControl('', Validators.required),
 		status: new FormControl('', Validators.required),
-		passageiros: new FormControl('', Validators.required),
+		passengers: new FormControl('', Validators.required),
+		active: new FormControl('', Validators.required),
 	});
 
 	orders: Order = orders;
@@ -100,6 +102,70 @@ export class ModalEditaOrderComponent implements OnInit {
 	activeForm: number = 1;
 	boolAnim: boolean = false;
 
+	status = ['Aguardando', 'Agendado', 'Em viagem', 'Concluído', 'Finalizado'];
+	empresa = ['Coottara', 'Particular', 'Chemtrade', 'Suzano', 'NutriPetro', 'Ultragaz'];
+	bloquinho = ['Sim', 'Não'];
+
+	origem_destino = [
+		"Aracruz",
+		"Barra de São Francisco",
+		"Barra do Riacho",
+		"Barra do Sahy",
+		"Bela Vista",
+		"Cachoeiro de Itapemirim",
+		"Cariacica",
+		"Centro",
+		"Centro Empresarial",
+		"Colatina",
+		"Coqueiral de Aracruz",
+		"Cupido",
+		"Ecoporanga",
+		"Fábrica",
+		"Fatima",
+		"Guanabara",
+		"Guaraná",
+		"Guaxindiba",
+		"Itaparica",
+		"Itaputera",
+		"Iúna",
+		"Jacupemba",
+		"Jardins",
+		"Jequitibá",
+		"Limão",
+		"Linhares",
+		"Mar Azul",
+		"Morobá",
+		"Nova Colatina",
+		"Nova Conquista",
+		"Novo Jequitibá",
+		"Planalto",
+		"Polivalente",
+		"Pontal do Piraqueaçu",
+		"Praia Formosa",
+		"Praia dos Padres",
+		"Primavera",
+		"Putiri",
+		"Recanto Feliz",
+		"Santa Cruz",
+		"Santa Luzia",
+		"Santa Marta",
+		"Sauaçu",
+		"Saue",
+		"Segato",
+		"Serra",
+		"São Clemente",
+		"São Francisco",
+		"São José",
+		"São Marcos",
+		"Viana",
+		"Vila Nova",
+		"Vila Rica",
+		"Vila Velha",
+		"Vila do Riacho",
+		"Vitória",
+		"de Carli"
+	]
+
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public dialogData: orderElement,
 		private orderService: OrderService,
@@ -109,6 +175,7 @@ export class ModalEditaOrderComponent implements OnInit {
 	) { }
 
 	ngOnInit(): void {
+		console.log(this.matDialog);
 		this._formOrder.patchValue(this.dialogData);
 	}
 
@@ -175,7 +242,7 @@ export class ModalEditaOrderComponent implements OnInit {
 		dialog.afterClosed().subscribe(response => {
 			if (response) {
 				this.orderService
-					.delete(this.dialogData._id, false)
+					.delete(this.dialogData.id, false)
 					.subscribe((success: any) => {
 						this.matSnack.open(
 							bitAtivo === 0
@@ -208,12 +275,32 @@ export class ModalEditaOrderComponent implements OnInit {
 			this.matSnack.open('Preencha todos os campos', '', { duration: 2500 });
 		} else {
 			this._formOrder.value.valorCorrida = parseFloat(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2)
+			delete this._formOrder.value.motorista
 			delete this._formOrder.value.intinerario
 			delete this._formOrder.value.created_at
-			delete this._formOrder.value._id
+			delete this._formOrder.value.updated_at
+			delete this._formOrder.value.id
 
+			let body = {
+				...this._formOrder.value,
+				active : true,
+				passageiros: this._formOrder.value.passengers
+					.filter((passengers: { nome: string; }) => passengers.nome !== '')
+					.map((passengers: { id: any, order_id: any, nome: string; active: boolean }) => {
+						return {
+							id: passengers.id,
+							order_id: passengers.order_id,
+							nome: passengers.nome,
+							status: 'Confirmado',
+							active: passengers.active
+						}
+					}) ?? []
+			};
+
+			delete body.passengers
+			
 			this.orderService
-				.put(this.dialogData._id, this._formOrder.value)
+				.put(this.dialogData.id, body)
 				.subscribe(
 					(success: any) => {
 						this.matSnack.open(
@@ -222,7 +309,7 @@ export class ModalEditaOrderComponent implements OnInit {
 							{ duration: 2000 }
 						);
 						this.dialogRef.close(true);
-						window.location.reload();
+						// window.location.reload();
 					},
 					error => {
 						this.matSnack.open(`Ocorreu um erro: ${error.error.message}`);

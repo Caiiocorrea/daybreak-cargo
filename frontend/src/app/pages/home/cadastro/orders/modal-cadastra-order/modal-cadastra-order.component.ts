@@ -156,20 +156,20 @@ export class ModalCadastraOrderComponent implements OnInit {
 			...this._formGroupOrder.value,
 			kmCorrida: `${this._formGroupOrder.value.kmCorrida}`,
 			passageiros: [
-				{ passageiro: this._formPassageiros.value.passageiro_one },
-				{ passageiro: this._formPassageiros.value.passageiro_two },
-				{ passageiro: this._formPassageiros.value.passageiro_three },
-				{ passageiro: this._formPassageiros.value.passageiro_four }
+				{ nome: this._formPassageiros.value.passageiro_one },
+				{ nome: this._formPassageiros.value.passageiro_two },
+				{ nome: this._formPassageiros.value.passageiro_three },
+				{ nome: this._formPassageiros.value.passageiro_four }
 			]
 		}
 
 		let body = {
 			...dados,
 			passageiros: dados.passageiros
-				.filter((passageiro: { passageiro: string; }) => passageiro.passageiro !== '')
-				.map((passageiro: { passageiro: string; }) => {
+				.filter((passageiro: { nome: string; }) => passageiro.nome !== '')
+				.map((passageiro: { nome: string; }) => {
 					return {
-						passageiro: passageiro.passageiro,
+						nome: passageiro.nome,
 						status: 'Confirmado'
 					}
 				}) ?? []
@@ -182,7 +182,8 @@ export class ModalCadastraOrderComponent implements OnInit {
 			error => {
 				console.log(error);
 				if (error.active === 302) {
-					this.idOrder = error.error.data[0].IdCaminhao;
+					console.log(error.error.data);
+					// this.idOrder = error.error.data[0].IdCaminhao;
 					this.itsSaved = 3;
 				} else {
 					this.itsSaved = 2;

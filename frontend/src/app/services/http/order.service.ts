@@ -12,8 +12,8 @@ export class OrderService {
 	constructor(private httpClient: HttpClient) { }
 
 	//Get Orders
-	getOrders(page?: number, limit?: number) {
-		return this.httpClient.get(`${API}${router}?page=${page}&limit=${limit}`);
+	getOrders(offset: number = 0, limit: number = 100) {
+		return this.httpClient.get(`${API}${router}?offset=${offset}&limit=${limit}`);
 	}
 
 	//filter
