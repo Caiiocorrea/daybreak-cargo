@@ -1,19 +1,18 @@
-name: Deploy Backend
-on: push
+# name: Deploy Backend
+# on: push
 
-jobs:
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
 
-      - name: FTP Deploy Backend
-        uses: locaweb/ftp-deploy@1.0.0
+#       - name: FTP Deploy Backend
+#         uses: locaweb/ftp-deploy@1.0.0
         
-        with:
-              host: ftp.nodejsng10f03.kinghost.net
-              user: api
-              password: v@fTrRZ2@3LgcV
-              localDir: "./backend/dist"
-              remoteDir: "/apps_nodejs/backend/dist"
+#         with:
+#               host: ftp.apisoftwaredaybr1.hospedagemdesites.ws
+#               user: apisoftwaredaybr1
+#               password: v@fTrRZ2@3LgcV
+#               localDir: "./backend/dist"
