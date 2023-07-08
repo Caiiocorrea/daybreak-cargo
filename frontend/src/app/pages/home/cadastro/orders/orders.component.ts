@@ -7,7 +7,7 @@ import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { Order, orders, ordersStatus } from 'src/app/utils/orders';
+// import { Order, orders, ordersStatus } from 'src/app/utils/orders';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -312,6 +312,8 @@ export class OrdersComponent implements OnInit {
 			}
 		})
 		]);
+
+		console.log(this._dataSource);
 	}
 
 	getFuncFAB(idFunc: Number) {
