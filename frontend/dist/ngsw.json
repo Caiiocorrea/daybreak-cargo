@@ -1,0 +1,113 @@
+{
+  "configVersion": 1,
+  "timestamp": 1688856094118,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/162.a48944a980203ab05778.js",
+        "/494.101b64cf54e8df193bb0.js",
+        "/787.9e6c0b9b1a272f5a94c3.js",
+        "/792.bf5201044cdfbf07066c.js",
+        "/83.57a877753b8ecf83ff54.js",
+        "/923.7662ca2c62811f31c2bb.js",
+        "/index.html",
+        "/main.bb2ac3380a550e96ce7e.js",
+        "/manifest.webmanifest",
+        "/polyfills.2758a1efedb88b7c0f99.js",
+        "/runtime.7da10df99e09e30ae7c7.js",
+        "/styles.5d156a0d2025e0223186.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-48x48.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/img/Chemtrade.png",
+        "/assets/img/Coottara.png",
+        "/assets/img/NutriPetro.png",
+        "/assets/img/Particular.png",
+        "/assets/img/Suzano.png",
+        "/assets/img/Ultragaz.png",
+        "/assets/img/user-login.png",
+        "/layers-2x.8f2c4d11474275fbc161.png",
+        "/layers.416d91365b44e4b4f477.png",
+        "/marker-icon.2b3e1faf89f94a483539.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/162.a48944a980203ab05778.js": "b46e18083a6cd7b6b0806a371259127ae9faa6b2",
+    "/494.101b64cf54e8df193bb0.js": "0cfb024bc4d67cb0d4471ae5eccacdf2533e1375",
+    "/787.9e6c0b9b1a272f5a94c3.js": "b012cda8e9292424a3d4849d8fee7e626449a676",
+    "/792.bf5201044cdfbf07066c.js": "9971e633e35200139571c035f856da53e0773d5a",
+    "/83.57a877753b8ecf83ff54.js": "4a8b772bcb4272effd37d3c9851d682e7565150f",
+    "/923.7662ca2c62811f31c2bb.js": "7cbc1e37f6060efef871ecb2043e5c2f1a5ee9c8",
+    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/assets/icons/icon-144x144.png": "438fee6aa8e392ede0f2726431f42985fde405c0",
+    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/assets/icons/icon-192x192.png": "9c22f8220862514d3a6a53b6f73cc374db147d64",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-48x48.png": "528852dd4a27291584278898220d84ed4a4e90f1",
+    "/assets/icons/icon-512x512.png": "eaae6a2c9739c342e83b6fd422d5e46dd61fbd18",
+    "/assets/icons/icon-72x72.png": "207a1c992e877a99834bba89bffa926d4595f648",
+    "/assets/icons/icon-96x96.png": "d8bf8b379040e0e1782c73409b196fc81dedc454",
+    "/assets/img/Chemtrade.png": "030db358949ecb79294bedef4bc18f3c46be463b",
+    "/assets/img/Coottara.png": "b541c97891ec180e0fd93295942254eb00c82259",
+    "/assets/img/NutriPetro.png": "19b42600f86b6504b258dd999fa744d22038ff6d",
+    "/assets/img/Particular.png": "13794bef42d75ffe954518a70d00feb736feb6ad",
+    "/assets/img/Suzano.png": "1462cd724ba30ea47e004d7bf3d7188985f540ea",
+    "/assets/img/Ultragaz.png": "f9f5ea6bcbc2e88e35b366fa8d0b5f67d2b55d22",
+    "/assets/img/user-login.png": "2f357b0c250f8c159efa3d7455705fde5095c9b8",
+    "/index.html": "a4df3d88ebda4826e5d2865db66873ed77744879",
+    "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
+    "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
+    "/main.bb2ac3380a550e96ce7e.js": "86e169845a7049a72e17cf759ec7fa9627d5b862",
+    "/manifest.webmanifest": "11aff9828472c035c9e771ce943ae146ae2a485d",
+    "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
+    "/polyfills.2758a1efedb88b7c0f99.js": "330f650b09a4fd84d03da6848e78d91ea1461f14",
+    "/runtime.7da10df99e09e30ae7c7.js": "bfdb460d74ece7941d6c3ae9cbb50491f14189af",
+    "/styles.5d156a0d2025e0223186.css": "a1c6a7d76096a51740b855bc92f5ebf5b5876958"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

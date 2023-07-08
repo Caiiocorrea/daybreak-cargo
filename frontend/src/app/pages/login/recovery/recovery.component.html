@@ -1,24 +1,17 @@
 <div class="recovery-container">
 	<form [formGroup]="_form" [noValidate]="false" (ngSubmit)="sendForm()">
+		<!-- <h3 style="color: rgb(78, 74, 74);"> Gestor de Viagens </h3>
+		<img style="width: 30%; height: 30%; margin: 0 auto; padding: 10px;" alt="logo"
+		src="assets/img/user-login.png" alt="logo" /> -->
 		<mat-form-field appearance="outline" hideRequiredMarker>
 			<mat-label> Digite o email para recuperar a senha </mat-label>
 			<input matInput type="email" formControlName="email" required />
 		</mat-form-field>
 		<div class="controls-container">
-			<button
-				mat-button
-				class="btn-secondary"
-				type="button"
-				[routerLink]="['../login']"
-			>
+			<button mat-button class="btn-secondary" type="button" [routerLink]="['../login']">
 				Voltar
 			</button>
-			<button
-				mat-raised-button
-				class="btn-primary"
-				type="submit"
-				[disabled]="!_form.valid"
-			>
+			<button mat-raised-button class="btn-primary" type="submit" [disabled]="!_form.valid">
 				Enviar
 			</button>
 		</div>

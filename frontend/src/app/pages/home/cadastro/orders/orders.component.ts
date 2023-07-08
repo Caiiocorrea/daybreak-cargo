@@ -83,20 +83,16 @@ export class OrdersComponent implements OnInit {
 	];
 
 	FabOptions = {
-		buttons: ['person_add', 'assessment'],
+		buttons: ['person_add'],
 	};
+	// 'assessment'
 
 	_dataSource!: MatTableDataSource<any>;
+	newdataSource: any[] = [];
 	pageCount!: number;
 	currentPage: number = 0;
 	rowsPage: number = 100;
 	totalRegisters: number = 0;
-
-	// orders: Order = orders;
-	// orderNames = Object.keys(orders);
-
-	// ordersStatus: Order = ordersStatus;
-	// orderStatusNames = Object.keys(ordersStatus);
 
 	breakPoint: boolean = false;
 	isLoading: boolean = true;
@@ -128,9 +124,7 @@ export class OrdersComponent implements OnInit {
 	// 	) {
 	// 		this.isLoading = true;
 	// 		// this.pageCount = parseInt((this.totalRegisters / this.rowsPage).toFixed(0));
-	// 		// console.log(this.pageCount, this.currentPage)
 	// 		if (this.pageCount <= 50) {
-	// 			// console.log(this.currentPage, this.pageCount)
 	// 			this.getOrder(0, this.pageCount)
 	// 		}
 
@@ -149,13 +143,21 @@ export class OrdersComponent implements OnInit {
 		this.check = event.checked;
 		if (event.checked) {
 			if (event.source.id === 'mat-slide-toggle-1') {
-				this.dataSource(this._dataSource.data.filter((order: any) => order.bloquinho === 'Sim'))
+				this.newdataSource = this._dataSource.data.filter((order: any) => order.bloquinho === 'Sim')
 			} else {
-				this.dataSource(this._dataSource.data.filter((order: any) => order.empresa === search))
+				this.newdataSource = this._dataSource.data.filter((order: any) => order.empresa === search)
 			}
 		} else {
 			this.getOrder();
 		}
+
+		this._dataSource = new MatTableDataSource([...this.newdataSource.map((order: any) => {
+			return {
+				...order,
+				intinerario: `${order.origem} x ${order.destino}`,
+			}
+		})
+		]);
 	}
 
 	getOrder(offset?: number, limit?: number) {
@@ -312,18 +314,15 @@ export class OrdersComponent implements OnInit {
 			}
 		})
 		]);
-
-		console.log(this._dataSource);
 	}
 
 	getFuncFAB(idFunc: Number) {
-		// console.log({ idFunc });
 		switch (idFunc) {
 			case 1:
 				this.register();
 				break;
 			default:
-				console.log('erro');
+				console.log({ idFunc });
 		}
 	}
 
