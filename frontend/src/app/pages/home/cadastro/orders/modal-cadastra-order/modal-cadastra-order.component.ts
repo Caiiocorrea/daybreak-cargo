@@ -63,7 +63,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 	orderBodyes: Order = orderBody;
 	orderBodyNames = Object.keys(orderBody);
 
-	status = ['Aguardando', 'Agendado', 'Em viagem', 'Concluído', 'Finalizado'];
+	status = ['Agendado', 'Em viagem', 'Finalizado', 'Cancelado'];
 	empresa = ['Coottara', 'Particular', 'Chemtrade', 'Suzano', 'NutriPetro', 'Ultragaz'];
 	bloquinho = ['Sim', 'Não'];
 

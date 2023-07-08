@@ -83,7 +83,7 @@ export class OrdersComponent implements OnInit {
 	];
 
 	FabOptions = {
-		buttons: ['person_add']
+		buttons: ['person_add', 'assessment'],
 	};
 
 	_dataSource!: MatTableDataSource<any>;
@@ -148,7 +148,7 @@ export class OrdersComponent implements OnInit {
 	toggle(event: MatSlideToggleChange, search: string) {
 		this.check = event.checked;
 		if (event.checked) {
-			if (search === 'Bloquinho') {
+			if (event.source.id === 'mat-slide-toggle-1') {
 				this.dataSource(this._dataSource.data.filter((order: any) => order.bloquinho === 'Sim'))
 			} else {
 				this.dataSource(this._dataSource.data.filter((order: any) => order.empresa === search))
@@ -163,8 +163,8 @@ export class OrdersComponent implements OnInit {
 		this.httpOrder.getOrders(offset, limit)
 			.subscribe((success: any) => {
 				// this.items.push(success.orders);
-				this.items.push(...success.data);
-				this.dataSource([...new Set(this.items)]);
+				// this.items.push(...success.data);
+				this.dataSource(success.data);
 				this.pageCount = success.count;
 				this.totalRegisters = success.count;
 				this.currentPage = success.offset
@@ -307,13 +307,15 @@ export class OrdersComponent implements OnInit {
 			return {
 				...order,
 				intinerario: `${order.origem} x ${order.destino}`,
-				valorCorrida: `R$ ${parseFloat(order.valorCorrida).toFixed(2)}`
+				valorCorrida: `R$ ${parseFloat(order.valorCorrida).toFixed(2)}`,
+				img: `../../../../../../assets/img/${order.empresa}.png`
 			}
 		})
 		]);
 	}
 
 	getFuncFAB(idFunc: Number) {
+		// console.log({ idFunc });
 		switch (idFunc) {
 			case 1:
 				this.register();

@@ -18,7 +18,6 @@ export interface UserElement {
 })
 export class UserAvatarComponent implements OnInit {
 	constructor(
-		// @Inject(MAT_DIALOG_DATA) public dialogData: UserElement,
 	) { }
 
 	_form = new FormGroup({
@@ -31,7 +30,7 @@ export class UserAvatarComponent implements OnInit {
 
 	user = {} as UserElement;
 	_dataSource!: MatTableDataSource<any>;
-	avatarURL: string = this.user.avatar
+	avatarURL: string =  'https://www.w3schools.com/howto/img_avatar.png';
 	isChecked = true;
 
 	ngOnInit(): void {

@@ -102,7 +102,7 @@ export class ModalEditaOrderComponent implements OnInit {
 	activeForm: number = 1;
 	boolAnim: boolean = false;
 
-	status = ['Aguardando', 'Agendado', 'Em viagem', 'Concluído', 'Finalizado'];
+	status = ['Agendado', 'Em viagem', 'Finalizado', 'Cancelado'];
 	empresa = ['Coottara', 'Particular', 'Chemtrade', 'Suzano', 'NutriPetro', 'Ultragaz'];
 	bloquinho = ['Sim', 'Não'];
 

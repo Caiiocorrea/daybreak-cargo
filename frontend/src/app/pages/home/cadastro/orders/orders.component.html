@@ -90,11 +90,7 @@
 						<span> Parceiro </span>
 					</mat-header-cell>
 					<mat-cell *matCellDef="let element" (click)="edit(element)">
-						<img src="{{
-							element.empresa === 'Coottara'
-								? '../../../../../../assets/img/coottara.png'
-								: '../../../../../../assets/img/tnt.png'
-						}}" alt="logo" class="imagem-logo" />
+						<img src="{{element.img}}" alt="logo" class="imagem-logo" />
 					</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="intinerario">
