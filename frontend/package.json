@@ -1,6 +1,6 @@
 {
-  "name": "frontend-infosistemas",
-  "version": "0.0.0",
+  "name": "daybreak-cargo-frontend",
+  "version": "1.0.0",
   "author": "Caio Santos Corrêa",
   "scripts": {
     "ng": "ng",
