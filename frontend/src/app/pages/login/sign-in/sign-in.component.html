@@ -1,16 +1,16 @@
 <div class="login-container">
 	<form [formGroup]="_form" [noValidate]="false" (ngSubmit)="validate()" autocomplete="off">
-		<h3 style="color: rgb(78, 74, 74);"> Gestor de Viagens </h3>
-		<img class="logo" src="assets/img/Particular.png" alt="logo" />
+		<h2 style="color:#263238;"> GESTOR DE VIAGENS </h2>
+		<img class="logo" src="assets/img/log-in.png" alt="logo" />
 		<mat-form-field appearance="outline" hideRequiredMarker>
-			<mat-label> Usuário </mat-label>
+			<mat-label> Digite seu e-mail </mat-label>
 			<input matInput type="text" formControlName="email" required />
 			<mat-error *ngIf="!_form.hasError('required')">
 				Por favor, informe seu E-mail.
 			</mat-error>
 		</mat-form-field>
 		<mat-form-field appearance="outline" hideRequiredMarker>
-			<mat-label> Senha </mat-label>
+			<mat-label> Digite sua senha </mat-label>
 			<input matInput [type]="hide ? 'password' : 'text'" formControlName="senha" required />
 			<button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
 				[attr.aria-pressed]="hide">
