@@ -7,6 +7,14 @@
 			[stepControl]="_formGroupOrder">
 			<form [formGroup]="_formGroupOrder" autocomplete="off">
 				<mat-form-field>
+					<mat-label> CAP </mat-label>
+					<input matInput type="number" formControlName="numero_cap" />
+					<!-- <mat-error *ngIf="!_formGroupOrder.hasError('required')">
+						Informe o KM se houver ou zero.
+					</mat-error> -->
+				</mat-form-field>
+
+				<mat-form-field>
 					<mat-label>Empresa</mat-label>
 					<input matInput formControlName="empresa" [matAutocomplete]="autoCategoria" required />
 					<mat-error *ngIf="!_formGroupOrder.hasError('required')">

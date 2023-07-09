@@ -25,6 +25,7 @@ import { OrderService } from 'src/app/services/http/order.service';
 		}
 	]
 })
+
 export class ModalCadastraOrderComponent implements OnInit {
 	constructor(
 		private snackBar: MatSnackBar,
@@ -39,6 +40,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 	stepperOrientation: Observable<StepperOrientation>;
 
 	_formGroupOrder = new FormGroup({
+		numero_cap: new FormControl('', Validators.required), 
 		empresa: new FormControl('', Validators.required),
 		origem: new FormControl('', Validators.required),
 		destino: new FormControl('', Validators.required),

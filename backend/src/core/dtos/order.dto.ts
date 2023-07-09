@@ -9,6 +9,10 @@ export class CreateOrderDto {
   @IsEmpty()
   motorista: string;
 
+  @IsString({ message: 'Número CAP deve ser uma string' })
+  @ApiProperty({ description: 'Número CAP do solicitante' })
+  numero_cap: string;
+
   @IsString({ message: 'Bloquinho deve ser uma string' })
   @IsNotEmpty({ message: 'Bloquinho é obrigatório' })
   @ApiProperty({ description: 'Quando bloquinho preenchido' })
@@ -30,12 +34,11 @@ export class CreateOrderDto {
   empresa: string;
 
   @IsString({ message: 'Km deve ser uma string' })
-  // @IsNotEmpty()
   @ApiProperty({ description: 'Total de KM percorrido' })
   kmCorrida: string;
 
   @IsString({ message: 'Valor deve ser uma string' })
-  // @IsNotEmpty()
+  @IsNotEmpty({ message: 'Valor é obrigatórioS' })
   @ApiProperty({ description: 'Valor total da viagem' })
   valorCorrida: string;
 
@@ -56,6 +59,10 @@ export class UpdateOrderDto {
 
   @IsEmpty()
   motorista: string;
+
+  @IsString({ message: 'Número CAP deve ser uma string' })
+  @ApiProperty({ description: 'Número CAP do solicitante' })
+  numero_cap: string;
 
   @IsString()
   @IsNotEmpty()
@@ -78,7 +85,6 @@ export class UpdateOrderDto {
   empresa: string;
 
   @IsString()
-  @IsNotEmpty()
   @ApiProperty()
   kmCorrida: string;
 

@@ -23,6 +23,11 @@ __decorate([
     __metadata("design:type", String)
 ], CreateOrderDto.prototype, "motorista", void 0);
 __decorate([
+    (0, class_validator_1.IsString)({ message: 'Número CAP deve ser uma string' }),
+    (0, swagger_1.ApiProperty)({ description: 'Número CAP do solicitante' }),
+    __metadata("design:type", String)
+], CreateOrderDto.prototype, "numero_cap", void 0);
+__decorate([
     (0, class_validator_1.IsString)({ message: 'Bloquinho deve ser uma string' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'Bloquinho é obrigatório' }),
     (0, swagger_1.ApiProperty)({ description: 'Quando bloquinho preenchido' }),
@@ -53,6 +58,7 @@ __decorate([
 ], CreateOrderDto.prototype, "kmCorrida", void 0);
 __decorate([
     (0, class_validator_1.IsString)({ message: 'Valor deve ser uma string' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'Valor é obrigatórioS' }),
     (0, swagger_1.ApiProperty)({ description: 'Valor total da viagem' }),
     __metadata("design:type", String)
 ], CreateOrderDto.prototype, "valorCorrida", void 0);
@@ -80,6 +86,11 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateOrderDto.prototype, "motorista", void 0);
 __decorate([
+    (0, class_validator_1.IsString)({ message: 'Número CAP deve ser uma string' }),
+    (0, swagger_1.ApiProperty)({ description: 'Número CAP do solicitante' }),
+    __metadata("design:type", String)
+], UpdateOrderDto.prototype, "numero_cap", void 0);
+__decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, swagger_1.ApiProperty)(),
@@ -105,7 +116,6 @@ __decorate([
 ], UpdateOrderDto.prototype, "empresa", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], UpdateOrderDto.prototype, "kmCorrida", void 0);

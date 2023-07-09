@@ -15,6 +15,11 @@
 			<ng-container [ngSwitch]="activeForm">
 				<form class="form-grid" [formGroup]="_formOrder" [@changeAnim]="activeForm === 1 ? 'open' : 'close'"
 					*ngSwitchCase="1">
+					<mat-form-field class="grid-2">
+						<mat-label> CAP </mat-label>
+						<input matInput type="text" formControlName="numero_cap" />
+					</mat-form-field>
+
 					<mat-form-field class="grid-1">
 						<mat-label>Origem</mat-label>
 						<input matInput formControlName="origem" [matAutocomplete]="autoOrigem" required />

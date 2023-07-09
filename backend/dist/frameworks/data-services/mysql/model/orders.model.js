@@ -31,6 +31,10 @@ __decorate([
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
+], Order.prototype, "numero_cap", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
 ], Order.prototype, "empresa", void 0);
 __decorate([
     sequelize_typescript_1.Column,

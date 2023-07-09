@@ -18,7 +18,7 @@ export interface PassageirosElement {
 }
 
 export interface PeriodicElement {
-	_id: string
+	id: string
 	intinerario: string
 	user_id: string
 	bloquinho: string
@@ -52,8 +52,9 @@ export class OrdersComponent implements OnInit {
 
 	_form = new FormGroup({
 		notify: new FormControl(''),
-		_id: new FormControl(''),
+		id: new FormControl(''),
 		intinerario: new FormControl(''),
+		numero_cap: new FormControl(''),
 		user_id: new FormControl(''),
 		bloquinho: new FormControl(''),
 		destino: new FormControl(''),
@@ -74,6 +75,7 @@ export class OrdersComponent implements OnInit {
 
 	displayedColumns: string[] = [
 		'notify',
+		'CAP',
 		'intinerario',
 		'status',
 		'valor',
@@ -287,6 +289,7 @@ export class OrdersComponent implements OnInit {
 								'Fechar',
 								{ duration: 2500 }
 							);
+							this.getOrder();
 						},
 						(error: any) => {
 							this.snackBar.open(
@@ -297,7 +300,6 @@ export class OrdersComponent implements OnInit {
 						}
 					);
 			}
-			this.getOrder();
 		});
 	}
 
@@ -338,6 +340,7 @@ export class OrdersComponent implements OnInit {
 		this._dataSource = new MatTableDataSource([...data.map((order: any) => {
 			return {
 				...order,
+				numero_cap: order.numero_cap ?? "",
 				intinerario: `${order.origem} x ${order.destino}`,
 				valorCorrida: `R$ ${parseFloat(order.valorCorrida).toFixed(2)}`,
 				img: `../../../../../../assets/img/${order.empresa}.png`

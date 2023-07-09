@@ -4,6 +4,7 @@ import User from "./users.model";
 export default class Order extends Model<Order> {
     id: number;
     user_id: number;
+    numero_cap: string;
     empresa: string;
     motorista: string;
     origem: string;

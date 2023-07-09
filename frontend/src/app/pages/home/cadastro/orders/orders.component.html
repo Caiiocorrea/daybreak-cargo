@@ -93,6 +93,16 @@
 						<img src="{{element.img}}" alt="logo" class="imagem-logo" />
 					</mat-cell>
 				</ng-container>
+
+				<ng-container matColumnDef="CAP">
+					<mat-header-cell *matHeaderCellDef>
+						<span> CAP </span>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element" data-label="CAP" (click)="edit(element)">
+						<span>{{element.numero_cap}}</span>
+					</mat-cell>
+				</ng-container>
+
 				<ng-container matColumnDef="intinerario">
 					<mat-header-cell *matHeaderCellDef>
 						<span> Percurso </span>
@@ -101,21 +111,21 @@
 						<span>{{element.intinerario}}</span>
 					</mat-cell>
 				</ng-container>
+
 				<ng-container matColumnDef="status">
 					<mat-header-cell *matHeaderCellDef>
 						<span> Status </span>
 					</mat-header-cell>
 					<mat-cell *matCellDef="let element" data-label="status" (click)="edit(element)">
-						<span
-						class="status {{
+						<span class="{{
 							element.status == 'Em viagem' ?
 							'start' :
 							element.status == 'Finalizado' ?
 							'finalizado' : 'cancelado'
-						}}"
-						>{{element.status}}</span>
+						}}">{{element.status}}</span>
 					</mat-cell>
 				</ng-container>
+
 				<ng-container matColumnDef="valor">
 					<mat-header-cell *matHeaderCellDef>
 						<span> Valor </span>
@@ -124,6 +134,7 @@
 						<span>{{element.valorCorrida}}</span>
 					</mat-cell>
 				</ng-container>
+
 				<ng-container matColumnDef="data">
 					<mat-header-cell mat-header-cell *matHeaderCellDef>
 						<span> Registro </span>
@@ -171,7 +182,14 @@
 				</ng-container>
 
 				<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-				<mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns" style="
+					border-top: 5px solid {{
+						row.status == 'Em viagem' ?
+						'#ffa500' :
+						row.status == 'Finalizado' ?
+						'#00d26a' : '#cc3333'
+					}};
+				"> </mat-row>
 			</mat-table>
 		</div>
 		<p *ngIf="!breakPoint">
