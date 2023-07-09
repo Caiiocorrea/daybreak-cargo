@@ -330,6 +330,18 @@
 							width: 100%;
 							text-align: right !important;
 						}
+
+						span.start {
+							color: orange
+						}
+
+						span.finalizado {
+							color: #00d26a;
+						}
+
+						span.cancelado {
+							color: #cc3333;
+						}
 					}
 
 					mat-cell:nth-last-child(1),
@@ -347,6 +359,10 @@
 							flex-direction: row;
 							justify-self: center;
 							gap: 5px;
+						}
+
+						mat-icon.start {
+							color: orange
 						}
 
 						mat-icon.check {
@@ -376,7 +392,7 @@
 		.mat-table .mat-row:nth-last-child(1) {
 			border: none;
 		}
-    
+
 		.mat-table .mat-cell {
 			border-bottom: 1px solid #ddd;
 		}

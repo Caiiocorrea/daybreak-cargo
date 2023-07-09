@@ -32,9 +32,9 @@ export interface orderElement {
 }
 
 @Component({
-	selector: 'app-modal-edita-order',
-	templateUrl: './modal-edita-order.component.html',
-	styleUrls: ['./modal-edita-order.component.scss'],
+	selector: 'app-modal-relatorio-order',
+	templateUrl: './modal-relatorio-order.component.html',
+	styleUrls: ['./modal-relatorio-order.component.scss'],
 	animations: [
 		trigger('changeAnim', [
 			state(
@@ -75,7 +75,7 @@ export interface orderElement {
 		])
 	]
 })
-export class ModalEditaOrderComponent implements OnInit {
+export class ModalRelatorioOrderComponent implements OnInit {
 	_formOrder = new FormGroup({
 		id: new FormControl('', Validators.required),
 		intinerario: new FormControl('', Validators.required),
@@ -175,7 +175,6 @@ export class ModalEditaOrderComponent implements OnInit {
 	) { }
 
 	ngOnInit(): void {
-		console.log(this.matDialog);
 		this._formOrder.patchValue(this.dialogData);
 	}
 
@@ -233,68 +232,57 @@ export class ModalEditaOrderComponent implements OnInit {
 			panelClass: 'modal-errorMessage',
 			data: {
 				Title: 'Exclusão de cadastro',
-				// Message: 'Você solicitou a exclusão do seguinte pedido:',
-				// Value: `Viagem: ${this.dialogData.intinerario} - Solicitante: ${this.dialogData.empresa}`,
-				// Confirm: 'Tem certeza que deseja excluir este cadastro?'
+				Message: 'Você solicitou a exclusão do seguinte pedido:',
+				Value: `Viagem: ${this.dialogData.intinerario} - Solicitante: ${this.dialogData.empresa}`,
+				Confirm: 'Tem certeza que deseja excluir este cadastro?'
 			}
 		});
 
-		this._formOrder.value.valorCorrida = parseFloat
-				(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2)
-
-			let body = {
-				...this._formOrder.value,
-				active: false,
-				passageiros: this._formOrder.value.passengers
-					.filter((passengers: { nome: string; }) => passengers.nome !== '')
-					.map((passengers: { id: any, order_id: any, nome: string; active: boolean }) => {
-						return {
-							id: passengers.id,
-							order_id: passengers.order_id,
-							nome: passengers.nome,
-							status: 'Confirmado',
-							active: passengers.active
-						}
-					}) ?? []
-			};
-
-			delete body.intinerario
-			delete body.passengers
-			delete body.created_at
-			delete body.updated_at
-			delete body.motorista
-			delete body.id
-
-			this.orderService
-				.put(this.dialogData.id, body)
-				.subscribe(
-					(success: any) => {
+		dialog.afterClosed().subscribe(response => {
+			if (response) {
+				this.orderService
+					.delete(this.dialogData.id, false)
+					.subscribe((success: any) => {
 						this.matSnack.open(
-							'Alteração salva com sucesso!',
+							bitAtivo === 0
+								? 'Viagem deletado com sucesso'
+								: 'Viagem reativado com sucesso',
 							'Fechar',
-							{ duration: 2000 }
+							{
+								duration: 2500
+							}
 						);
-						this.dialogRef.close(true);
+
+						if (bitAtivo === 0) {
+							this.dialogRef.close(true);
+						} else {
+							this.activeForm = 1;
+							this.canUpdate = true;
+							// this.dialogData.active = 'Ativo';
+						}
 					},
-					(error: any) => this.matSnack.open(
-						'Não foi possível salvar as alterações',
-						'Fechar',
-						{ duration: 2000 }
-					)
-				);
+						error => {
+							this.matSnack.open(`Ocorreu um erro: ${error.error.message}`);
+						}
+					);
+			}
+		});
 	}
 
 	saveEdit() {
 		if (!this._formOrder.valid) {
-			this.matSnack.open('Preencha todos os campos', 'Ok', { duration: 300 })
-		}
-		else {
-			this._formOrder.value.valorCorrida = parseFloat
-				(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2)
+			this.matSnack.open('Preencha todos os campos', '', { duration: 2500 });
+		} else {
+			this._formOrder.value.valorCorrida = parseFloat(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2)
+			delete this._formOrder.value.motorista
+			delete this._formOrder.value.intinerario
+			delete this._formOrder.value.created_at
+			delete this._formOrder.value.updated_at
+			delete this._formOrder.value.id
 
 			let body = {
 				...this._formOrder.value,
-				active: true,
+				active : true,
 				passageiros: this._formOrder.value.passengers
 					.filter((passengers: { nome: string; }) => passengers.nome !== '')
 					.map((passengers: { id: any, order_id: any, nome: string; active: boolean }) => {
@@ -308,13 +296,8 @@ export class ModalEditaOrderComponent implements OnInit {
 					}) ?? []
 			};
 
-			delete body.intinerario
 			delete body.passengers
-			delete body.created_at
-			delete body.updated_at
-			delete body.motorista
-			delete body.id
-
+			
 			this.orderService
 				.put(this.dialogData.id, body)
 				.subscribe(
@@ -325,12 +308,11 @@ export class ModalEditaOrderComponent implements OnInit {
 							{ duration: 2000 }
 						);
 						this.dialogRef.close(true);
+						// window.location.reload();
 					},
-					(error: any) => this.matSnack.open(
-						'Não foi possível salvar as alterações',
-						'Fechar',
-						{ duration: 2000 }
-					)
+					error => {
+						this.matSnack.open(`Ocorreu um erro: ${error.error.message}`);
+					}
 				);
 		}
 	}

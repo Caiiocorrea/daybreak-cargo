@@ -1,5 +1,5 @@
 import { ErrorMessageComponent } from '../../../../../app/components/error-message/error-message.component';
-// import { ModalRelatorioOrderComponent } from './modal-relatorio-orders/modal-relatorio-order.component';
+import { ModalRelatorioOrderComponent } from './modal-relatorio-order/modal-relatorio-order.component';
 import { ModalCadastraOrderComponent } from './modal-cadastra-order/modal-cadastra-order.component';
 import { ModalEditaOrderComponent } from './modal-edita-order/modal-edita-order.component';
 import { OrderService } from '../../../../../app/services/http/order.service';
@@ -7,7 +7,6 @@ import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-// import { Order, orders, ordersStatus } from 'src/app/utils/orders';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -79,13 +78,12 @@ export class OrdersComponent implements OnInit {
 		'status',
 		'valor',
 		'data',
-		// 'Controls'
+		'Controls'
 	];
 
 	FabOptions = {
-		buttons: ['person_add'],
+		buttons: ['person_add', 'assessment'],
 	};
-	// 'assessment'
 
 	_dataSource!: MatTableDataSource<any>;
 	newdataSource: any[] = [];
@@ -164,8 +162,6 @@ export class OrdersComponent implements OnInit {
 		this.isLoading = true;
 		this.httpOrder.getOrders(offset, limit)
 			.subscribe((success: any) => {
-				// this.items.push(success.orders);
-				// this.items.push(...success.data);
 				this.dataSource(success.data);
 				this.pageCount = success.count;
 				this.totalRegisters = success.count;
@@ -237,38 +233,72 @@ export class OrdersComponent implements OnInit {
 		});
 	}
 
-	concludeOrder(value: any, idOrder: number) {
-		value.status = 'Concluído';
+	alterOrderStatus(idOrder: number, value: any, newStatus: string) {
+		let typeTitle: any, typeMessage: any;
+		if (newStatus === 'Cancelado') { typeTitle = 'cancelar', typeMessage = 'cancelada' }
+		else if (newStatus === 'Finalizado') { typeTitle = 'finalizar', typeMessage = 'finalizada' }
+		else if (newStatus === 'Em viagem') { typeTitle = 'iniciar', typeMessage = 'iniciada' }
+
 		const dialog = this.dialog.open(ErrorMessageComponent, {
 			autoFocus: false,
 			panelClass: 'modal-erroMessage',
 			data: {
-				Title: 'Concluir viagem?',
-				// Message: 'Você solicitou a conclusão da viagem',
-				// Value: `Viagem: ${value.intinerario} - Solicitante: ${value.empresa}`,
-				// Confirm: 'Tem certeza que deseja concluir a viagem?'
+				Title: `Deseja ${typeTitle} a viagem?`,
+				// Message: 'Você solicitou a finalização da viagem:',
+				Value: `${value.intinerario}`,
+				Confirm: `${value.created_at}`
 			}
 		});
 
-		// dialog.afterClosed().subscribe(response => {
-		// 	if (response) {
-		// 		this.httpOrder.delete(value._id).subscribe(
-		// 			(success: any) => {
-		// 				this.snackBar.open(
-		// 					'Viagem excluída com sucesso!',
-		// 					'Fechar',
-		// 					{ duration: 3000 }
-		// 				);
-		// 			}, error => {
-		// 				this.snackBar.open(
-		// 					`Não foi possível excluir a viagem`,
-		// 					'Fechar',
-		// 					{ duration: 3000 }
-		// 				);
-		// 			});
-		// 	}
-		// 	this.getOrder();
-		// });
+		let body = {
+			...value,
+			status: newStatus,
+			active: true,
+			valorCorrida: value.valorCorrida.replace('R$', '').replace(',', '.'),
+			passageiros: value.passengers
+				.filter((passengers: { nome: string; }) => passengers.nome !== '')
+				.map((passengers: { id: any, order_id: any, nome: string; active: boolean }) => {
+					return {
+						id: passengers.id,
+						order_id: passengers.order_id,
+						nome: passengers.nome,
+						status: 'Confirmado',
+						active: passengers.active
+					}
+				}) ?? []
+		}
+
+		delete body.intinerario
+		delete body.passengers
+		delete body.created_at
+		delete body.updated_at
+		delete body.motorista
+		delete body.user_id
+		delete body.img
+		delete body.id
+
+		dialog.afterClosed().subscribe(response => {
+			if (response) {
+				this.httpOrder.put(idOrder, body)
+					.subscribe(
+						(success: any) => {
+							this.snackBar.open(
+								`Viagem ${typeMessage} com sucesso`,
+								'Fechar',
+								{ duration: 2500 }
+							);
+						},
+						(error: any) => {
+							this.snackBar.open(
+								`Não foi possível ${typeMessage} a viagem`,
+								'Fechar',
+								{ duration: 2500 }
+							);
+						}
+					);
+			}
+			this.getOrder();
+		});
 	}
 
 	deleteOrder(value: any, idOrder: number) {
@@ -321,8 +351,10 @@ export class OrdersComponent implements OnInit {
 			case 1:
 				this.register();
 				break;
-			default:
-				console.log({ idFunc });
+			case 2:
+				this.relatorio();
+			// default:
+			// console.log({ idFunc });
 		}
 	}
 
@@ -333,17 +365,17 @@ export class OrdersComponent implements OnInit {
 		this.getOrder();
 	}
 
-	// relatorio() {
-	// 	const dialog = this.dialog.open(ModalRelatorioOrderComponent, {
-	// 		autoFocus: false,
-	// 		panelClass: 'modal-default',
-	// 		data: {}
-	// 	});
+	relatorio() {
+		const dialog = this.dialog.open(ModalRelatorioOrderComponent, {
+			autoFocus: false,
+			panelClass: 'modal-default',
+			data: {}
+		});
 
-	// 	// dialog.afterClosed().subscribe((modalResult: boolean) => {
-	// 	// 	if (modalResult) {
-	// 	// 		this.getOrder();
-	// 	// 	}
-	// 	// });
-	// }
+		// dialog.afterClosed().subscribe((modalResult: boolean) => {
+		// 	if (modalResult) {
+		// 		this.getOrder();
+		// 	}
+		// });
+	}
 }

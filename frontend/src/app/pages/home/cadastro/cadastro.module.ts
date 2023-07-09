@@ -6,6 +6,7 @@ import { CadastroRoutingModule } from './cadastro-routing.module';
 import { CadastroComponent } from './cadastro.component';
 
 import { OrdersComponent } from './orders/orders.component';
+import { ModalRelatorioOrderComponent } from './orders/modal-relatorio-order/modal-relatorio-order.component';
 import { ModalCadastraOrderComponent } from './orders/modal-cadastra-order/modal-cadastra-order.component';
 import { ModalEditaOrderComponent } from './orders/modal-edita-order/modal-edita-order.component';
 
@@ -44,6 +45,7 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
 		OrdersComponent,
 		ModalCadastraOrderComponent,
 		ModalEditaOrderComponent,
+		ModalRelatorioOrderComponent
 	],
 	imports: [
 		ComponentsModule,

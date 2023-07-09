@@ -106,7 +106,14 @@
 						<span> Status </span>
 					</mat-header-cell>
 					<mat-cell *matCellDef="let element" data-label="status" (click)="edit(element)">
-						<span>{{element.status}}</span>
+						<span
+						class="status {{
+							element.status == 'Em viagem' ?
+							'start' :
+							element.status == 'Finalizado' ?
+							'finalizado' : 'cancelado'
+						}}"
+						>{{element.status}}</span>
 					</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="valor">
@@ -129,7 +136,7 @@
 				<ng-container matColumnDef="Controls">
 					<mat-header-cell mat-header-cell *matHeaderCellDef> </mat-header-cell>
 					<mat-cell *matCellDef="let element" data-label="" class="controls">
-						<span id="vertical-menu">
+						<!-- <span id="vertical-menu">
 							<mat-icon [matMenuTriggerFor]="optionsMenu"> more_vert </mat-icon>
 							<mat-menu #optionsMenu="matMenu">
 								<button matRipple mat-menu-item classe="delete"
@@ -142,17 +149,23 @@
 									<span> Editar </span>
 								</button>
 							</mat-menu>
-						</span>
+						</span> -->
 						<span id="horizontal-menu">
-							<button mat-icon-button class="check" (click)="concludeOrder(element, element.id)">
-								<mat-icon class="check"> check </mat-icon>
+							<button mat-icon-button class="start"
+								(click)="alterOrderStatus(element.id, element, 'Em viagem')">
+								<mat-icon class="start"> play_circle_filled </mat-icon>
 							</button>
-							<button mat-icon-button class="delete" (click)="deleteOrder(element, element.id)">
+							<button mat-icon-button class="check"
+								(click)="alterOrderStatus(element.id, element, 'Finalizado')">
+								<mat-icon class="check"> check_circle </mat-icon>
+							</button>
+							<button mat-icon-button class="delete"
+								(click)="alterOrderStatus(element.id, element, 'Cancelado')">
 								<mat-icon class="delete"> cancel </mat-icon>
 							</button>
-							<button mat-icon-button class="delete" (click)="edit(element)">
+							<!-- <button mat-icon-button class="delete" (click)="edit(element)">
 								<mat-icon class="edit"> edit </mat-icon>
-							</button>
+							</button> -->
 						</span>
 					</mat-cell>
 				</ng-container>
