@@ -1,8 +1,12 @@
 {
   "name": "Anjos Transporte",
   "short_name": "Anjos Transporte",
-  "theme_color": "#1976d2",
+  "theme_color": "#263238",
   "background_color": "#fafafa",
+  
+
+
+
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
