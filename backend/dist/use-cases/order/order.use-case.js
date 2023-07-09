@@ -53,6 +53,7 @@ let OrderUseCases = class OrderUseCases {
         const result = await this.orderRepository.findAndCountAll({
             where: Object.assign(Object.assign({}, query), { user_id: user.user_id }),
             offset, limit,
+            order: [['created_at', 'DESC']],
             include: [{ model: this.passengersRepository }],
         });
         if (!result) {

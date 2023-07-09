@@ -52,6 +52,7 @@ export class OrderUseCases {
         user_id: user.user_id
       },
       offset, limit,
+      order: [['created_at', 'DESC']],
       include: [{ model: this.passengersRepository }],
     })
 

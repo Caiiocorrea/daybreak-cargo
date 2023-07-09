@@ -285,10 +285,10 @@ export class ModalEditaOrderComponent implements OnInit {
 	}
 
 	saveEdit() {
-		if (!this._formOrder.valid) {
-			this.matSnack.open('Preencha todos os campos', 'Ok', { duration: 300 })
-		}
-		else {
+		// if (!this._formOrder.valid || !this._formOrder.value.passengers) {
+		// 	this.matSnack.open('Preencha todos os campos', 'Ok', { duration: 300 })
+		// }
+		// else {
 			this._formOrder.value.valorCorrida = parseFloat
 				(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2)
 
@@ -332,6 +332,6 @@ export class ModalEditaOrderComponent implements OnInit {
 						{ duration: 2000 }
 					)
 				);
-		}
+		// }
 	}
 }
