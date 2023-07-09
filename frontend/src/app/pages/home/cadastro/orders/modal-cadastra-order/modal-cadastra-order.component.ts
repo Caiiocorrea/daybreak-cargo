@@ -40,7 +40,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 	stepperOrientation: Observable<StepperOrientation>;
 
 	_formGroupOrder = new FormGroup({
-		numero_cap: new FormControl('', Validators.required), 
+		numero_cap: new FormControl('', Validators.required),
 		empresa: new FormControl('', Validators.required),
 		origem: new FormControl('', Validators.required),
 		destino: new FormControl('', Validators.required),
@@ -150,9 +150,9 @@ export class ModalCadastraOrderComponent implements OnInit {
 	}
 
 	registerOrder() {
-		if (!this._formGroupOrder.valid && !this._formPassageiros.valid) {
-			this.snackBar.open('Preencha todos os dados obrigatórios', 'OK', { duration: 2500 });
-		}
+		// if (!this._formGroupOrder.valid && !this._formPassageiros.valid) {
+		// 	this.snackBar.open('Preencha todos os dados obrigatórios', 'OK', { duration: 2500 });
+		// }
 
 		let dados = {
 			...this._formGroupOrder.value,
@@ -167,6 +167,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 
 		let body = {
 			...dados,
+			numero_cap: `${dados.numero_cap}`,
 			passageiros: dados.passageiros
 				.filter((passageiro: { nome: string; }) => passageiro.nome !== '')
 				.map((passageiro: { nome: string; }) => {

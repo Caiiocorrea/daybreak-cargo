@@ -84,8 +84,10 @@ export class OrdersComponent implements OnInit {
 	];
 
 	FabOptions = {
-		buttons: ['person_add', 'assessment'],
+		buttons: ['person_add'],
 	};
+
+	// 'assessment'
 
 	_dataSource!: MatTableDataSource<any>;
 	newdataSource: any[] = [];
