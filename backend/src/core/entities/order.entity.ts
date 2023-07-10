@@ -1,7 +1,8 @@
 export class Order {
   id?: string
   user_id?: string
-  numero_cap: any
+  numero_cap: string
+  centro_custo: string
   bloquinho: string
   destino: string
   empresa: string

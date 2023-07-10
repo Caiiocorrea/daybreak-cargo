@@ -28,6 +28,11 @@ __decorate([
     __metadata("design:type", String)
 ], CreateOrderDto.prototype, "numero_cap", void 0);
 __decorate([
+    (0, class_validator_1.IsString)({ message: 'Centro de Custo deve ser uma string' }),
+    (0, swagger_1.ApiProperty)({ description: 'Centro de Custo do solicitante' }),
+    __metadata("design:type", String)
+], CreateOrderDto.prototype, "centro_custo", void 0);
+__decorate([
     (0, class_validator_1.IsString)({ message: 'Bloquinho deve ser uma string' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'Bloquinho é obrigatório' }),
     (0, swagger_1.ApiProperty)({ description: 'Quando bloquinho preenchido' }),
@@ -90,6 +95,11 @@ __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Número CAP do solicitante' }),
     __metadata("design:type", String)
 ], UpdateOrderDto.prototype, "numero_cap", void 0);
+__decorate([
+    (0, class_validator_1.IsString)({ message: 'Centro de Custo deve ser uma string' }),
+    (0, swagger_1.ApiProperty)({ description: 'Centro de Custo do solicitante' }),
+    __metadata("design:type", String)
+], UpdateOrderDto.prototype, "centro_custo", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),

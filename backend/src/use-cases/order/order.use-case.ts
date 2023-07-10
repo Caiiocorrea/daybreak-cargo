@@ -14,30 +14,20 @@ export class OrderUseCases {
   ) { }
 
   async getOrder(searchObject: any, user: any) {
-    const fields = Object.keys(this.orderRepository.rawAttributes);
-
-    fields.forEach((field) => {
-      if (searchObject[field] === '') {
-        delete searchObject[field];
-      }
-    });
-
-    const whereCondition: WhereOptions = {};
-    for (const field in searchObject) {
-      if (fields.includes(field)) {
-        whereCondition[field] = {
-          [Op.like]: `%${searchObject[field]}%`,
-        };
-      }
-    }
-
-    return this.orderRepository.findAll({
+    const result = await this.orderRepository.findAndCountAll({
       where: {
-        [Op.or]: [whereCondition],
-        user_id: user.user_id
+        numero_cap: searchObject.search,
+        user_id: user.user_id,
       },
       include: [{ model: this.passengersRepository }],
     });
+
+    return {
+      count: result.count - 1 ?? 0,
+      offset: 0,
+      limit: 100,
+      data: result.rows ?? []
+    };
   }
 
   async getAllOrders(query: any, user: any) {
@@ -49,7 +39,8 @@ export class OrderUseCases {
     const result = await this.orderRepository.findAndCountAll({
       where: {
         ...query,
-        user_id: user.user_id
+        user_id: user.user_id,
+        active: true
       },
       offset, limit,
       order: [['created_at', 'DESC']],

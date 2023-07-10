@@ -3,6 +3,7 @@ export declare class CreateOrderDto {
     user_id: number;
     motorista: string;
     numero_cap: string;
+    centro_custo: string;
     bloquinho: string;
     origem: string;
     destino: string;
@@ -16,6 +17,7 @@ export declare class UpdateOrderDto {
     user_id: number;
     motorista: string;
     numero_cap: string;
+    centro_custo: string;
     bloquinho: string;
     destino: string;
     origem: string;

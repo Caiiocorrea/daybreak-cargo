@@ -12,34 +12,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-export interface PassageirosElement {
-	nome: string
-	status: string
-}
-
-export interface PeriodicElement {
-	id: string
-	intinerario: string
-	user_id: string
-	bloquinho: string
-	destino: string
-	empresa: string
-	motorista: string
-	kmCorrida: string
-	origem: string
-	valorCorrida: string
-	status: string
-	passengers: PassageirosElement[]
-	created_at: string
-	updated_at: string
-	Controls: any;
-}
 
 @Component({
 	templateUrl: './orders.component.html',
 	styleUrls: ['./orders.component.scss'],
 	viewProviders: [MatExpansionPanel]
 })
+
 export class OrdersComponent implements OnInit {
 	constructor(
 		private dialog: MatDialog,
@@ -55,6 +34,7 @@ export class OrdersComponent implements OnInit {
 		id: new FormControl(''),
 		intinerario: new FormControl(''),
 		numero_cap: new FormControl(''),
+		centro_custo: new FormControl(''),
 		user_id: new FormControl(''),
 		bloquinho: new FormControl(''),
 		destino: new FormControl(''),
@@ -67,7 +47,7 @@ export class OrdersComponent implements OnInit {
 		passengers: new FormControl(''),
 		created_at: new FormControl(''),
 
-		// filter
+		//filter
 		search: new FormControl(''),
 		date_one: new FormControl(''),
 		date_two: new FormControl(''),
@@ -99,8 +79,6 @@ export class OrdersComponent implements OnInit {
 	breakPoint: boolean = false;
 	isLoading: boolean = true;
 	check: boolean = false;
-
-	items: any[] = []; // Array para armazenar os itens carregados
 
 	ngOnInit(): void {
 		this.getOrder(this.currentPage, this.rowsPage);
@@ -146,11 +124,23 @@ export class OrdersComponent implements OnInit {
 		if (event.checked) {
 			if (event.source.id === 'mat-slide-toggle-1') {
 				this.newdataSource = this._dataSource.data.filter((order: any) => order.bloquinho === 'Sim')
-			} else {
+			}
+			// else if (event.source.id === 'mat-slide-toggle-3') {
+			// 	this.newdataSource = this._dataSource.data.filter((order: any) => order.bloquinho === 'Sim')
+			// }
+			else {
 				this.newdataSource = this._dataSource.data.filter((order: any) => order.empresa === search)
 			}
 		} else {
 			this.getOrder();
+		}
+
+		if (this.newdataSource.length <= 0) {
+			this.snackBar.open(
+				'Nenhuma viagem encontrada...',
+				'Fechar', { duration: 2500 }
+			)
+			window.location.reload()
 		}
 
 		this._dataSource = new MatTableDataSource([...this.newdataSource.map((order: any) => {
@@ -175,7 +165,7 @@ export class OrdersComponent implements OnInit {
 				const { status, message } = error;
 				if (status === 401) {
 					this.snackBar.open(`Acesso expirado, faça login novamente`, 'OK', {
-						duration: 3000
+						duration: 2500
 					});
 
 					setTimeout(() => {
@@ -190,22 +180,32 @@ export class OrdersComponent implements OnInit {
 		this.isLoading = true;
 		let query = {
 			search: this._form.value.search,
-			date_one: this._form.value.date_one ? new Date(this._form.value.date_one).toISOString().split('T')[0] : undefined,
-			date_two: this._form.value.date_two ? new Date(this._form.value.date_two).toISOString().split('T')[0] : undefined,
+			// date_one: this._form.value.date_one ? new Date(this._form.value.date_one).toISOString() : undefined,
+			// date_two: this._form.value.date_two ? new Date(this._form.value.date_two).toISOString() : undefined,
 		}
 
 		if (!this._form.value.search) {
 			this.isLoading = false;
-			this.snackBar.open('Primeiro informe o que deseja pesquisar...', 'fechar', {
-				duration: 3000
+			this.snackBar.open('Informe o número CAP que deseja pesquisar...', 'Fechar', {
+				duration: 2500
 			})
 		}
-		else if (this._form.value.search || this._form.value.date_one && this._form.value.date_two) {
-			this.httpOrder.filterOrders(query).subscribe((success: any) => {
-				this.dataSource(success);
-				this._dataSource._renderChangesSubscription;
-				this.isLoading = false;
-			})
+		else {
+			this.httpOrder.filterOrders(query).subscribe(
+				(success: any) => {
+					console.log(success.data.length)
+					if (success.data.length >= 1) {
+						this.dataSource(success.data);
+						this._dataSource._renderChangesSubscription;
+						this.isLoading = false;
+					} else {
+						this.snackBar.open(
+							'Nenhuma viagem encontrada...',
+							'Fechar', { duration: 2500 }
+						)
+						this.isLoading = false;
+					}
+				})
 		}
 	}
 
@@ -249,8 +249,8 @@ export class OrdersComponent implements OnInit {
 			data: {
 				Title: `Deseja ${typeTitle} a viagem?`,
 				// Message: 'Você solicitou a finalização da viagem:',
-				Value: `${value.intinerario}`,
-				Confirm: `${value.created_at}`
+				// Value: `CAP: ${value.numero_cap}` ?? 'Não informado',
+				// Confirm: `${value.intinerario}`
 			}
 		});
 
@@ -305,37 +305,66 @@ export class OrdersComponent implements OnInit {
 		});
 	}
 
-	deleteOrder(value: any, idOrder: number) {
+	deleteOrder(value: any, idOrder: number, active: boolean) {
 		const dialog = this.dialog.open(ErrorMessageComponent, {
 			autoFocus: false,
 			panelClass: 'modal-erroMessage',
 			data: {
-				Title: 'Excluir viagem?',
+				Title: 'Deseja excluir a viagem?'
 				// Message: 'Você solicitou a exclusão do seguinte pedido:',
 				// Value: `Viagem: ${value.intinerario} \n\n\n Solicitante: ${value.empresa}`,
 				// Confirm: 'Tem certeza que deseja excluir este cadastro?'
 			}
 		});
 
-		// dialog.afterClosed().subscribe(response => {
-		// 	if (response) {
-		// 		this.httpOrder.delete(value._id).subscribe(
-		// 			(success: any) => {
-		// 				this.snackBar.open(
-		// 					'Viagem excluída com sucesso!',
-		// 					'Fechar',
-		// 					{ duration: 3000 }
-		// 				);
-		// 			}, error => {
-		// 				this.snackBar.open(
-		// 					`Não foi possível excluir a viagem`,
-		// 					'Fechar',
-		// 					{ duration: 3000 }
-		// 				);
-		// 			});
-		// 	}
-		// 	this.getOrder();
-		// });
+		let body = {
+			...value,
+			active: active,
+			valorCorrida: value.valorCorrida.replace('R$', '').replace(',', '.'),
+			passageiros: value.passengers
+				.filter((passengers: { nome: string; }) => passengers.nome !== '')
+				.map((passengers: { id: any, order_id: any, nome: string; active: boolean }) => {
+					return {
+						id: passengers.id,
+						order_id: passengers.order_id,
+						nome: passengers.nome,
+						status: 'Confirmado',
+						active: active
+					}
+				}) ?? []
+		}
+
+		delete body.intinerario
+		delete body.passengers
+		delete body.created_at
+		delete body.updated_at
+		delete body.motorista
+		delete body.user_id
+		delete body.img
+		delete body.id
+
+		dialog.afterClosed().subscribe(response => {
+			if (response) {
+				this.httpOrder.put(idOrder, body)
+					.subscribe(
+						(success: any) => {
+							this.snackBar.open(
+								'Viagem excluída com sucesso',
+								'Fechar',
+								{ duration: 2500 }
+							);
+							this.dialog.closeAll()
+						},
+						(error: any) => {
+							this.snackBar.open(
+								`Não foi possível excluir a viagem`,
+								'Fechar',
+								{ duration: 2500 }
+							);
+						}
+					);
+			}
+		});
 	}
 
 	dataSource(data: any) {
@@ -343,6 +372,7 @@ export class OrdersComponent implements OnInit {
 			return {
 				...order,
 				numero_cap: order.numero_cap ?? "",
+				centro_custo: order.centro_custo ?? "",
 				intinerario: `${order.origem} x ${order.destino}`,
 				valorCorrida: `R$ ${parseFloat(order.valorCorrida).toFixed(2)}`,
 				img: `../../../../../../assets/img/${order.empresa}.png`
@@ -364,10 +394,12 @@ export class OrdersComponent implements OnInit {
 	}
 
 	clearFilter() {
-		this._form.value.search = '';
-		this._form.value.date_one = '';
-		this._form.value.date_two = '';
-		this.getOrder();
+		// this._form.value.search = '';
+		// this.check = false;
+		// this._form.value.date_one = '';
+		// this._form.value.date_two = '';
+		// this.getOrder();
+		window.location.reload()
 	}
 
 	relatorio() {

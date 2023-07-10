@@ -5,7 +5,12 @@ export declare class OrderUseCases {
     private passengersRepository;
     private orderRepository;
     constructor(passengersRepository: typeof Passengers, orderRepository: typeof Order);
-    getOrder(searchObject: any, user: any): Promise<Order[]>;
+    getOrder(searchObject: any, user: any): Promise<{
+        count: number;
+        offset: number;
+        limit: number;
+        data: Order[];
+    }>;
     getAllOrders(query: any, user: any): Promise<{
         count: number;
         offset: number;

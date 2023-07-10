@@ -13,6 +13,10 @@ export class CreateOrderDto {
   @ApiProperty({ description: 'Número CAP do solicitante' })
   numero_cap: string;
 
+  @IsString({ message: 'Centro de Custo deve ser uma string' })
+  @ApiProperty({ description: 'Centro de Custo do solicitante' })
+  centro_custo: string;
+
   @IsString({ message: 'Bloquinho deve ser uma string' })
   @IsNotEmpty({ message: 'Bloquinho é obrigatório' })
   @ApiProperty({ description: 'Quando bloquinho preenchido' })
@@ -63,6 +67,10 @@ export class UpdateOrderDto {
   @IsString({ message: 'Número CAP deve ser uma string' })
   @ApiProperty({ description: 'Número CAP do solicitante' })
   numero_cap: string;
+
+  @IsString({ message: 'Centro de Custo deve ser uma string' })
+  @ApiProperty({ description: 'Centro de Custo do solicitante' })
+  centro_custo: string;
 
   @IsString()
   @IsNotEmpty()

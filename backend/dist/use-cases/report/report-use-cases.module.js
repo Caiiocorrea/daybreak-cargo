@@ -7,17 +7,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReportUseCasesModule = void 0;
+const passengers_provedores_1 = require("../../frameworks/data-services/mysql/passengers.provedores");
 const data_services_module_1 = require("../../frameworks/data-services/data-services.module");
+const orders_provedores_1 = require("../../frameworks/data-services/mysql/orders.provedores");
 const report_google_sheets_use_case_1 = require("./report.google.sheets.use-case");
-const report_month_use_case_1 = require("./report.month.use-case");
 const common_1 = require("@nestjs/common");
 let ReportUseCasesModule = class ReportUseCasesModule {
 };
 ReportUseCasesModule = __decorate([
     (0, common_1.Module)({
         imports: [data_services_module_1.DataServicesModule],
-        providers: [report_month_use_case_1.ReportMonthUseCases, report_google_sheets_use_case_1.ReporGoogleSheetstUseCases],
-        exports: [report_month_use_case_1.ReportMonthUseCases, report_google_sheets_use_case_1.ReporGoogleSheetstUseCases],
+        providers: [
+            report_google_sheets_use_case_1.ReporGoogleSheetstUseCases,
+            ...orders_provedores_1.ordesProviders,
+            ...passengers_provedores_1.passengersProviders
+        ],
+        exports: [
+            report_google_sheets_use_case_1.ReporGoogleSheetstUseCases
+        ],
     })
 ], ReportUseCasesModule);
 exports.ReportUseCasesModule = ReportUseCasesModule;

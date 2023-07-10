@@ -8,21 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReporGoogleSheetstUseCases = void 0;
 const google_spreadsheet_1 = require("google-spreadsheet");
-const abstracts_1 = require("../../core/abstracts");
 const common_1 = require("@nestjs/common");
 const uuid_1 = require("uuid");
 const moment = require("moment");
 let sheet;
 let ReporGoogleSheetstUseCases = class ReporGoogleSheetstUseCases {
-    constructor(dataServices) {
-        this.dataServices = dataServices;
+    constructor(passengersRepository, orderRepository) {
+        this.passengersRepository = passengersRepository;
+        this.orderRepository = orderRepository;
     }
     parsePassageiro(passageiros) {
         let newPassageiros = [];
-        const passageiro = passageiros.map(({ passageiro }) => passageiro);
+        const passageiro = passageiros.map(({ nome }) => nome);
         newPassageiros.push(...passageiro);
         return `${passageiro} `;
     }
@@ -85,22 +88,25 @@ let ReporGoogleSheetstUseCases = class ReporGoogleSheetstUseCases {
         await sheet.saveUpdatedCells();
         await sheet.loadHeaderRow(3);
         await sheet.getRows();
-        const dados = await this.dataServices.orders.getAll(0, 100, {}, user);
+        const dados = await this.orderRepository.findAndCountAll({
+            where: { user_id: user.user_id },
+            include: [{ model: this.passengersRepository }],
+        });
         let dadosPlanilha = [];
-        for (let i in dados) {
+        for (let i in dados.rows) {
             dadosPlanilha.push({
-                'EMPRESA': dados[i].empresa,
+                'EMPRESA': dados.rows[i].empresa,
                 'CENTRO DE CUSTO (Suzano / Imetame)': '',
-                'Nº DO CAP (Suzano)': '',
+                'Nº DO CAP (Suzano)': dados.rows[i].numero_cap,
                 'DATA': moment(Date.now()).format('DD-MM-YYYY'),
-                'NOME DO TAXISTA COOPERADO': dados[i].motorista,
-                'ORIGEM': dados[i].origem,
-                'DESTINO': dados[i].destino,
+                'NOME DO TAXISTA COOPERADO': dados.rows[i].motorista,
+                'ORIGEM': dados.rows[i].origem,
+                'DESTINO': dados.rows[i].destino,
                 'HORARIO DE SAÍDA': moment(Date.now()).format('HH:mm'),
-                'KM': dados[i].kmCorrida,
-                'NOME COMPLETO DO PASSAGEIRO': this.parsePassageiro(dados[i].passageiros),
-                'Nº DE PASSAGEIROS': dados[i].passageiros.length,
-                'VALOR': dados[i].valorCorrida
+                'KM': dados.rows[i].kmCorrida,
+                'NOME COMPLETO DO PASSAGEIRO': this.parsePassageiro(dados.rows[i].passengers),
+                'Nº DE PASSAGEIROS': dados.rows[i].passengers.length,
+                'VALOR': dados.rows[i].valorCorrida
             });
         }
         await sheet.addRows([...dadosPlanilha]);
@@ -127,7 +133,9 @@ let ReporGoogleSheetstUseCases = class ReporGoogleSheetstUseCases {
 };
 ReporGoogleSheetstUseCases = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [abstracts_1.IDataServices])
+    __param(0, (0, common_1.Inject)('PASSENGERS_REPOSITORY')),
+    __param(1, (0, common_1.Inject)('ORDERS_REPOSITORY')),
+    __metadata("design:paramtypes", [Object, Object])
 ], ReporGoogleSheetstUseCases);
 exports.ReporGoogleSheetstUseCases = ReporGoogleSheetstUseCases;
 //# sourceMappingURL=report.google.sheets.use-case.js.map

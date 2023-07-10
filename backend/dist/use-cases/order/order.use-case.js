@@ -15,34 +15,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderUseCases = void 0;
 const common_1 = require("@nestjs/common");
 const orderEnum_1 = require("../../core/enum/orderEnum");
-const sequelize_1 = require("sequelize");
 let OrderUseCases = class OrderUseCases {
     constructor(passengersRepository, orderRepository) {
         this.passengersRepository = passengersRepository;
         this.orderRepository = orderRepository;
     }
     async getOrder(searchObject, user) {
-        const fields = Object.keys(this.orderRepository.rawAttributes);
-        fields.forEach((field) => {
-            if (searchObject[field] === '') {
-                delete searchObject[field];
-            }
-        });
-        const whereCondition = {};
-        for (const field in searchObject) {
-            if (fields.includes(field)) {
-                whereCondition[field] = {
-                    [sequelize_1.Op.like]: `%${searchObject[field]}%`,
-                };
-            }
-        }
-        return this.orderRepository.findAll({
+        var _a, _b;
+        const result = await this.orderRepository.findAndCountAll({
             where: {
-                [sequelize_1.Op.or]: [whereCondition],
-                user_id: user.user_id
+                numero_cap: searchObject.search,
+                user_id: user.user_id,
             },
             include: [{ model: this.passengersRepository }],
         });
+        return {
+            count: (_a = result.count - 1) !== null && _a !== void 0 ? _a : 0,
+            offset: 0,
+            limit: 100,
+            data: (_b = result.rows) !== null && _b !== void 0 ? _b : []
+        };
     }
     async getAllOrders(query, user) {
         var _a, _b, _c, _d;
@@ -51,7 +43,7 @@ let OrderUseCases = class OrderUseCases {
         delete query.offset;
         delete query.limit;
         const result = await this.orderRepository.findAndCountAll({
-            where: Object.assign(Object.assign({}, query), { user_id: user.user_id }),
+            where: Object.assign(Object.assign({}, query), { user_id: user.user_id, active: true }),
             offset, limit,
             order: [['created_at', 'DESC']],
             include: [{ model: this.passengersRepository }],

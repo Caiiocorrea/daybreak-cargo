@@ -1,6 +1,7 @@
+import Passengers from '../../frameworks/data-services/mysql/model/passengers.model';
+import Order from '../../frameworks/data-services/mysql/model/orders.model';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { IDataServices } from '../../core/abstracts';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 // import { createWriteStream } from 'fs';
 import { v4 as uuid_v4 } from "uuid";
 import * as moment from 'moment';
@@ -11,13 +12,14 @@ let sheet: any
 @Injectable()
 export class ReporGoogleSheetstUseCases {
   constructor(
-    private dataServices: IDataServices
+    @Inject('PASSENGERS_REPOSITORY') private passengersRepository: typeof Passengers,
+    @Inject('ORDERS_REPOSITORY') private orderRepository: typeof Order,
   ) { }
 
 
   parsePassageiro(passageiros: any) {
     let newPassageiros: any = []
-    const passageiro = passageiros.map(({ passageiro }) => passageiro)
+    const passageiro = passageiros.map(({ nome }) => nome)
     newPassageiros.push(...passageiro)
     return `${passageiro} `
   }
@@ -83,23 +85,28 @@ export class ReporGoogleSheetstUseCases {
     await sheet.saveUpdatedCells()//Salva a primeira linha
     await sheet.loadHeaderRow(3)//Acessa a terceira linha
     await sheet.getRows()//Acessa todas as linhas
-    const dados = await this.dataServices.orders.getAll(0, 100, {}, user)
+    const dados = await this.orderRepository.findAndCountAll({
+      where: { user_id: user.user_id },
+      // order: [['created_at', 'DESC']],
+      include: [{ model: this.passengersRepository }],
+    })
 
     let dadosPlanilha: any = []
-    for (let i in dados) {
+    for (let i in dados.rows) {
+      // console.log({ dados: dados.rows[i] })
       dadosPlanilha.push({
-        'EMPRESA': dados[i].empresa,
+        'EMPRESA': dados.rows[i].empresa,
         'CENTRO DE CUSTO (Suzano / Imetame)': '',
-        'Nº DO CAP (Suzano)': '',
+        'Nº DO CAP (Suzano)': dados.rows[i].numero_cap,
         'DATA': moment(Date.now()).format('DD-MM-YYYY'),
-        'NOME DO TAXISTA COOPERADO': dados[i].motorista,
-        'ORIGEM': dados[i].origem,
-        'DESTINO': dados[i].destino,
+        'NOME DO TAXISTA COOPERADO': dados.rows[i].motorista,
+        'ORIGEM': dados.rows[i].origem,
+        'DESTINO': dados.rows[i].destino,
         'HORARIO DE SAÍDA': moment(Date.now()).format('HH:mm'),
-        'KM': dados[i].kmCorrida,
-        'NOME COMPLETO DO PASSAGEIRO': this.parsePassageiro(dados[i].passageiros),
-        'Nº DE PASSAGEIROS': dados[i].passageiros.length,
-        'VALOR': dados[i].valorCorrida
+        'KM': dados.rows[i].kmCorrida,
+        'NOME COMPLETO DO PASSAGEIRO': this.parsePassageiro(dados.rows[i].passengers),
+        'Nº DE PASSAGEIROS': dados.rows[i].passengers.length,
+        'VALOR': dados.rows[i].valorCorrida
       })
     }
     await sheet.addRows([...dadosPlanilha])

@@ -305,7 +305,7 @@ export class ModalRelatorioOrderComponent implements OnInit {
 						this.matSnack.open(
 							'Alteração salva com sucesso!',
 							'Fechar',
-							{ duration: 2000 }
+							{ duration: 2500 }
 						);
 						this.dialogRef.close(true);
 						// window.location.reload();

@@ -18,11 +18,11 @@
 				</mat-expansion-panel-header>
 				<form [formGroup]="_form" class="form-grid" (ngSubmit)="getFilter()" autocomplete="off">
 					<mat-form-field class="grid-1">
-						<mat-label> Pesquisar... </mat-label>
+						<mat-label> Pesquise pelo número CAP... </mat-label>
 						<input matInput type="text" formControlName="search" />
 						<mat-icon matSuffix> search </mat-icon>
 					</mat-form-field>
-					<div style="display: flexbox;">
+					<!-- <div style="display: flexbox;">
 						<mat-form-field class="grid-1" style="width: 50%">
 							<mat-label> Data Inicial </mat-label>
 							<input matInput [matDatepicker]="picker" formControlName="date_one" />
@@ -35,20 +35,17 @@
 							<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
 							<mat-datepicker #picker2></mat-datepicker>
 						</mat-form-field>
-					</div>
+					</div> -->
 					<div class="grid-1">
-						<mat-slide-toggle formControlName="intinerario" color="primary"
-							(change)="toggle($event, 'Bloquinho')" class="PREPARATION_STARTED">
+						<mat-slide-toggle color="primary" (change)="toggle($event, 'Bloquinho')">
 							Bloquinho
 						</mat-slide-toggle>
-						<!-- <mat-slide-toggle formControlName="intinerario" color="primary"
-							(change)="toggle($event, 'Coottara')" class="PLACED">
-							Coottara
-						</mat-slide-toggle> -->
-						<mat-slide-toggle formControlName="intinerario" color="primary"
-							(change)="toggle($event, 'Particular')" class="PREPARATION_STARTED">
+						<mat-slide-toggle color="primary" (change)="toggle($event, 'Particular')">
 							Particular
 						</mat-slide-toggle>
+						<!-- <mat-slide-toggle color="primary" (change)="toggle($event, 'Coottara')">
+							Inativos
+						</mat-slide-toggle> -->
 					</div>
 					<div class="grid-1 button-group">
 						<button mat-button color="primary" class="grid-1" (click)="clearFilter()">

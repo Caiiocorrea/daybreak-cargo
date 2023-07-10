@@ -1,8 +1,10 @@
+import Passengers from '../../frameworks/data-services/mysql/model/passengers.model';
+import Order from '../../frameworks/data-services/mysql/model/orders.model';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { IDataServices } from '../../core/abstracts';
 export declare class ReporGoogleSheetstUseCases {
-    private dataServices;
-    constructor(dataServices: IDataServices);
+    private passengersRepository;
+    private orderRepository;
+    constructor(passengersRepository: typeof Passengers, orderRepository: typeof Order);
     parsePassageiro(passageiros: any): string;
     prepareNameMonth(month: number): string;
     getDoc(user: any): Promise<GoogleSpreadsheet>;

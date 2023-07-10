@@ -33,6 +33,9 @@ export default class Order extends Model<Order> {
     numero_cap: string;
 
     @Column
+    centro_custo: string;
+
+    @Column
     empresa: string;
 
     @Column
