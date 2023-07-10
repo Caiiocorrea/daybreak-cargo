@@ -40,7 +40,8 @@ export class OrdersComponent implements OnInit {
 		destino: new FormControl(''),
 		empresa: new FormControl(''),
 		motorista: new FormControl(''),
-		kmCorrida: new FormControl(''),
+		km_inicial: new FormControl(''),
+		km_final: new FormControl(''),
 		origem: new FormControl(''),
 		valorCorrida: new FormControl(''),
 		status: new FormControl(''),
@@ -374,7 +375,7 @@ export class OrdersComponent implements OnInit {
 				numero_cap: order.numero_cap ?? "",
 				centro_custo: order.centro_custo ?? "",
 				intinerario: `${order.origem} x ${order.destino}`,
-				valorCorrida: `R$ ${parseFloat(order.valorCorrida).toFixed(2)}`,
+				valorCorrida: order.valorCorrida ? `R$ ${parseFloat(order.valorCorrida).toFixed(2)}` : 'R$ 0,00',
 				img: `../../../../../../assets/img/${order.empresa}.png`
 			}
 		})

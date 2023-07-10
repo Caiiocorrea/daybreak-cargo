@@ -15,9 +15,14 @@
 			<ng-container [ngSwitch]="activeForm">
 				<form class="form-grid" [formGroup]="_formOrder" [@changeAnim]="activeForm === 1 ? 'open' : 'close'"
 					*ngSwitchCase="1">
-					<mat-form-field class="grid-2">
+					<mat-form-field class="grid-1">
 						<mat-label> CAP </mat-label>
 						<input matInput type="text" formControlName="numero_cap" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-1">
+						<mat-label> Centro de Custo </mat-label>
+						<input matInput type="text" formControlName="centro_custo" />
 					</mat-form-field>
 
 					<mat-form-field class="grid-1">
@@ -58,17 +63,24 @@
 
 					<mat-form-field class="grid-1">
 						<mat-label>Bloquinho</mat-label>
-						<input matInput formControlName="bloquinho" [matAutocomplete]="autoBloquinho" tabindex="1" required />
+						<input matInput formControlName="bloquinho" [matAutocomplete]="autoBloquinho" tabindex="1"
+							required />
 						<mat-autocomplete #autoBloquinho="matAutocomplete">
 							<mat-option *ngFor="let option of bloquinho" [value]="option">{{ option }}
 							</mat-option>
 						</mat-autocomplete>
 					</mat-form-field>
 
-					<mat-form-field class="grid-2">
-						<mat-label> KM </mat-label>
-						<input matInput type="text" formControlName="kmCorrida" />
+					<mat-form-field class="grid-1">
+						<mat-label> KM Inicial </mat-label>
+						<input matInput type="text" formControlName="km_inicial" />
 					</mat-form-field>
+
+					<mat-form-field class="grid-1">
+						<mat-label> KM Final </mat-label>
+						<input matInput type="text" formControlName="km_final" />
+					</mat-form-field>
+
 
 					<mat-form-field class="grid-1">
 						<mat-label> Total </mat-label>
@@ -78,6 +90,7 @@
 
 				<form [formGroup]="_formOrder" [@changeAnim]="activeForm === 2 ? 'open' : 'close'" *ngSwitchCase="2">
 					<div class="timeline-container">
+						<mat-label>Clique no passageiro para editar </mat-label>
 						<ul class="timeline">
 							<li *ngFor="let item of dialogData.passengers">
 								<div class="timeline-badge">

@@ -57,13 +57,17 @@ __decorate([
     __metadata("design:type", String)
 ], CreateOrderDto.prototype, "empresa", void 0);
 __decorate([
-    (0, class_validator_1.IsString)({ message: 'Km deve ser uma string' }),
-    (0, swagger_1.ApiProperty)({ description: 'Total de KM percorrido' }),
+    (0, class_validator_1.IsString)({ message: 'Km Inicial deve ser uma string' }),
+    (0, swagger_1.ApiProperty)({ description: 'Km ao iniciar corrida' }),
     __metadata("design:type", String)
-], CreateOrderDto.prototype, "kmCorrida", void 0);
+], CreateOrderDto.prototype, "km_inicial", void 0);
+__decorate([
+    (0, class_validator_1.IsString)({ message: 'Km Final deve ser uma string' }),
+    (0, swagger_1.ApiProperty)({ description: 'Km ao finalizar corrida' }),
+    __metadata("design:type", String)
+], CreateOrderDto.prototype, "km_final", void 0);
 __decorate([
     (0, class_validator_1.IsString)({ message: 'Valor deve ser uma string' }),
-    (0, class_validator_1.IsNotEmpty)({ message: 'Valor é obrigatórioS' }),
     (0, swagger_1.ApiProperty)({ description: 'Valor total da viagem' }),
     __metadata("design:type", String)
 ], CreateOrderDto.prototype, "valorCorrida", void 0);
@@ -128,10 +132,14 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], UpdateOrderDto.prototype, "kmCorrida", void 0);
+], UpdateOrderDto.prototype, "km_inicial", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], UpdateOrderDto.prototype, "km_final", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], UpdateOrderDto.prototype, "valorCorrida", void 0);

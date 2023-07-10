@@ -40,12 +40,14 @@ export class ModalCadastraOrderComponent implements OnInit {
 	stepperOrientation: Observable<StepperOrientation>;
 
 	_formGroupOrder = new FormGroup({
+		centro_custo: new FormControl('', Validators.required),
 		numero_cap: new FormControl('', Validators.required),
 		empresa: new FormControl('', Validators.required),
 		origem: new FormControl('', Validators.required),
 		destino: new FormControl('', Validators.required),
 		bloquinho: new FormControl('', Validators.required),
-		kmCorrida: new FormControl('', Validators.required),
+		km_inicial: new FormControl('', Validators.required),
+		km_final: new FormControl('', Validators.required),
 		valorCorrida: new FormControl('', Validators.required),
 		status: new FormControl('', Validators.required)
 	});
@@ -156,7 +158,6 @@ export class ModalCadastraOrderComponent implements OnInit {
 
 		let dados = {
 			...this._formGroupOrder.value,
-			kmCorrida: `${this._formGroupOrder.value.kmCorrida}`,
 			passageiros: [
 				{ nome: this._formPassageiros.value.passageiro_one },
 				{ nome: this._formPassageiros.value.passageiro_two },
@@ -167,7 +168,11 @@ export class ModalCadastraOrderComponent implements OnInit {
 
 		let body = {
 			...dados,
-			numero_cap: `${dados.numero_cap}`,
+			numero_cap: dados.numero_cap ? `${dados.numero_cap}` : '',
+			centro_custo: dados.centro_custo ? `${dados.centro_custo}` : '',
+			km_inicial: dados.km_inicial ? `${dados.km_inicial}` : '',
+			km_final: dados.km_final ? `${dados.km_final}` : '',
+			valorCorrida: dados.valorCorrida ? `${dados.valorCorrida}` : '',
 			passageiros: dados.passageiros
 				.filter((passageiro: { nome: string; }) => passageiro.nome !== '')
 				.map((passageiro: { nome: string; }) => {

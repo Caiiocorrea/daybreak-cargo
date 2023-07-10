@@ -8,7 +8,8 @@ export declare class CreateOrderDto {
     origem: string;
     destino: string;
     empresa: string;
-    kmCorrida: string;
+    km_inicial: string;
+    km_final: string;
     valorCorrida: string;
     status: string;
     passageiros: CreatePassengersDto[];
@@ -22,7 +23,8 @@ export declare class UpdateOrderDto {
     destino: string;
     origem: string;
     empresa: string;
-    kmCorrida: string;
+    km_inicial: string;
+    km_final: string;
     valorCorrida: string;
     status: string;
     passageiros: UpdatePassengersDto[];

@@ -7,7 +7,8 @@ export class Order {
   destino: string
   empresa: string
   motorista: string
-  kmCorrida: string
+  km_inicial: string
+  km_final: string
   origem: string
   valorCorrida: string
   status: string

@@ -59,7 +59,11 @@ __decorate([
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
-], Order.prototype, "kmCorrida", void 0);
+], Order.prototype, "km_inicial", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Order.prototype, "km_final", void 0);
 __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)

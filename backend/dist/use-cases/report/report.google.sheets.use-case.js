@@ -103,7 +103,7 @@ let ReporGoogleSheetstUseCases = class ReporGoogleSheetstUseCases {
                 'ORIGEM': dados.rows[i].origem,
                 'DESTINO': dados.rows[i].destino,
                 'HORARIO DE SAÍDA': moment(Date.now()).format('HH:mm'),
-                'KM': dados.rows[i].kmCorrida,
+                'KM': '',
                 'NOME COMPLETO DO PASSAGEIRO': this.parsePassageiro(dados.rows[i].passengers),
                 'Nº DE PASSAGEIROS': dados.rows[i].passengers.length,
                 'VALOR': dados.rows[i].valorCorrida

@@ -86,7 +86,8 @@ export class ModalEditaOrderComponent implements OnInit {
 		destino: new FormControl('', Validators.required),
 		empresa: new FormControl('', Validators.required),
 		motorista: new FormControl('', Validators.required),
-		kmCorrida: new FormControl('', Validators.required),
+		km_inicial: new FormControl('', Validators.required),
+		km_final: new FormControl('', Validators.required),
 		origem: new FormControl('', Validators.required),
 		valorCorrida: new FormControl('', Validators.required),
 		status: new FormControl('', Validators.required),
@@ -181,6 +182,20 @@ export class ModalEditaOrderComponent implements OnInit {
 		this.activeForm = idForm;
 	}
 
+	// editPassageiro(active?: boolean) {
+	// 	active = false
+	// 	const dialog = this.matDialog.open(ErrorMessageComponent, {
+	// 		autoFocus: false,
+	// 		panelClass: 'modal-errorMessage',
+	// 		data: {
+	// 			Title: 'Deseja excluir essa viagem?'
+	// 			// Message: 'Você solicitou a exclusão do seguinte pedido:',
+	// 			// Value: `Viagem: ${this.dialogData.intinerario} - Solicitante: ${this.dialogData.empresa}`,
+	// 			// Confirm: 'Tem certeza que deseja excluir este cadastro?'
+	// 		}
+	// 	});
+	// }
+
 	deleteOrder(active?: boolean) {
 		active = false
 		const dialog = this.matDialog.open(ErrorMessageComponent, {
@@ -249,12 +264,13 @@ export class ModalEditaOrderComponent implements OnInit {
 		// 	this.matSnack.open('Preencha todos os campos', 'Ok', { duration: 300 })
 		// }
 		// else {
-		this._formOrder.value.valorCorrida = parseFloat
-			(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2)
+		// this._formOrder.value.valorCorrida = parseFloat
+		// 	(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2)
 
 		let body = {
 			...this._formOrder.value,
 			active: true,
+			valorCorrida: parseFloat(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2),
 			passageiros: this._formOrder.value.passengers
 				.filter((passengers: { nome: string; }) => passengers.nome !== '')
 				.map((passengers: { id: any, order_id: any, nome: string; active: boolean }) => {

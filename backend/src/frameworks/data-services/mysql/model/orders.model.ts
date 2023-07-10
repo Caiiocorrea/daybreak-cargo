@@ -51,7 +51,10 @@ export default class Order extends Model<Order> {
     bloquinho: string;
 
     @Column
-    kmCorrida: string;
+    km_inicial: string;
+
+    @Column
+    km_final: string;
 
     @Column
     valorCorrida: string;

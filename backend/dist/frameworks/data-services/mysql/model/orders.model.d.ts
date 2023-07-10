@@ -11,7 +11,8 @@ export default class Order extends Model<Order> {
     origem: string;
     destino: string;
     bloquinho: string;
-    kmCorrida: string;
+    km_inicial: string;
+    km_final: string;
     valorCorrida: string;
     status: string;
     active: boolean;

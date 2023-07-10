@@ -37,12 +37,16 @@ export class CreateOrderDto {
   @ApiProperty({ description: 'Empresa solicitante' })
   empresa: string;
 
-  @IsString({ message: 'Km deve ser uma string' })
-  @ApiProperty({ description: 'Total de KM percorrido' })
-  kmCorrida: string;
+  @IsString({ message: 'Km Inicial deve ser uma string' })
+  @ApiProperty({ description: 'Km ao iniciar corrida' })
+  km_inicial: string;
+
+  @IsString({ message: 'Km Final deve ser uma string' })
+  @ApiProperty({ description: 'Km ao finalizar corrida' })
+  km_final: string;
 
   @IsString({ message: 'Valor deve ser uma string' })
-  @IsNotEmpty({ message: 'Valor é obrigatórioS' })
+  // @IsNotEmpty({ message: 'Valor é obrigatórioS' })
   @ApiProperty({ description: 'Valor total da viagem' })
   valorCorrida: string;
 
@@ -94,10 +98,14 @@ export class UpdateOrderDto {
 
   @IsString()
   @ApiProperty()
-  kmCorrida: string;
+  km_inicial: string;
 
   @IsString()
-  @IsNotEmpty()
+  @ApiProperty()
+  km_final: string;
+
+  @IsString()
+  // @IsNotEmpty()
   @ApiProperty()
   valorCorrida: string;
 

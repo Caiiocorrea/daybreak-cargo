@@ -118,7 +118,9 @@
 							element.status == 'Em viagem' ?
 							'start' :
 							element.status == 'Finalizado' ?
-							'finalizado' : 'cancelado'
+							'finalizado' : 
+							element.status == 'Agendado' ?
+							'agendado' : 'cancelado'
 						}}">{{element.status}}</span>
 					</mat-cell>
 				</ng-container>
@@ -137,7 +139,7 @@
 						<span> Registro </span>
 					</mat-header-cell>
 					<mat-cell *matCellDef="let element" data-label="registro" (click)="edit(element)">
-						<span>{{element.created_at | date: 'dd/MM/yyyy - HH:mm'}}</span>
+						<span>{{element.created_at | date: 'dd/MM/yyyy'}}</span>
 					</mat-cell>
 				</ng-container>
 
@@ -184,7 +186,9 @@
 						row.status == 'Em viagem' ?
 						'#ffa500' :
 						row.status == 'Finalizado' ?
-						'#00d26a' : '#cc3333'
+						'#00d26a' :
+						row.status == 'Agendado' ?
+						'#8b8b8b' : '#cc3333'
 					}};
 				"> </mat-row>
 			</mat-table>
