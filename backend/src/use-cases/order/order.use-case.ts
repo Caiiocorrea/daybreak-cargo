@@ -35,69 +35,9 @@ export class OrderUseCases {
     let offset: number = Number(query.offset ?? 0);
     let limit: number = Number(query.limit ?? 25);
     let newResult: any[] = []
-    let origem_destino = [
-      "Aracruz",
-      "Barra de São Francisco",
-      "Barra do Riacho",
-      "Barra do Sahy",
-      "Bela Vista",
-      "Cachoeiro de Itapemirim",
-      "Cariacica",
-      "Centro",
-      "Centro Empresarial",
-      "Colatina",
-      "Coqueiral de Aracruz",
-      "Cupido",
-      "Ecoporanga",
-      "Fábrica",
-      "Fatima",
-      "Guanabara",
-      "Guaraná",
-      "Guaxindiba",
-      "Itaparica",
-      "Itaputera",
-      "Iúna",
-      "Jacupemba",
-      "Jardins",
-      "Jequitibá",
-      "Limão",
-      "Linhares",
-      "Mar Azul",
-      "Morobá",
-      "Nova Colatina",
-      "Nova Conquista",
-      "Novo Jequitibá",
-      "Planalto",
-      "Polivalente",
-      "Pontal do Piraqueaçu",
-      "Praia Formosa",
-      "Praia dos Padres",
-      "Primavera",
-      "Putiri",
-      "Recanto Feliz",
-      "Santa Cruz",
-      "Santa Luzia",
-      "Santa Marta",
-      "Sauaçu",
-      "Saue",
-      "Segato",
-      "Serra",
-      "São Clemente",
-      "São Francisco",
-      "São José",
-      "São Marcos",
-      "Viana",
-      "Vila Nova",
-      "Vila Rica",
-      "Vila Velha",
-      "Vila do Riacho",
-      "Vitória",
-      "de Carli"
-    ]
 
     delete query.offset;
     delete query.limit;
-
 
     const result = await this.orderRepository.findAndCountAll({
       where: {
