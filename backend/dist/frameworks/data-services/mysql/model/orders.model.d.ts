@@ -16,6 +16,8 @@ export default class Order extends Model<Order> {
     valorCorrida: string;
     status: string;
     active: boolean;
+    data_viagem: string;
+    hora_viagem: string;
     created_at: Date;
     updated_at: Date;
     user: User;

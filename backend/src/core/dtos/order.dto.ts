@@ -59,6 +59,15 @@ export class CreateOrderDto {
   @IsNotEmpty({ message: 'Passageiros é obrigatório' })
   @ApiProperty({ description: 'Passageiros da viagem' })
   passageiros: CreatePassengersDto[];
+
+  @IsString()
+  @ApiProperty()
+  data_viagem: string;
+
+
+  @IsString()
+  @ApiProperty()
+  hora_viagem: string;
 }
 
 export class UpdateOrderDto {
@@ -122,4 +131,13 @@ export class UpdateOrderDto {
   @IsBoolean()
   @ApiProperty()
   active: boolean;
+
+  @IsString()
+  @ApiProperty()
+  data_viagem: string;
+
+
+  @IsString()
+  @ApiProperty()
+  hora_viagem: string;
 }

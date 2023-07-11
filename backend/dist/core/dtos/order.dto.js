@@ -83,6 +83,16 @@ __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Passageiros da viagem' }),
     __metadata("design:type", Array)
 ], CreateOrderDto.prototype, "passageiros", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], CreateOrderDto.prototype, "data_viagem", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], CreateOrderDto.prototype, "hora_viagem", void 0);
 exports.CreateOrderDto = CreateOrderDto;
 class UpdateOrderDto {
 }
@@ -160,5 +170,15 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", Boolean)
 ], UpdateOrderDto.prototype, "active", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], UpdateOrderDto.prototype, "data_viagem", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], UpdateOrderDto.prototype, "hora_viagem", void 0);
 exports.UpdateOrderDto = UpdateOrderDto;
 //# sourceMappingURL=order.dto.js.map

@@ -13,6 +13,8 @@ export declare class CreateOrderDto {
     valorCorrida: string;
     status: string;
     passageiros: CreatePassengersDto[];
+    data_viagem: string;
+    hora_viagem: string;
 }
 export declare class UpdateOrderDto {
     user_id: number;
@@ -29,4 +31,6 @@ export declare class UpdateOrderDto {
     status: string;
     passageiros: UpdatePassengersDto[];
     active: boolean;
+    data_viagem: string;
+    hora_viagem: string;
 }

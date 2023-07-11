@@ -13,6 +13,8 @@ export declare class Order {
     valorCorrida: string;
     status: string;
     passageiros: Passageiros[];
+    data_viagem: string;
+    hora_viagem: string;
     created_at?: string;
     updated_at?: string;
 }

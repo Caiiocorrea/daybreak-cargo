@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import * as moment from 'moment';
 
 
 @Component({
@@ -47,6 +48,9 @@ export class OrdersComponent implements OnInit {
 		status: new FormControl(''),
 		passengers: new FormControl(''),
 		created_at: new FormControl(''),
+		data_viagem: new FormControl(''),
+		hora: new FormControl(''),
+		minuto: new FormControl(''),
 
 		//filter
 		search: new FormControl(''),
@@ -279,6 +283,8 @@ export class OrdersComponent implements OnInit {
 		delete body.updated_at
 		delete body.motorista
 		delete body.user_id
+		delete body.minuto
+		delete body.hora
 		delete body.img
 		delete body.id
 
@@ -370,13 +376,19 @@ export class OrdersComponent implements OnInit {
 
 	dataSource(data: any) {
 		this._dataSource = new MatTableDataSource([...data.map((order: any) => {
+			let newHora = order.hora_viagem ? ' às ' + order.hora_viagem : ""
+			let newData = moment(order.data_viagem).format('DD/MM/YYYY') + newHora
 			return {
 				...order,
 				numero_cap: order.numero_cap ?? "",
 				centro_custo: order.centro_custo ?? "",
 				intinerario: `${order.origem} x ${order.destino}`,
 				valorCorrida: order.valorCorrida ? `R$ ${parseFloat(order.valorCorrida).toFixed(2)}` : 'R$ 0,00',
-				img: `../../../../../../assets/img/${order.empresa}.png`
+				img: `../../../../../../assets/img/${order.empresa}.png`,
+				hora: order.hora_viagem ? order.hora_viagem.split(':').slice(0, 1).join(':') : '',
+				minuto: order.hora_viagem ? order.hora_viagem.split(':').slice(1, 2).join(':') : '',
+				data_viagem: moment(order.data_viagem).toDate() ?? '',
+				created_at: newData != 'Invalid date' ? newData : '',
 			}
 		})
 		]);

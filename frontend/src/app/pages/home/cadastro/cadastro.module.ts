@@ -32,6 +32,8 @@ import { ComponentsModule } from 'src/app/components/components.module';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+
 
 const maskConfigFunction: () => Partial<IConfig> = () => {
 	return {
@@ -70,7 +72,8 @@ const maskConfigFunction: () => Partial<IConfig> = () => {
 		MatAutocompleteModule,
 		NgxMaskModule.forRoot(maskConfigFunction),
 		MatDatepickerModule,
-		MatNativeDateModule
+		MatNativeDateModule,
+		NgxMaterialTimepickerModule
 	]
 })
 export class CadastroModule { }

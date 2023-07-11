@@ -6,6 +6,7 @@ import { OrderService } from 'src/app/services/http/order.service';
 import { Order, orders, orderBody } from 'src/app/utils/orders';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as moment from 'moment';
 
 export interface PassageirosElement {
 	nome: string
@@ -93,6 +94,9 @@ export class ModalEditaOrderComponent implements OnInit {
 		status: new FormControl('', Validators.required),
 		passengers: new FormControl('', Validators.required),
 		active: new FormControl('', Validators.required),
+		data_viagem: new FormControl('', Validators.required),
+		hora: new FormControl('', Validators.required),
+		minuto: new FormControl('', Validators.required)
 	});
 
 	idOrder: number = 0;
@@ -163,6 +167,48 @@ export class ModalEditaOrderComponent implements OnInit {
 		"Vila do Riacho",
 		"Vitória",
 		"de Carli"
+	]
+
+	hora = [
+		"00",
+		"01",
+		"02",
+		"03",
+		"04",
+		"05",
+		"06",
+		"07",
+		"08",
+		"09",
+		"10",
+		"11",
+		"12",
+		"13",
+		"14",
+		"15",
+		"16",
+		"17",
+		"18",
+		"19",
+		"20",
+		"21",
+		"22",
+		"23"
+	]
+
+	minuto = [
+		"00",
+		"05",
+		"10",
+		"15",
+		"20",
+		"25",
+		"30",
+		"35",
+		"40",
+		"45",
+		"50",
+		"55"
 	]
 
 	constructor(
@@ -267,9 +313,18 @@ export class ModalEditaOrderComponent implements OnInit {
 		// this._formOrder.value.valorCorrida = parseFloat
 		// 	(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2)
 
+		// console.log(this._formOrder.value)
+		let data_viagem = moment(this._formOrder.value.data_viagem).format('YYYY-MM-DD')
+		let hora_viagem = `${this._formOrder.value.hora}:${this._formOrder.value.minuto}`
 		let body = {
 			...this._formOrder.value,
 			active: true,
+			data_viagem: data_viagem !== "Invalid date" ? data_viagem : "",
+			hora_viagem: hora_viagem !== ":" ? hora_viagem : "",
+			numero_cap: this._formOrder.value.numero_cap ? `${this._formOrder.value.numero_cap}` : '',
+			centro_custo: this._formOrder.value.centro_custo ? `${this._formOrder.value.centro_custo}` : '',
+			km_inicial: this._formOrder.value.km_inicial ? `${this._formOrder.value.km_inicial}` : '',
+			km_final: this._formOrder.value.km_final ? `${this._formOrder.value.km_final}` : '',
 			valorCorrida: parseFloat(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2),
 			passageiros: this._formOrder.value.passengers
 				.filter((passengers: { nome: string; }) => passengers.nome !== '')
@@ -289,6 +344,8 @@ export class ModalEditaOrderComponent implements OnInit {
 		delete body.created_at
 		delete body.updated_at
 		delete body.motorista
+		delete body.minuto
+		delete body.hora
 		delete body.id
 
 		this.orderService

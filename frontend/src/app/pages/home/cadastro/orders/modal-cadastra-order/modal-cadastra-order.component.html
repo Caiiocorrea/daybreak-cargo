@@ -71,7 +71,7 @@
 				</mat-form-field>
 
 				<mat-form-field>
-					<mat-label> KM Inicial </mat-label>
+					<mat-label> KM inicial </mat-label>
 					<input matInput type="number" formControlName="km_inicial" />
 					<!-- <mat-error *ngIf="!_formGroupOrder.hasError('required')">
 						Informe o KM se houver ou zero.
@@ -79,7 +79,7 @@
 				</mat-form-field>
 
 				<mat-form-field>
-					<mat-label> KM Final </mat-label>
+					<mat-label> KM final </mat-label>
 					<input matInput type="number" formControlName="km_final" />
 					<!-- <mat-error *ngIf="!_formGroupOrder.hasError('required')">
 						Informe o KM se houver ou zero.
@@ -88,7 +88,7 @@
 
 				<mat-form-field>
 					<mat-label> Valor </mat-label>
-					<input matInput type="text" formControlName="valorCorrida"/>
+					<input matInput type="text" formControlName="valorCorrida" />
 					<!-- <mat-error *ngIf="!_formGroupOrder.hasError('required')">
 						Informe o valor se houver ou zero.
 					</mat-error> -->
@@ -105,6 +105,39 @@
 						</mat-option>
 					</mat-autocomplete>
 				</mat-form-field>
+
+				<mat-form-field>
+					<mat-label> Data da Solicitação </mat-label>
+					<input matInput [matDatepicker]="picker" formControlName="data_viagem" />
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-datepicker #picker></mat-datepicker>
+				</mat-form-field>
+
+				<div style="display: flex; width: 100%; 
+					align-self: center; justify-content: center;">
+					<mat-form-field style="width: 50%">
+						<mat-label>Hora</mat-label>
+						<input matInput formControlName="hora" [matAutocomplete]="autoHora" />
+						<mat-autocomplete #autoHora="matAutocomplete">
+							<mat-option *ngFor="let option of hora" [value]="option">{{ option }}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+					<mat-label style="
+						margin: -20px 10px 0 10px; 
+						align-self: center; 
+						font-weight: bold;
+						font-size: x-large;
+						display: flex;">:</mat-label>
+					<mat-form-field style="width: 50%">
+						<mat-label>Minuto</mat-label>
+						<input matInput formControlName="minuto" [matAutocomplete]="autoMinuto" />
+						<mat-autocomplete #autoMinuto="matAutocomplete">
+							<mat-option *ngFor="let option of minuto" [value]="option">{{ option }}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+				</div>
 			</form>
 			<div class="controls">
 				<button color="primary" mat-button mat-dialog-close>Cancelar</button>

@@ -78,6 +78,14 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Order.prototype, "active", void 0);
 __decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Order.prototype, "data_viagem", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], Order.prototype, "hora_viagem", void 0);
+__decorate([
     sequelize_typescript_1.CreatedAt,
     sequelize_typescript_1.Column,
     __metadata("design:type", Date)

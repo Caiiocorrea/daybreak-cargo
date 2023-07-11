@@ -66,6 +66,12 @@ export default class Order extends Model<Order> {
     @Column
     active: boolean;
 
+    @Column
+    data_viagem: string
+
+    @Column
+    hora_viagem: string
+
     /* auto */
     @CreatedAt
     @Column

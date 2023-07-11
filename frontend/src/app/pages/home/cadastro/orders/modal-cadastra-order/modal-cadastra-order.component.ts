@@ -10,6 +10,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 import { Order, orders, orderBody } from 'src/app/utils/orders';
 import { OrderService } from 'src/app/services/http/order.service';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-modal-cadastra-order',
@@ -49,7 +50,10 @@ export class ModalCadastraOrderComponent implements OnInit {
 		km_inicial: new FormControl('', Validators.required),
 		km_final: new FormControl('', Validators.required),
 		valorCorrida: new FormControl('', Validators.required),
-		status: new FormControl('', Validators.required)
+		status: new FormControl('', Validators.required),
+		data_viagem: new FormControl('', Validators.required),
+		hora: new FormControl('', Validators.required),
+		minuto: new FormControl('', Validators.required)
 	});
 
 	_formPassageiros = new FormGroup({
@@ -131,6 +135,48 @@ export class ModalCadastraOrderComponent implements OnInit {
 		"de Carli"
 	]
 
+	hora = [
+		"00",
+		"01",
+		"02",
+		"03",
+		"04",
+		"05",
+		"06",
+		"07",
+		"08",
+		"09",
+		"10",
+		"11",
+		"12",
+		"13",
+		"14",
+		"15",
+		"16",
+		"17",
+		"18",
+		"19",
+		"20",
+		"21",
+		"22",
+		"23"
+	]
+
+	minuto = [
+		"00",
+		"05",
+		"10",
+		"15",
+		"20",
+		"25",
+		"30",
+		"35",
+		"40",
+		"45",
+		"50",
+		"55"
+	]
+
 	ngOnInit(): void { }
 
 	refresh() {
@@ -158,6 +204,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 
 		let dados = {
 			...this._formGroupOrder.value,
+			hora_viagem: `${this._formGroupOrder.value.hora}:${this._formGroupOrder.value.minuto}`,
 			passageiros: [
 				{ nome: this._formPassageiros.value.passageiro_one },
 				{ nome: this._formPassageiros.value.passageiro_two },
@@ -172,6 +219,8 @@ export class ModalCadastraOrderComponent implements OnInit {
 			centro_custo: dados.centro_custo ? `${dados.centro_custo}` : '',
 			km_inicial: dados.km_inicial ? `${dados.km_inicial}` : '',
 			km_final: dados.km_final ? `${dados.km_final}` : '',
+			data_viagem: moment(dados.data_viagem).format('YYYY-MM-DD'),
+			hora_viagem: dados.hora_viagem != ':' ? `${dados.hora_viagem}` : '',
 			valorCorrida: dados.valorCorrida ? `${dados.valorCorrida}` : '',
 			passageiros: dados.passageiros
 				.filter((passageiro: { nome: string; }) => passageiro.nome !== '')
@@ -182,6 +231,9 @@ export class ModalCadastraOrderComponent implements OnInit {
 					}
 				}) ?? []
 		};
+
+		delete body.hora;
+		delete body.minuto;
 
 		this.orderService.post(body).subscribe(
 			(success: any) => {
