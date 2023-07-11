@@ -35,6 +35,11 @@ export class OrderService {
 		return this.httpClient.put(`${API}${router}/${idOrder}`, body);
 	}
 
+	//Put Status
+	alterOrderStatus(idOrder: number, body: any) {
+		return this.httpClient.put(`${API}${router}/alterOrderStatus/${idOrder}`, body);
+	}
+
 	//Delete - Update
 	delete(idOrder: Number) {
 		return this.httpClient.delete(`${API}${router}/${idOrder}`);

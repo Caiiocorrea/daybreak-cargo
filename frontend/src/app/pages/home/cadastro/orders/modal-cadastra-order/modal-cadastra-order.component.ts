@@ -216,6 +216,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 
 		let body = {
 			...dados,
+			sgs: dados.sgs ? `${dados.sgs}` : '',
 			numero_cap: dados.numero_cap ? `${dados.numero_cap}` : '',
 			centro_custo: dados.centro_custo ? `${dados.centro_custo}` : '',
 			km_inicial: dados.km_inicial ? `${dados.km_inicial}` : '',

@@ -168,7 +168,6 @@ export class OrdersComponent implements OnInit {
 				this.pageCount = success.count;
 				this.totalRegisters = success.count;
 				this.currentPage = success.offset
-				this.isLoading = false;
 			}, (error: any) => {
 				const { status, message } = error;
 				if (status === 401) {
@@ -254,59 +253,27 @@ export class OrdersComponent implements OnInit {
 		const dialog = this.dialog.open(ErrorMessageComponent, {
 			autoFocus: false,
 			panelClass: 'modal-erroMessage',
-			data: {
-				Title: `Deseja ${typeTitle} a viagem?`,
-				// Message: 'Você solicitou a finalização da viagem:',
-				// Value: `CAP: ${value.numero_cap}` ?? 'Não informado',
-				// Confirm: `${value.intinerario}`
-			}
+			data: { Title: `Deseja ${typeTitle} a viagem?` }
 		});
 
 		let body = {
-			...value,
-			status: newStatus,
-			active: true,
-			valorCorrida: value.valorCorrida.replace('R$', '').replace(',', '.'),
-			passageiros: value.passengers
-				.filter((passengers: { nome: string; }) => passengers.nome !== '')
-				.map((passengers: { id: any, order_id: any, nome: string; active: boolean }) => {
-					return {
-						id: passengers.id,
-						order_id: passengers.order_id,
-						nome: passengers.nome,
-						status: 'Confirmado',
-						active: passengers.active
-					}
-				}) ?? []
+			status: newStatus
 		}
-
-		delete body.intinerario
-		delete body.passengers
-		delete body.created_at
-		delete body.updated_at
-		delete body.motorista
-		delete body.user_id
-		delete body.minuto
-		delete body.hora
-		delete body.img
-		delete body.id
 
 		dialog.afterClosed().subscribe(response => {
 			if (response) {
-				this.httpOrder.put(idOrder, body)
+				this.httpOrder.alterOrderStatus(idOrder, body)
 					.subscribe(
 						(success: any) => {
+							this.getOrder();
 							this.snackBar.open(
-								`Viagem ${typeMessage} com sucesso`,
-								'Fechar',
+								`Viagem ${typeMessage} com sucesso`, 'Fechar',
 								{ duration: 2500 }
 							);
-							this.getOrder();
 						},
 						(error: any) => {
 							this.snackBar.open(
-								`Não foi possível ${typeMessage} a viagem`,
-								'Fechar',
+								`Não foi possível ${typeMessage} a viagem`, 'Fechar',
 								{ duration: 2500 }
 							);
 						}
@@ -326,6 +293,7 @@ export class OrdersComponent implements OnInit {
 			}
 		})
 		]);
+		this.isLoading = false;
 	}
 
 	getFuncFAB(idFunc: Number) {

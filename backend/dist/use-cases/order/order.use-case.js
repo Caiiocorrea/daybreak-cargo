@@ -162,6 +162,14 @@ let OrderUseCases = class OrderUseCases {
             throw new common_1.InternalServerErrorException({ message: error.message });
         }
     }
+    async alterOrderStatus(orderId, body, user) {
+        try {
+            return await this.orderRepository.update({ status: body.status }, { where: { id: orderId } });
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException({ message: error.message });
+        }
+    }
 };
 OrderUseCases = __decorate([
     (0, common_1.Injectable)(),

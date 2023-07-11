@@ -265,6 +265,7 @@ export class ModalEditaOrderComponent implements OnInit {
 		let body = {
 			...this._formOrder.value,
 			active: true,
+			sgs: this._formOrder.value.sgs ? `${this._formOrder.value.sgs}` : '',
 			data_viagem: data_viagem !== "Invalid date" ? data_viagem : "",
 			hora_viagem: hora_viagem !== ":" ? hora_viagem : "",
 			numero_cap: this._formOrder.value.numero_cap ? `${this._formOrder.value.numero_cap}` : '',

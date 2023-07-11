@@ -46,18 +46,28 @@ export class OrderController {
   async updateOrder(
     @Param('id') orderId: string,
     @Body() updateOrderDto: UpdateOrderDto,
-    @Res () res: any
+    @Res() res: any
   ) {
-    const order = await this.orderUseCases.updateOrder(orderId, updateOrderDto, res.locals.user);
+    await this.orderUseCases.updateOrder(orderId, updateOrderDto, res.locals.user);
+    return res.status(201).send({ message: OrderEnum.updated });
+  }
+
+  @Put('/alterOrderStatus/:id')
+  async alterOrderStatus(
+    @Param('id') orderId: string,
+    @Body() body: any,
+    @Res() res: any
+  ) {
+    await this.orderUseCases.alterOrderStatus(orderId, body, res.locals.user);
     return res.status(201).send({ message: OrderEnum.updated });
   }
 
   @Delete('/:id')
   async deleteOrder(
     @Param('id') orderId: string,
-    @Res () res: any
+    @Res() res: any
   ) {
-    const order = await this.orderUseCases.deleteOrder(orderId, res.locals.user);
+    await this.orderUseCases.deleteOrder(orderId, res.locals.user);
     return res.status(201).send({ message: OrderEnum.deleted });
   }
 }

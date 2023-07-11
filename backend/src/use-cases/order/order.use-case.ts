@@ -174,4 +174,12 @@ export class OrderUseCases {
       throw new InternalServerErrorException({ message: error.message })
     }
   }
+
+  async alterOrderStatus(orderId: any, body: any, user: any) {
+    try {
+      return await this.orderRepository.update({ status: body.status }, { where: { id: orderId } })
+    } catch (error) {
+      throw new InternalServerErrorException({ message: error.message })
+    }
+  }
 }
