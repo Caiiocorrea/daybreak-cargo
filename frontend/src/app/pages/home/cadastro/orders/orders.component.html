@@ -43,6 +43,9 @@
 						<mat-slide-toggle color="primary" (change)="toggle($event, 'Particular')">
 							Particular
 						</mat-slide-toggle>
+						<mat-slide-toggle color="primary" (change)="toggle($event, 'sgs')">
+							SGS
+						</mat-slide-toggle>
 						<!-- <mat-slide-toggle color="primary" (change)="toggle($event, 'Coottara')">
 							Inativos
 						</mat-slide-toggle> -->
@@ -97,6 +100,24 @@
 					</mat-header-cell>
 					<mat-cell *matCellDef="let element" data-label="CAP" (click)="edit(element)">
 						<span>{{element.numero_cap}}</span>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="Centro_Custo">
+					<mat-header-cell *matHeaderCellDef>
+						<span> Centro de Custo </span>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element" data-label="c.custo" (click)="edit(element)">
+						<span>{{element.centro_custo}}</span>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="SGS">
+					<mat-header-cell *matHeaderCellDef>
+						<span> SGS </span>
+					</mat-header-cell>
+					<mat-cell *matCellDef="let element" data-label="SGS" (click)="edit(element)">
+						<span>{{element.sgs}}</span>
 					</mat-cell>
 				</ng-container>
 

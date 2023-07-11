@@ -241,7 +241,7 @@ export class ModalRelatorioOrderComponent implements OnInit {
 		dialog.afterClosed().subscribe(response => {
 			if (response) {
 				this.orderService
-					.delete(this.dialogData.id, false)
+					.delete(this.dialogData.id)
 					.subscribe((success: any) => {
 						this.matSnack.open(
 							bitAtivo === 0

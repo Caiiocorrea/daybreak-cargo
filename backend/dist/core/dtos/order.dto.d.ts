@@ -5,6 +5,7 @@ export declare class CreateOrderDto {
     numero_cap: string;
     centro_custo: string;
     bloquinho: string;
+    sgs: string;
     origem: string;
     destino: string;
     empresa: string;
@@ -22,6 +23,7 @@ export declare class UpdateOrderDto {
     numero_cap: string;
     centro_custo: string;
     bloquinho: string;
+    sgs: string;
     destino: string;
     origem: string;
     empresa: string;

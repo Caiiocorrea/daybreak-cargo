@@ -51,6 +51,9 @@ export default class Order extends Model<Order> {
     bloquinho: string;
 
     @Column
+    sgs: string;
+
+    @Column
     km_inicial: string;
 
     @Column

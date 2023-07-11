@@ -37,15 +37,79 @@ let OrderUseCases = class OrderUseCases {
         };
     }
     async getAllOrders(query, user) {
-        var _a, _b, _c, _d;
+        var _a, _b, _c;
         let offset = Number((_a = query.offset) !== null && _a !== void 0 ? _a : 0);
         let limit = Number((_b = query.limit) !== null && _b !== void 0 ? _b : 25);
+        let newResult = [];
+        let origem_destino = [
+            "Aracruz",
+            "Barra de São Francisco",
+            "Barra do Riacho",
+            "Barra do Sahy",
+            "Bela Vista",
+            "Cachoeiro de Itapemirim",
+            "Cariacica",
+            "Centro",
+            "Centro Empresarial",
+            "Colatina",
+            "Coqueiral de Aracruz",
+            "Cupido",
+            "Ecoporanga",
+            "Fábrica",
+            "Fatima",
+            "Guanabara",
+            "Guaraná",
+            "Guaxindiba",
+            "Itaparica",
+            "Itaputera",
+            "Iúna",
+            "Jacupemba",
+            "Jardins",
+            "Jequitibá",
+            "Limão",
+            "Linhares",
+            "Mar Azul",
+            "Morobá",
+            "Nova Colatina",
+            "Nova Conquista",
+            "Novo Jequitibá",
+            "Planalto",
+            "Polivalente",
+            "Pontal do Piraqueaçu",
+            "Praia Formosa",
+            "Praia dos Padres",
+            "Primavera",
+            "Putiri",
+            "Recanto Feliz",
+            "Santa Cruz",
+            "Santa Luzia",
+            "Santa Marta",
+            "Sauaçu",
+            "Saue",
+            "Segato",
+            "Serra",
+            "São Clemente",
+            "São Francisco",
+            "São José",
+            "São Marcos",
+            "Viana",
+            "Vila Nova",
+            "Vila Rica",
+            "Vila Velha",
+            "Vila do Riacho",
+            "Vitória",
+            "de Carli"
+        ];
         delete query.offset;
         delete query.limit;
         const result = await this.orderRepository.findAndCountAll({
             where: Object.assign(Object.assign({}, query), { user_id: user.user_id, active: true }),
             offset, limit,
-            order: [['created_at', 'DESC']],
+            order: [
+                ['data_viagem', 'DESC'],
+                ['hora_viagem', 'DESC'],
+                ['created_at', 'DESC']
+            ],
             include: [{ model: this.passengersRepository }],
         });
         if (!result) {
@@ -55,7 +119,11 @@ let OrderUseCases = class OrderUseCases {
             count: (_c = result.count - 1) !== null && _c !== void 0 ? _c : 0,
             offset,
             limit,
-            data: (_d = result.rows) !== null && _d !== void 0 ? _d : []
+            data: result.rows.map((order) => {
+                var _a, _b;
+                newResult.push(Object.assign(Object.assign({}, order.dataValues), { numero_cap: (_a = order.numero_cap) !== null && _a !== void 0 ? _a : "", centro_custo: (_b = order.centro_custo) !== null && _b !== void 0 ? _b : "", intinerario: `${order.origem} x ${order.destino}`, valorCorrida: order.valorCorrida ? `R$ ${parseFloat(order.valorCorrida).toFixed(2)}` : 'R$ 0,00', img: `../../../../../../assets/img/${order.empresa}.png`, hora: order.hora_viagem ? order.hora_viagem.split(':').slice(0, 1).join(':') : '', minuto: order.hora_viagem ? order.hora_viagem.split(':').slice(1, 2).join(':') : '' }));
+                return newResult !== null && newResult !== void 0 ? newResult : [];
+            })
         };
     }
     async createOrder(createOrderDto, user) {
@@ -81,6 +149,14 @@ let OrderUseCases = class OrderUseCases {
                     await this.passengersRepository.update(passenger, { where: { id: passenger.id } });
                 });
             }).catch((error) => { throw error; });
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException({ message: error.message });
+        }
+    }
+    async deleteOrder(orderId, user) {
+        try {
+            return await this.orderRepository.update({ active: false }, { where: { id: orderId } });
         }
         catch (error) {
             throw new common_1.InternalServerErrorException({ message: error.message });

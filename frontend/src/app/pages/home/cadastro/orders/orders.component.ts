@@ -38,6 +38,7 @@ export class OrdersComponent implements OnInit {
 		centro_custo: new FormControl(''),
 		user_id: new FormControl(''),
 		bloquinho: new FormControl(''),
+		sgs: new FormControl(''),
 		destino: new FormControl(''),
 		empresa: new FormControl(''),
 		motorista: new FormControl(''),
@@ -61,6 +62,8 @@ export class OrdersComponent implements OnInit {
 	displayedColumns: string[] = [
 		'notify',
 		'CAP',
+		'SGS',
+		'Centro_Custo',
 		'intinerario',
 		'status',
 		'valor',
@@ -130,9 +133,9 @@ export class OrdersComponent implements OnInit {
 			if (event.source.id === 'mat-slide-toggle-1') {
 				this.newdataSource = this._dataSource.data.filter((order: any) => order.bloquinho === 'Sim')
 			}
-			// else if (event.source.id === 'mat-slide-toggle-3') {
-			// 	this.newdataSource = this._dataSource.data.filter((order: any) => order.bloquinho === 'Sim')
-			// }
+			else if (event.source.id === 'mat-slide-toggle-3') {
+				this.newdataSource = this._dataSource.data.filter((order: any) => order.sgs === 'Sim')
+			}
 			else {
 				this.newdataSource = this._dataSource.data.filter((order: any) => order.empresa === search)
 			}
@@ -312,81 +315,12 @@ export class OrdersComponent implements OnInit {
 		});
 	}
 
-	deleteOrder(value: any, idOrder: number, active: boolean) {
-		const dialog = this.dialog.open(ErrorMessageComponent, {
-			autoFocus: false,
-			panelClass: 'modal-erroMessage',
-			data: {
-				Title: 'Deseja excluir a viagem?'
-				// Message: 'Você solicitou a exclusão do seguinte pedido:',
-				// Value: `Viagem: ${value.intinerario} \n\n\n Solicitante: ${value.empresa}`,
-				// Confirm: 'Tem certeza que deseja excluir este cadastro?'
-			}
-		});
-
-		let body = {
-			...value,
-			active: active,
-			valorCorrida: value.valorCorrida.replace('R$', '').replace(',', '.'),
-			passageiros: value.passengers
-				.filter((passengers: { nome: string; }) => passengers.nome !== '')
-				.map((passengers: { id: any, order_id: any, nome: string; active: boolean }) => {
-					return {
-						id: passengers.id,
-						order_id: passengers.order_id,
-						nome: passengers.nome,
-						status: 'Confirmado',
-						active: active
-					}
-				}) ?? []
-		}
-
-		delete body.intinerario
-		delete body.passengers
-		delete body.created_at
-		delete body.updated_at
-		delete body.motorista
-		delete body.user_id
-		delete body.img
-		delete body.id
-
-		dialog.afterClosed().subscribe(response => {
-			if (response) {
-				this.httpOrder.put(idOrder, body)
-					.subscribe(
-						(success: any) => {
-							this.snackBar.open(
-								'Viagem excluída com sucesso',
-								'Fechar',
-								{ duration: 2500 }
-							);
-							this.dialog.closeAll()
-						},
-						(error: any) => {
-							this.snackBar.open(
-								`Não foi possível excluir a viagem`,
-								'Fechar',
-								{ duration: 2500 }
-							);
-						}
-					);
-			}
-		});
-	}
-
 	dataSource(data: any) {
-		this._dataSource = new MatTableDataSource([...data.map((order: any) => {
+		this._dataSource = new MatTableDataSource([...data[0].map((order: any) => {
 			let newHora = order.hora_viagem ? ' às ' + order.hora_viagem : ""
 			let newData = moment(order.data_viagem).format('DD/MM/YYYY') + newHora
 			return {
 				...order,
-				numero_cap: order.numero_cap ?? "",
-				centro_custo: order.centro_custo ?? "",
-				intinerario: `${order.origem} x ${order.destino}`,
-				valorCorrida: order.valorCorrida ? `R$ ${parseFloat(order.valorCorrida).toFixed(2)}` : 'R$ 0,00',
-				img: `../../../../../../assets/img/${order.empresa}.png`,
-				hora: order.hora_viagem ? order.hora_viagem.split(':').slice(0, 1).join(':') : '',
-				minuto: order.hora_viagem ? order.hora_viagem.split(':').slice(1, 2).join(':') : '',
 				data_viagem: moment(order.data_viagem).toDate() ?? '',
 				created_at: newData != 'Invalid date' ? newData : '',
 			}

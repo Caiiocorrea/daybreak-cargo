@@ -40,6 +40,10 @@ let OrderController = class OrderController {
         const order = await this.orderUseCases.updateOrder(orderId, updateOrderDto, res.locals.user);
         return res.status(201).send({ message: orderEnum_1.OrderEnum.updated });
     }
+    async deleteOrder(orderId, res) {
+        const order = await this.orderUseCases.deleteOrder(orderId, res.locals.user);
+        return res.status(201).send({ message: orderEnum_1.OrderEnum.deleted });
+    }
 };
 __decorate([
     (0, common_1.Post)(),
@@ -74,6 +78,14 @@ __decorate([
     __metadata("design:paramtypes", [String, dtos_1.UpdateOrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "updateOrder", null);
+__decorate([
+    (0, common_1.Delete)('/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "deleteOrder", null);
 OrderController = __decorate([
     (0, common_1.Controller)('order'),
     (0, swagger_1.ApiTags)('order'),

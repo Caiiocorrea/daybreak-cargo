@@ -4,6 +4,7 @@ export enum OrderEnum {
   created = 'Ordem criada com sucesso.',
   notCreated = 'Ordem não criada.',
   updated = 'Ordem atualizada com sucesso.',
+  deleted = 'Ordem exluída com sucesso.',
   notUpdated = 'Ordem não atualizada.',
   duplicate = 'Ordem já existe.',
 }

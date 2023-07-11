@@ -39,6 +39,11 @@ __decorate([
     __metadata("design:type", String)
 ], CreateOrderDto.prototype, "bloquinho", void 0);
 __decorate([
+    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], CreateOrderDto.prototype, "sgs", void 0);
+__decorate([
     (0, class_validator_1.IsString)({ message: 'Origem deve ser uma string' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'Origem é obrigatório' }),
     (0, swagger_1.ApiProperty)({ description: 'Local de início da viagem' }),
@@ -120,6 +125,11 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], UpdateOrderDto.prototype, "bloquinho", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], UpdateOrderDto.prototype, "sgs", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, UseGuards, Query, Res } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, UseGuards, Query, Res, Delete } from '@nestjs/common';
 import { JwtAuthGuard } from '../use-cases/auth/guards/jwt-auth.guard';
 import { OrderUseCases } from '../use-cases/order/order.use-case';
 import { CreateOrderDto, UpdateOrderDto } from '../core/dtos';
@@ -50,5 +50,14 @@ export class OrderController {
   ) {
     const order = await this.orderUseCases.updateOrder(orderId, updateOrderDto, res.locals.user);
     return res.status(201).send({ message: OrderEnum.updated });
+  }
+
+  @Delete('/:id')
+  async deleteOrder(
+    @Param('id') orderId: string,
+    @Res () res: any
+  ) {
+    const order = await this.orderUseCases.deleteOrder(orderId, res.locals.user);
+    return res.status(201).send({ message: OrderEnum.deleted });
   }
 }

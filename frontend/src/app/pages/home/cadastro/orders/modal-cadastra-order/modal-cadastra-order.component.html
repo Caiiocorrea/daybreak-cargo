@@ -23,6 +23,18 @@
 				</mat-form-field>
 
 				<mat-form-field>
+					<mat-label>SGS</mat-label>
+					<input matInput formControlName="sgs" [matAutocomplete]="autoSGS" required />
+					<mat-error *ngIf="!_formGroupOrder.hasError('required')">
+						Informe se foi preenchido o bloquinho.
+					</mat-error>
+					<mat-autocomplete #autoSGS="matAutocomplete">
+						<mat-option *ngFor="let option of bloquinho" [value]="option">{{ option }}
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
+
+				<mat-form-field>
 					<mat-label>Empresa</mat-label>
 					<input matInput formControlName="empresa" [matAutocomplete]="autoCategoria" required />
 					<mat-error *ngIf="!_formGroupOrder.hasError('required')">
@@ -108,7 +120,10 @@
 
 				<mat-form-field>
 					<mat-label> Data da Solicitação </mat-label>
-					<input matInput [matDatepicker]="picker" formControlName="data_viagem" />
+					<input matInput [matDatepicker]="picker" formControlName="data_viagem" required />
+					<mat-error *ngIf="!_formGroupOrder.hasError('required')">
+						Informe a data da Solicitação.
+					</mat-error>
 					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 					<mat-datepicker #picker></mat-datepicker>
 				</mat-form-field>

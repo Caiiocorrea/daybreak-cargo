@@ -8,6 +8,7 @@ var OrderEnum;
     OrderEnum["created"] = "Ordem criada com sucesso.";
     OrderEnum["notCreated"] = "Ordem n\u00E3o criada.";
     OrderEnum["updated"] = "Ordem atualizada com sucesso.";
+    OrderEnum["deleted"] = "Ordem exlu\u00EDda com sucesso.";
     OrderEnum["notUpdated"] = "Ordem n\u00E3o atualizada.";
     OrderEnum["duplicate"] = "Ordem j\u00E1 existe.";
 })(OrderEnum = exports.OrderEnum || (exports.OrderEnum = {}));

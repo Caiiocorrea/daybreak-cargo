@@ -26,9 +26,18 @@
 					</mat-form-field>
 
 					<mat-form-field class="grid-1">
+						<mat-label>SGS</mat-label>
+						<input matInput formControlName="sgs" [matAutocomplete]="autoSGS" tabindex="1" required />
+						<mat-autocomplete #autoSGS="matAutocomplete">
+							<mat-option *ngFor="let option of bloquinho" [value]="option">{{ option }}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+
+					<mat-form-field class="grid-1">
 						<mat-label>Origem</mat-label>
 						<input matInput formControlName="origem" [matAutocomplete]="autoOrigem" required />
-						<mat-autocomplete #autoOrigem="matAutocomplete">
+						<mat-autocomplete #autoOrigem>
 							<mat-option *ngFor="let option of origem_destino" [value]="option">{{ option }}
 							</mat-option>
 						</mat-autocomplete>
@@ -60,6 +69,7 @@
 							</mat-option>
 						</mat-autocomplete>
 					</mat-form-field>
+
 
 					<mat-form-field class="grid-1">
 						<mat-label>Bloquinho</mat-label>
@@ -123,7 +133,7 @@
 
 				<form [formGroup]="_formOrder" [@changeAnim]="activeForm === 2 ? 'open' : 'close'" *ngSwitchCase="2">
 					<div class="timeline-container">
-						<mat-label>Clique no passageiro para editar </mat-label>
+						<!-- <mat-label>Clique no passageiro para editar </mat-label> -->
 						<ul class="timeline">
 							<li *ngFor="let item of dialogData.passengers">
 								<div class="timeline-badge">

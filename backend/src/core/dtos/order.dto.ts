@@ -22,6 +22,10 @@ export class CreateOrderDto {
   @ApiProperty({ description: 'Quando bloquinho preenchido' })
   bloquinho: string;
 
+  @IsString()
+  @ApiProperty()
+  sgs: string;
+
   @IsString({ message: 'Origem deve ser uma string' })
   @IsNotEmpty({ message: 'Origem é obrigatório' })
   @ApiProperty({ description: 'Local de início da viagem' })
@@ -89,6 +93,10 @@ export class UpdateOrderDto {
   @IsNotEmpty()
   @ApiProperty()
   bloquinho: string;
+
+  @IsString()
+  @ApiProperty()
+  sgs: string;
 
   @IsString()
   @IsNotEmpty()

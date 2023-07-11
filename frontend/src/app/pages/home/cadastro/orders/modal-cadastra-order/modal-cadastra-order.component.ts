@@ -47,6 +47,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 		origem: new FormControl('', Validators.required),
 		destino: new FormControl('', Validators.required),
 		bloquinho: new FormControl('', Validators.required),
+		sgs: new FormControl('', Validators.required),
 		km_inicial: new FormControl('', Validators.required),
 		km_final: new FormControl('', Validators.required),
 		valorCorrida: new FormControl('', Validators.required),

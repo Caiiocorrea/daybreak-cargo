@@ -36,7 +36,7 @@ export class OrderService {
 	}
 
 	//Delete - Update
-	delete(idOrder: Number, active: boolean = false) {
-		return this.httpClient.delete(`${API}${router}/${idOrder}?active=${active}`);
+	delete(idOrder: Number) {
+		return this.httpClient.delete(`${API}${router}/${idOrder}`);
 	}
 }

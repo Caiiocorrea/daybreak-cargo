@@ -15,8 +15,9 @@ export declare class OrderUseCases {
         count: number;
         offset: number;
         limit: number;
-        data: Order[];
+        data: any[][];
     }>;
     createOrder(createOrderDto: CreateOrderDto, user: any): Promise<void>;
     updateOrder(orderId: any, updateOrderDto: UpdateOrderDto, user: any): Promise<void>;
+    deleteOrder(orderId: any, user: any): Promise<[affectedCount: number]>;
 }

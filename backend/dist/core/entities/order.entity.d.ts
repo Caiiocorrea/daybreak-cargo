@@ -4,6 +4,7 @@ export declare class Order {
     numero_cap: string;
     centro_custo: string;
     bloquinho: string;
+    sgs: string;
     destino: string;
     empresa: string;
     motorista: string;
