@@ -62,7 +62,7 @@ export class OrdersComponent implements OnInit {
 	displayedColumns: string[] = [
 		'notify',
 		'CAP',
-		'SGS',
+		// 'SGS',
 		'Centro_Custo',
 		'intinerario',
 		'status',
@@ -181,6 +181,7 @@ export class OrdersComponent implements OnInit {
 					}, 1000);
 				}
 			});
+		this.isLoading = false;
 	}
 
 	getFilter() {
@@ -290,6 +291,10 @@ export class OrdersComponent implements OnInit {
 				...order,
 				data_viagem: moment(order.data_viagem).toDate() ?? '',
 				created_at: newData != 'Invalid date' ? newData : '',
+				passageiro_one: order.passengers.map(({ nome }: any) => nome)[0] ?? '',
+				passageiro_two: order.passengers.map(({ nome }: any) => nome)[1] ?? '',
+				passageiro_three: order.passengers.map(({ nome }: any) => nome)[2] ?? '',
+				passageiro_four: order.passengers.map(({ nome }: any) => nome)[3] ?? '',
 			}
 		})
 		]);

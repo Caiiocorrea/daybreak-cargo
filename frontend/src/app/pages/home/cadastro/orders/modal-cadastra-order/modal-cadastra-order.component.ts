@@ -41,24 +41,24 @@ export class ModalCadastraOrderComponent implements OnInit {
 	stepperOrientation: Observable<StepperOrientation>;
 
 	_formGroupOrder = new FormGroup({
-		centro_custo: new FormControl('', Validators.required),
-		numero_cap: new FormControl('', Validators.required),
+		centro_custo: new FormControl(''),
+		numero_cap: new FormControl(''),
 		empresa: new FormControl('', Validators.required),
 		origem: new FormControl('', Validators.required),
 		destino: new FormControl('', Validators.required),
 		bloquinho: new FormControl('', Validators.required),
-		sgs: new FormControl('', Validators.required),
-		km_inicial: new FormControl('', Validators.required),
-		km_final: new FormControl('', Validators.required),
-		valorCorrida: new FormControl('', Validators.required),
+		sgs: new FormControl(''),
+		km_inicial: new FormControl(''),
+		km_final: new FormControl(''),
+		valorCorrida: new FormControl(''),
 		status: new FormControl('', Validators.required),
 		data_viagem: new FormControl('', Validators.required),
-		hora: new FormControl('', Validators.required),
-		minuto: new FormControl('', Validators.required)
+		hora: new FormControl(''),
+		minuto: new FormControl(''),
 	});
 
 	_formPassageiros = new FormGroup({
-		passageiro_one: new FormControl('', Validators.required),
+		passageiro_one: new FormControl(''),
 		passageiro_two: new FormControl(''),
 		passageiro_three: new FormControl(''),
 		passageiro_four: new FormControl(''),
@@ -73,7 +73,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 	orderBodyNames = Object.keys(orderBody);
 
 	status = ['Agendado', 'Em viagem', 'Finalizado', 'Cancelado'];
-	empresa = ['Coottara', 'Particular', 'Chemtrade', 'Suzano', 'NutriPetro', 'Ultragaz'];
+	empresa = ['Coottara', 'Particular']; //'Chemtrade', 'Suzano', 'NutriPetro', 'Ultragaz'
 	bloquinho = ['Sim', 'Não'];
 
 	origem_destino = [
@@ -89,6 +89,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 		"Colatina",
 		"Coqueiral de Aracruz",
 		"Cupido",
+		"Chemtrade",
 		"Ecoporanga",
 		"Fábrica",
 		"Fatima",
@@ -108,6 +109,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 		"Nova Colatina",
 		"Nova Conquista",
 		"Novo Jequitibá",
+		"NutriPetro",
 		"Planalto",
 		"Polivalente",
 		"Pontal do Piraqueaçu",
@@ -127,12 +129,14 @@ export class ModalCadastraOrderComponent implements OnInit {
 		"São Francisco",
 		"São José",
 		"São Marcos",
+		"Suzano",
 		"Viana",
 		"Vila Nova",
 		"Vila Rica",
 		"Vila Velha",
 		"Vila do Riacho",
 		"Vitória",
+		"Ultragaz",
 		"de Carli"
 	]
 
@@ -199,10 +203,6 @@ export class ModalCadastraOrderComponent implements OnInit {
 	}
 
 	registerOrder() {
-		// if (!this._formGroupOrder.valid && !this._formPassageiros.valid) {
-		// 	this.snackBar.open('Preencha todos os dados obrigatórios', 'OK', { duration: 2500 });
-		// }
-
 		let dados = {
 			...this._formGroupOrder.value,
 			hora_viagem: `${this._formGroupOrder.value.hora}:${this._formGroupOrder.value.minuto}`,
@@ -242,10 +242,7 @@ export class ModalCadastraOrderComponent implements OnInit {
 				this.itsSaved = 1;
 			},
 			error => {
-				console.log(error);
 				if (error.active === 302) {
-					console.log(error.error.data);
-					// this.idOrder = error.error.data[0].IdCaminhao;
 					this.itsSaved = 3;
 				} else {
 					this.itsSaved = 2;

@@ -3,7 +3,6 @@ import { animate, keyframes, state, style, transition, trigger } from '@angular/
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrderService } from 'src/app/services/http/order.service';
-import { Order, orders, orderBody } from 'src/app/utils/orders';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
@@ -80,34 +79,38 @@ export interface orderElement {
 export class ModalEditaOrderComponent implements OnInit {
 	_formOrder = new FormGroup({
 		id: new FormControl('', Validators.required),
-		numero_cap: new FormControl('', Validators.required),
-		centro_custo: new FormControl('', Validators.required),
+		numero_cap: new FormControl(''),
+		centro_custo: new FormControl(''),
 		intinerario: new FormControl('', Validators.required),
 		bloquinho: new FormControl('', Validators.required),
 		sgs: new FormControl('', Validators.required),
+		origem: new FormControl('', Validators.required),
 		destino: new FormControl('', Validators.required),
 		empresa: new FormControl('', Validators.required),
 		motorista: new FormControl('', Validators.required),
-		km_inicial: new FormControl('', Validators.required),
-		km_final: new FormControl('', Validators.required),
-		origem: new FormControl('', Validators.required),
-		valorCorrida: new FormControl('', Validators.required),
+		km_inicial: new FormControl(''),
+		km_final: new FormControl(''),
+		valorCorrida: new FormControl(''),
 		status: new FormControl('', Validators.required),
 		passengers: new FormControl('', Validators.required),
 		active: new FormControl('', Validators.required),
 		data_viagem: new FormControl('', Validators.required),
 		hora: new FormControl('', Validators.required),
-		minuto: new FormControl('', Validators.required)
+		minuto: new FormControl('', Validators.required),
+
+		passageiro_one: new FormControl(''),
+		passageiro_two: new FormControl(''),
+		passageiro_three: new FormControl(''),
+		passageiro_four: new FormControl(''),
 	});
 
 	idOrder: number = 0;
-
-	canUpdate: boolean = false;
 	activeForm: number = 1;
 	boolAnim: boolean = false;
+	canUpdate: boolean = false;
 
 	status = ['Agendado', 'Em viagem', 'Finalizado', 'Cancelado'];
-	empresa = ['Coottara', 'Particular', 'Chemtrade', 'Suzano', 'NutriPetro', 'Ultragaz'];
+	empresa = ['Coottara', 'Particular']; //'Chemtrade', 'Suzano', 'NutriPetro', 'Ultragaz'
 	bloquinho = ['Sim', 'Não'];
 
 	origem_destino = [
@@ -123,6 +126,7 @@ export class ModalEditaOrderComponent implements OnInit {
 		"Colatina",
 		"Coqueiral de Aracruz",
 		"Cupido",
+		"Chemtrade",
 		"Ecoporanga",
 		"Fábrica",
 		"Fatima",
@@ -142,6 +146,7 @@ export class ModalEditaOrderComponent implements OnInit {
 		"Nova Colatina",
 		"Nova Conquista",
 		"Novo Jequitibá",
+		"NutriPetro",
 		"Planalto",
 		"Polivalente",
 		"Pontal do Piraqueaçu",
@@ -161,12 +166,14 @@ export class ModalEditaOrderComponent implements OnInit {
 		"São Francisco",
 		"São José",
 		"São Marcos",
+		"Suzano",
 		"Viana",
 		"Vila Nova",
 		"Vila Rica",
 		"Vila Velha",
 		"Vila do Riacho",
 		"Vitória",
+		"Ultragaz",
 		"de Carli"
 	]
 
@@ -262,6 +269,7 @@ export class ModalEditaOrderComponent implements OnInit {
 	saveEdit() {
 		let data_viagem = moment(this._formOrder.value.data_viagem).format('YYYY-MM-DD')
 		let hora_viagem = `${this._formOrder.value.hora}:${this._formOrder.value.minuto}`
+		let statusPassageiro = "Confirmado"
 		let body = {
 			...this._formOrder.value,
 			active: true,
@@ -273,19 +281,48 @@ export class ModalEditaOrderComponent implements OnInit {
 			km_inicial: this._formOrder.value.km_inicial ? `${this._formOrder.value.km_inicial}` : '',
 			km_final: this._formOrder.value.km_final ? `${this._formOrder.value.km_final}` : '',
 			valorCorrida: parseFloat(this._formOrder.value.valorCorrida.replace('R$', '')).toFixed(2),
-			passageiros: this._formOrder.value.passengers
-				.filter((passengers: { nome: string; }) => passengers.nome !== '')
-				.map((passengers: { id: any, order_id: any, nome: string; active: boolean }) => {
-					return {
-						id: passengers.id,
-						order_id: passengers.order_id,
-						nome: passengers.nome,
-						status: 'Confirmado',
-						active: passengers.active
-					}
-				}) ?? []
+			passageiros: [
+				{
+					id: this._formOrder.value.passengers[0]?.id,
+					order_id: this._formOrder.value.id,
+					nome: this._formOrder.value.passageiro_one ?? "",
+					status: statusPassageiro,
+					active: true
+				},
+				{
+					id: this._formOrder.value.passengers[1]?.id,
+					order_id: this._formOrder.value.id,
+					nome: this._formOrder.value.passageiro_two ?? "",
+					status: statusPassageiro,
+					active: true
+				},
+				{
+					id: this._formOrder.value.passengers[2]?.id,
+					order_id: this._formOrder.value.id,
+					nome: this._formOrder.value.passageiro_three ?? "",
+					status: statusPassageiro,
+					active: true
+				},
+				{
+					id: this._formOrder.value.passengers[3]?.id,
+					order_id: this._formOrder.value.id,
+					nome: this._formOrder.value.passageiro_four ?? "",
+					status: statusPassageiro,
+					active: true
+				}
+			].map((passenger: any) => {
+				if (passenger.nome !== "") {
+					return passenger
+				}
+			})
 		};
 
+		console.log({ body })
+
+		delete body.passageiro_one
+		delete body.passageiro_two
+		delete body.passageiro_three
+		delete body.passageiro_four
 		delete body.intinerario
 		delete body.passengers
 		delete body.created_at

@@ -85,9 +85,14 @@ let OrderUseCases = class OrderUseCases {
     async updateOrder(orderId, updateOrderDto, user) {
         try {
             return await this.orderRepository.update(updateOrderDto, { where: { id: orderId } })
-                .then(async (order) => {
+                .then(async () => {
                 updateOrderDto.passageiros.map(async (passenger) => {
-                    await this.passengersRepository.update(passenger, { where: { id: passenger.id } });
+                    if (passenger.id) {
+                        await this.passengersRepository.update(passenger, { where: { id: passenger.id } });
+                    }
+                    else {
+                        await this.passengersRepository.create(passenger);
+                    }
                 });
             }).catch((error) => { throw error; });
         }

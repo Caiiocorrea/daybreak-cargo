@@ -5,7 +5,7 @@
 	<div class="container-controls">
 		<div class="side-nav">
 			<button mat-button (click)="toggleForm(1)" [ngClass]="{ active: activeForm === 1 }">
-				Detalhes da Viagem
+				Dados da Viagem
 			</button>
 			<button mat-button (click)="toggleForm(2)" [ngClass]="{ active: activeForm === 2 }">
 				Passageiros
@@ -25,14 +25,14 @@
 						<input matInput type="text" formControlName="centro_custo" />
 					</mat-form-field>
 
-					<mat-form-field class="grid-1">
+					<!-- <mat-form-field class="grid-1">
 						<mat-label>SGS</mat-label>
 						<input matInput formControlName="sgs" [matAutocomplete]="autoSGS" tabindex="1" required />
 						<mat-autocomplete #autoSGS="matAutocomplete">
 							<mat-option *ngFor="let option of bloquinho" [value]="option">{{ option }}
 							</mat-option>
 						</mat-autocomplete>
-					</mat-form-field>
+					</mat-form-field> -->
 
 					<mat-form-field class="grid-1">
 						<mat-label>Origem</mat-label>
@@ -132,27 +132,25 @@
 				</form>
 
 				<form [formGroup]="_formOrder" [@changeAnim]="activeForm === 2 ? 'open' : 'close'" *ngSwitchCase="2">
-					<div class="timeline-container">
-						<!-- <mat-label>Clique no passageiro para editar </mat-label> -->
-						<ul class="timeline">
-							<li *ngFor="let item of dialogData.passengers">
-								<div class="timeline-badge">
-									<mat-icon>person</mat-icon>
-								</div>
-								<div class="lineVertical"></div>
-								<div class="timeline-panel">
-									<div class="timeline-heading">
-										<h4 class="timeline-title">{{ item.nome }}</h4>
-										<p>
-											<small class="text-muted">
-												Status: {{ item.status }}
-											</small>
-										</p>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
+					<mat-form-field class="grid-1" style="margin-bottom: 20px;">
+						<mat-label> 1º Passageiro </mat-label>
+						<input matInput type="text" formControlName="passageiro_one" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-1" style="margin-bottom: 20px;">
+						<mat-label> 2º Passageiro </mat-label>
+						<input matInput type="text" formControlName="passageiro_two" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-1" style="margin-bottom: 20px;">
+						<mat-label> 3º Passageiro </mat-label>
+						<input matInput type="text" formControlName="passageiro_three" />
+					</mat-form-field>
+
+					<mat-form-field class="grid-1" style="margin-bottom: 20px;">
+						<mat-label> 4º Passageiro </mat-label>
+						<input matInput type="text" formControlName="passageiro_four" />
+					</mat-form-field>
 				</form>
 			</ng-container>
 			<ng-container>
