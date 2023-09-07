@@ -9,10 +9,10 @@ async function bootstrap() {
     const packageJson = require("../package.json");
     app.setGlobalPrefix('api/v1/');
     const config = new swagger_1.DocumentBuilder()
-        .setTitle('Daybreak Cargo')
+        .setTitle('TaskBotMaster')
         .setDescription(packageJson.description)
-        .setTermsOfService('https://www.daybreaksoftware.com.br')
-        .setContact(packageJson.author, 'https://www.daybreaksoftware.com.br/', 'softwaredaybreak@gmail.com')
+        .setTermsOfService('https://www.taskbotmaster.com.br')
+        .setContact(packageJson.author, 'https://www.taskbotmaster.com.br/', 'taskbotmaster@email.com')
         .setVersion(packageJson.version)
         .addBearerAuth({
         description: `[apenas texto] Insira o token no seguinte formato: Bearer <JWT>`,

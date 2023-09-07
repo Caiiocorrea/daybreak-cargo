@@ -1,7 +1,7 @@
 {
-  "name": "daybreak_cargo",
+  "name": "taskbotmaster",
   "version": "1.0",
-  "description": "REST API - Daybreak Cargo",
+  "description": "REST API - TaskBotMaster",
   "author": "Daybreak Software",
   "private": true,
   "license": "UNLICENSED",

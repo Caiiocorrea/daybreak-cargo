@@ -6,18 +6,18 @@ export declare class AuthUseCases {
     constructor(userRepository: typeof User, jwtService: JwtService);
     validateUser(email: string, senha: string): Promise<any>;
     signIn(email: string, senha: string): Promise<{
-        sub: number;
-        nome: string;
-        sobrenome: string;
-        email: string;
+        sub: any;
+        nome: any;
+        sobrenome: any;
+        email: any;
         token: string;
         refreshToken: string;
     }>;
     getTokens(payload: User): Promise<{
-        sub: number;
-        nome: string;
-        sobrenome: string;
-        email: string;
+        sub: any;
+        nome: any;
+        sobrenome: any;
+        email: any;
         token: string;
         refreshToken: string;
     }>;

@@ -7,29 +7,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
-const common_1 = require("@nestjs/common");
-const data_services_module_1 = require("./frameworks/data-services/data-services.module");
-const auth_use_cases_module_1 = require("./use-cases/auth/auth-use-cases.module");
-const logging_middleware_1 = require("./Middleware/logging.middleware");
-const service_motoboxe_controller_1 = require("./controllers/service.motoboxe.controller");
 const order_use_cases_module_1 = require("./use-cases/conversation/order-use-cases.module");
+const data_services_module_1 = require("./frameworks/data-services/data-services.module");
+const conversations_controller_1 = require("./controllers/conversations.controller");
+const app_controller_1 = require("./controllers/app.controller");
+const common_1 = require("@nestjs/common");
 let AppModule = class AppModule {
-    configure(consumer) {
-        consumer
-            .apply(logging_middleware_1.LoggingMiddleware)
-            .exclude({ path: 'api/v1/taskbotmaster/whatsapp', method: common_1.RequestMethod.POST })
-            .forRoutes(service_motoboxe_controller_1.ServiceController);
-    }
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             order_use_cases_module_1.ConversationUseCasesModule,
-            auth_use_cases_module_1.AuthUseCasesModule,
             data_services_module_1.DataServicesModule,
         ],
         controllers: [
-            service_motoboxe_controller_1.ServiceController,
+            conversations_controller_1.ServiceController,
+            app_controller_1.AppController,
         ],
         providers: []
     })

@@ -1,171 +1,201 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
-import Passengers from '../../frameworks/data-services/mysql/model/passengers.model';
-import Order from '../../frameworks/data-services/mysql/model/orders.model';
-import { CreateOrderDto, UpdateOrderDto } from '../../core/dtos';
-import { OrderEnum } from '../../core/enum/orderEnum';
-import { Sequelize, Op } from 'sequelize';
+import Conversation from '../../frameworks/data-services/mysql/model/conversation.model';
+import { twilioConfiguration } from 'src/configuration';
+import { Inject, Injectable } from '@nestjs/common';
 
 
 @Injectable()
 export class ConversationUseCases {
+  accountSid = twilioConfiguration.accountSid;
+  authToken = twilioConfiguration.authToken;
+  from: string = twilioConfiguration.from;
+  client = require('twilio')(this.accountSid, this.authToken, {
+    lazyLoading: true,
+  })
+
   constructor(
-    // @Inject('PASSENGERS_REPOSITORY') private passengersRepository: typeof Passengers,
-    // @Inject('ORDERS_REPOSITORY') private orderRepository: typeof Order,
+    @Inject('CONVERSATION_REPOSITORY')
+    private conversationRepository: typeof Conversation,
   ) { }
 
-  // async getOrder(searchObject: any, user: any) {
-  //   console.log({ searchObject, user })
-  //   // if (!searchObject.search ||
-  //   //   !searchObject.date_one &&
-  //   //   !searchObject.date_two
-  //   // ) { throw new BadRequestException({ message: OrderEnum.notFound }) }
+  async directMessage(body: any, res: any) {
+    const { Body, From, WaId } = body
 
-  //   let consulta: any
-  //   if (searchObject.date_one && searchObject.date_two) {
-  //     consulta = {
-  //       [Op.or]: [
-  //         { id: searchObject.search },
-  //         { numero_cap: searchObject.search },
-  //         { centro_custo: searchObject.search },
-  //         { origem: searchObject.search },
-  //         { destino: searchObject.search },
-  //         { motorista: searchObject.search },
-  //         { empresa: searchObject.search },
-  //         { status: searchObject.search },
-  //         { hora_viagem: searchObject.search },
-  //       ],
-  //       data_viagem: {
-  //         [Op.gte]: searchObject.date_one,
-  //         [Op.lte]: searchObject.date_two,
-  //       },
-  //       user_id: user.user_id,
-  //       active: true
-  //     }
-  //   } else {
-  //     consulta = {
-  //       [Op.or]: [
-  //         { id: searchObject.search },
-  //         { numero_cap: searchObject.search },
-  //         { centro_custo: searchObject.search },
-  //         { origem: searchObject.search },
-  //         { destino: searchObject.search },
-  //         { motorista: searchObject.search },
-  //         { empresa: searchObject.search },
-  //         { status: searchObject.search },
-  //         { hora_viagem: searchObject.search },
-  //       ],
-  //       user_id: user.user_id,
-  //       active: true
-  //     }
-  //   }
+    let payloadApi = {
+      body: Body,
+      to: From,
+      from: this.from,
+    }
 
-  //   const result = await this.orderRepository.findAndCountAll({
-  //     where: consulta,
-  //     include: [{ model: this.passengersRepository }],
-  //     logging: console.log
-  //   });
+    let payloadBD = body
 
-  //   return {
-  //     count: result.count - 1 ?? 0,
-  //     offset: 0,
-  //     limit: 100,
-  //     data: result.rows ?? []
-  //   };
-  // }
+    const conversation = await this.conversationRepository
+      .findOne({
+        where: { WaId: WaId },
+        order: [['created_at', 'DESC']],
+        limit: 1,
+      })
 
-  // async getAllOrders(query: any, user: any) {
-  //   let offset: number = Number(query.offset ?? 0);
-  //   let limit: number = Number(query.limit ?? 25);
-  //   let newResult: any[] = []
+    console.log({ conversation: conversation?.Stage })
 
-  //   delete query.offset;
-  //   delete query.limit;
+    let { Stage } = conversation ?? { Stage: '' }
 
-  //   const result = await this.orderRepository.findAndCountAll({
-  //     where: {
-  //       ...query,
-  //       user_id: user.user_id,
-  //       active: true
-  //     },
-  //     offset, limit,
-  //     order: [
-  //       ['data_viagem', 'DESC'],
-  //       ['hora_viagem', 'DESC'],
-  //       ['created_at', 'DESC']
-  //     ],
-  //     include: [{ model: this.passengersRepository }],
-  //   })
+    if ([
+      'oi', 'Oi', 'oI', 'OI',
+      'olá', 'Olá', 'oLá', 'OLá', 'oLA', 'OLA', 'olA', 'OLa',
+      'hello', 'Hello', 'hEllo', 'heLlo', 'helLo', 'hellO', 'HELLO', 'hELLO', 'heLLO', 'helLO',
+      'hi', 'Hi', 'hI', 'HI',
+      'eae', 'Eae', 'eAe', 'EAe', 'eAE', 'EAE', 'eaE', 'EaE',
+      'eai', 'Eai', 'eAi', 'EAi', 'eAI', 'EAI', 'eaI', 'EaI',
+    ].includes(Body)) {
+      Stage = ''
+    }
 
-  //   if (!result) {
-  //     throw new BadRequestException({ message: OrderEnum.notFound })
-  //   }
+    console.log({ Stage })
 
-  //   return {
-  //     count: result.count - 1 ?? 0,
-  //     offset,
-  //     limit,
-  //     data: result.rows.map((order) => {
-  //       newResult.push({
-  //         ...order.dataValues,
-  //         numero_cap: order.numero_cap ?? "",
-  //         centro_custo: order.centro_custo ?? "",
-  //         intinerario: `${order.origem} x ${order.destino}`,
-  //         valorCorrida: order.valorCorrida ? `R$ ${parseFloat(order.valorCorrida).toFixed(2)}` : 'R$ 0,00',
-  //         img: `../../../../../../assets/img/${order.empresa}.png`,
-  //         hora: order.hora_viagem ? order.hora_viagem.split(':').slice(0, 1).join(':') : '',
-  //         minuto: order.hora_viagem ? order.hora_viagem.split(':').slice(1, 2).join(':') : '',
-  //       })
+    switch (Stage) {
+      case 'department':
+        await this.department(payloadApi, payloadBD)
+        break;
+      case 'commercial':
+        // await this.service3()
+        break;
+      case 'maintenance':
+        await this.maintenance(payloadApi, payloadBD)
+        break;
+      case 'afterSales':
+        // await this.receivedMessage(payloadApi, Body)
+        break;
+      case 'requestMatricula':
+        await this.requestMatricula(payloadApi, payloadBD)
+        break;
+      case 'requestCustomer':
+        await this.requestCustomer(payloadApi, payloadBD)
+        break;
+      case 'timeOrKm':
+        await this.timeOrKm(payloadApi, payloadBD)
+        break;
+      default:
+        payloadBD.Stage = 'department'
+        await this.receivedMessage(payloadApi, payloadBD)
+        break;
+    }
+  }
 
-  //       return newResult ?? []
-  //     })
-  //   };
-  // }
+  async receivedMessage(payloadApi: any, payloadBD: any) {
+    console.log({ payloadApi, payloadBD })
 
-  // async createOrder(createOrderDto: CreateOrderDto, user: any) {
-  //   try {
-  //     createOrderDto.user_id = user.user_id;
-  //     createOrderDto.motorista = user.nome + ' ' + user.sobrenome;
-  //     return await this.orderRepository.create(createOrderDto).then(async (order) => {
-  //       createOrderDto.passageiros.map(async (passenger) => {
-  //         passenger.order_id = order.id;
-  //         await this.passengersRepository.create(passenger)
-  //       })
-  //     }).catch((error) => { throw error })
-  //   } catch (error) {
-  //     throw new InternalServerErrorException({ message: error.message })
-  //   }
-  // }
+    await this.client.messages.create({
+      ...payloadApi,
+      body: `Oi, sou a assistente virtual da MOTOBOXE 👋`,
+    })
 
-  // async updateOrder(orderId: any, updateOrderDto: UpdateOrderDto, user: any) {
-  //   try {
-  //     return await this.orderRepository.update(updateOrderDto, { where: { id: orderId } })
-  //       .then(async () => {
-  //         updateOrderDto.passageiros.map(async (passenger: any) => {
-  //           if (passenger.id) {
-  //             await this.passengersRepository.update(passenger, { where: { id: passenger.id } })
-  //           } else {
-  //             await this.passengersRepository.create(passenger)
-  //           }
-  //         })
-  //       }).catch((error) => { throw error })
-  //   } catch (error) {
-  //     throw new InternalServerErrorException({ message: error.message })
-  //   }
-  // }
+    await this.client.messages.create({
+      ...payloadApi,
+      body: `Para continuar com seu atendimento, por favor, informe o departamento que deseja falar.`,
+    })
 
-  // async deleteOrder(orderId: any, user: any) {
-  //   try {
-  //     return await this.orderRepository.update({ active: false }, { where: { id: orderId } })
-  //   } catch (error) {
-  //     throw new InternalServerErrorException({ message: error.message })
-  //   }
-  // }
+    await this.client.messages.create({
+      ...payloadApi,
+      body: `1 - Comercial\n2 - Manutenção\n3 - Pós Venda`,
+    })
 
-  // async alterOrderStatus(orderId: any, body: any, user: any) {
-  //   try {
-  //     return await this.orderRepository.update({ status: body.status }, { where: { id: orderId } })
-  //   } catch (error) {
-  //     throw new InternalServerErrorException({ message: error.message })
-  //   }
-  // }
+    return await this.conversationRepository.create(payloadBD)
+  }
+
+  async department(payloadApi: any, payloadBD: any) {
+    console.log({ payloadApi, payloadBD })
+    const message = `1 - Agendamento\n2 - Informações`
+
+    if (payloadApi.body === '1') {
+      payloadBD.Stage = 'commercial'
+      await this.client.messages.create({
+        ...payloadApi,
+        body: `opção em desenvolvimento...\n\n 0 - Voltar`,
+      })
+    }
+    if (payloadApi.body === '2') {
+      payloadBD.Stage = 'requestMatricula'
+      await this.client.messages.create({
+        ...payloadApi,
+        body: `1 - Agendamento\n2 - Informações`,
+      })
+    }
+    if (payloadApi.body === '3') {
+      payloadBD.Stage = 'afterSales'
+      await this.client.messages.create({
+        ...payloadApi,
+        body: `1 - Agendamento\n2 - Informações`,
+      })
+    }
+
+    return await this.conversationRepository.create(payloadBD)
+  }
+
+  async maintenance(payloadApi: any, payloadBD: any) {
+    console.log({ payloadApi, payloadBD })
+
+    if (payloadApi.Body === '1') {
+      await this.client.messages.create({
+        ...payloadApi,
+        body: `1 - Manutenção programada\n2 - Manutenção Reparação`,
+      })
+
+      payloadBD.Stage = 'requestMatricula'
+      return await this.conversationRepository.create(payloadBD)
+    }
+
+    if (payloadApi.Body === '2') {
+      await this.client.messages.create({
+        ...payloadApi,
+        body: `Opção em desenvolvimento...`,
+      })
+
+      payloadBD.Stage = 'requestMatricula'
+      return await this.conversationRepository.create(payloadBD)
+    }
+  }
+
+  async requestMatricula(payloadApi: any, payloadBD: any) {
+    console.log({ payloadApi, payloadBD })
+
+    await this.client.messages.create({
+      ...payloadApi,
+      body: `Informe o número da *MATRICULA* do seu veículo.`,
+    })
+
+    payloadBD.Stage = 'requestCustomer'
+    return await this.conversationRepository.create(payloadBD)
+  }
+
+  async requestCustomer(payloadApi: any, payloadBD: any) {
+    console.log({ payloadApi, payloadBD })
+
+    //consultar dados antes de enviar mensagem(pendente)
+    const dados = 1
+
+    if (dados === 1) {
+      await this.client.messages.create({
+        ...payloadApi,
+        body: `Conforme o seu cadastro, a última manutenção foi realizada em 01/09/2023.\nDeseja confirmar essa data?\n\n\n1 - Sim\n2 - Não`,
+      })
+    }
+    
+    payloadBD.Stage = 'timeOrKm'
+    return await this.conversationRepository.create(payloadBD)
+  }
+
+  async timeOrKm(payloadApi: any, payloadBD: any) {
+    console.log({ payloadApi, payloadBD })
+
+    await this.client.messages.create({
+      ...payloadApi,
+      body: `1 - Manutenção por tempo\n2 - Manutenção por KM`,
+    })
+
+    //Consultar dados do cliente, se existir data de manutenção, enviar mensagem(pendente)
+    //Se não existir data de manutenção, enviar formulário para o cliente informar a data da última manutenção(pendente)
+
+    payloadBD.Stage = 'requestDataVehicle'
+    return await this.conversationRepository.create(payloadBD)
+  }
 }

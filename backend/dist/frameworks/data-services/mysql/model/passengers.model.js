@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
 const orders_model_1 = require("./orders.model");
@@ -52,7 +53,7 @@ __decorate([
 ], Passengers.prototype, "updated_at", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => orders_model_1.default),
-    __metadata("design:type", orders_model_1.default)
+    __metadata("design:type", typeof (_a = typeof orders_model_1.default !== "undefined" && orders_model_1.default) === "function" ? _a : Object)
 ], Passengers.prototype, "order", void 0);
 Passengers = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: "passengers" })

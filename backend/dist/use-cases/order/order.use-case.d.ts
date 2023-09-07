@@ -9,16 +9,16 @@ export declare class OrderUseCases {
         count: number;
         offset: number;
         limit: number;
-        data: Order[];
+        data: any;
     }>;
     getAllOrders(query: any, user: any): Promise<{
         count: number;
         offset: number;
         limit: number;
-        data: any[][];
+        data: any;
     }>;
-    createOrder(createOrderDto: CreateOrderDto, user: any): Promise<void>;
-    updateOrder(orderId: any, updateOrderDto: UpdateOrderDto, user: any): Promise<void>;
-    deleteOrder(orderId: any, user: any): Promise<[affectedCount: number]>;
-    alterOrderStatus(orderId: any, body: any, user: any): Promise<[affectedCount: number]>;
+    createOrder(createOrderDto: CreateOrderDto, user: any): Promise<any>;
+    updateOrder(orderId: any, updateOrderDto: UpdateOrderDto, user: any): Promise<any>;
+    deleteOrder(orderId: any, user: any): Promise<any>;
+    alterOrderStatus(orderId: any, body: any, user: any): Promise<any>;
 }

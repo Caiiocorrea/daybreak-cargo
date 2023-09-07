@@ -1,9 +1,6 @@
 import { IGenericRepository } from './generic-repository.abstract';
-import { Vehicle } from '../entities/vehicle.entity';
-import { Order, User } from '../entities';
+import { Conversation } from '../entities';
 
 export abstract class IDataServices {
-  abstract users: IGenericRepository<User>;
-  abstract orders: IGenericRepository<Order>;
-  abstract vehicles: IGenericRepository<Vehicle>;
+  abstract conversation: IGenericRepository<Conversation>;
 }

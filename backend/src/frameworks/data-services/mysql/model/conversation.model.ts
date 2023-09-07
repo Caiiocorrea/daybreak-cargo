@@ -41,6 +41,9 @@ export default class Conversation extends Model<Conversation> {
   Body: string;
 
   @Column
+  Stage: string;
+
+  @Column
   To: string;
 
   @Column

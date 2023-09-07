@@ -9,11 +9,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DataServicesModule = void 0;
 const conversation_model_1 = require("./mysql/model/conversation.model");
 const sequelize_typescript_1 = require("sequelize-typescript");
+const config_1 = require("@nestjs/config");
 const common_1 = require("@nestjs/common");
 let DataServicesModule = class DataServicesModule {
 };
 DataServicesModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
+        ],
         providers: [
             {
                 provide: 'SEQUELIZE',

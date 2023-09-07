@@ -8,8 +8,8 @@ export declare class UserUseCases {
     private authUseCases;
     constructor(userRepository: typeof User, vehicleRepository: typeof Vehicle, authUseCases: AuthUseCases);
     getAllUsers(query: any, user: any): Promise<any[]>;
-    getUserByEmailSenha(email: string, senha: string): Promise<User>;
-    getUserByEmail(email: string): Promise<User>;
+    getUserByEmailSenha(email: string, senha: string): Promise<any>;
+    getUserByEmail(email: string): Promise<any>;
     createUser(createUserDto: CreateUserDto, user: any): Promise<void>;
-    updateUser(userId: string, updateUserDto: UpdateUserDto, user: any): Promise<void>;
+    updateUser(userId: string, updateUserDto: UpdateUserDto, user: any): any;
 }

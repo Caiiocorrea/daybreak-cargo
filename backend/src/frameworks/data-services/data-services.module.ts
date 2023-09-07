@@ -1,9 +1,14 @@
 // import { MongoDataServicesModule } from './mongo/mongo-data-services.module';
 import Conversation from './mysql/model/conversation.model';
 import { Sequelize } from 'sequelize-typescript';
+import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 
 @Module({
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    /* MongoDataServicesModule */
+  ],
   providers: [
     {
       provide: 'SEQUELIZE',
@@ -23,7 +28,6 @@ import { Module } from '@nestjs/common';
       }
     }
   ],
-  // imports: [MongoDataServicesModule],
   // exports: [MongoDataServicesModule],
 })
 export class DataServicesModule { }
