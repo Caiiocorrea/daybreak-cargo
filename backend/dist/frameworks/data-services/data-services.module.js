@@ -7,11 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DataServicesModule = void 0;
-const passengers_model_1 = require("./mysql/model/passengers.model");
-const vehicles_model_1 = require("./mysql/model/vehicles.model");
+const conversation_model_1 = require("./mysql/model/conversation.model");
 const sequelize_typescript_1 = require("sequelize-typescript");
-const orders_model_1 = require("./mysql/model/orders.model");
-const users_model_1 = require("./mysql/model/users.model");
 const common_1 = require("@nestjs/common");
 let DataServicesModule = class DataServicesModule {
 };
@@ -30,8 +27,8 @@ DataServicesModule = __decorate([
                         database: process.env.MYSQL_DATABASE,
                         logging: false,
                     });
-                    sequelize.addModels([users_model_1.default, passengers_model_1.default, vehicles_model_1.default, orders_model_1.default]);
-                    await sequelize.sync();
+                    sequelize.addModels([conversation_model_1.default]);
+                    await sequelize.sync({ force: false });
                     return sequelize;
                 }
             }

@@ -5,17 +5,17 @@
 	<div class="container-controls">
 		<div class="side-nav">
 			<button mat-button (click)="toggleForm(1)" [ngClass]="{ active: activeForm === 1 }">
-				Detalhes da Viagem
+				Relatório Quinzenal
 			</button>
 			<button mat-button (click)="toggleForm(2)" [ngClass]="{ active: activeForm === 2 }">
-				Passageiros
+				Relatório Mensal
 			</button>
 		</div>
-		<!-- <div class="form-container">
+		<div class="form-container">
 			<ng-container [ngSwitch]="activeForm">
 				<form class="form-grid" [formGroup]="_formOrder" [@changeAnim]="activeForm === 1 ? 'open' : 'close'"
 					*ngSwitchCase="1">
-					<mat-form-field class="grid-1">
+					<!-- <mat-form-field class="grid-1">
 						<mat-label>Origem</mat-label>
 						<input matInput formControlName="origem" [matAutocomplete]="autoOrigem" required />
 						<mat-autocomplete #autoOrigem="matAutocomplete">
@@ -53,7 +53,8 @@
 
 					<mat-form-field class="grid-1">
 						<mat-label>Bloquinho</mat-label>
-						<input matInput formControlName="bloquinho" [matAutocomplete]="autoBloquinho" tabindex="1" required />
+						<input matInput formControlName="bloquinho" [matAutocomplete]="autoBloquinho" tabindex="1"
+							required />
 						<mat-autocomplete #autoBloquinho="matAutocomplete">
 							<mat-option *ngFor="let option of bloquinho" [value]="option">{{ option }}
 							</mat-option>
@@ -68,11 +69,11 @@
 					<mat-form-field class="grid-1">
 						<mat-label> Total </mat-label>
 						<input matInput type="text" formControlName="valorCorrida" />
-					</mat-form-field>
+					</mat-form-field> -->
 				</form>
 
 				<form [formGroup]="_formOrder" [@changeAnim]="activeForm === 2 ? 'open' : 'close'" *ngSwitchCase="2">
-					<div class="timeline-container">
+					<!-- <div class="timeline-container">
 						<ul class="timeline">
 							<li *ngFor="let item of dialogData.passengers">
 								<div class="timeline-badge">
@@ -91,7 +92,7 @@
 								</div>
 							</li>
 						</ul>
-					</div>
+					</div> -->
 				</form>
 			</ng-container>
 			<ng-container>
@@ -102,6 +103,6 @@
 					</button>
 				</div>
 			</ng-container>
-		</div> -->
+		</div>
 	</div>
 </div>

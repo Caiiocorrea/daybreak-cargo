@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderUseCases = void 0;
 const common_1 = require("@nestjs/common");
 const orderEnum_1 = require("../../core/enum/orderEnum");
+const sequelize_1 = require("sequelize");
 let OrderUseCases = class OrderUseCases {
     constructor(passengersRepository, orderRepository) {
         this.passengersRepository = passengersRepository;
@@ -22,12 +23,50 @@ let OrderUseCases = class OrderUseCases {
     }
     async getOrder(searchObject, user) {
         var _a, _b;
-        const result = await this.orderRepository.findAndCountAll({
-            where: {
-                numero_cap: searchObject.search,
+        console.log({ searchObject, user });
+        let consulta;
+        if (searchObject.date_one && searchObject.date_two) {
+            consulta = {
+                [sequelize_1.Op.or]: [
+                    { id: searchObject.search },
+                    { numero_cap: searchObject.search },
+                    { centro_custo: searchObject.search },
+                    { origem: searchObject.search },
+                    { destino: searchObject.search },
+                    { motorista: searchObject.search },
+                    { empresa: searchObject.search },
+                    { status: searchObject.search },
+                    { hora_viagem: searchObject.search },
+                ],
+                data_viagem: {
+                    [sequelize_1.Op.gte]: searchObject.date_one,
+                    [sequelize_1.Op.lte]: searchObject.date_two,
+                },
                 user_id: user.user_id,
-            },
+                active: true
+            };
+        }
+        else {
+            consulta = {
+                [sequelize_1.Op.or]: [
+                    { id: searchObject.search },
+                    { numero_cap: searchObject.search },
+                    { centro_custo: searchObject.search },
+                    { origem: searchObject.search },
+                    { destino: searchObject.search },
+                    { motorista: searchObject.search },
+                    { empresa: searchObject.search },
+                    { status: searchObject.search },
+                    { hora_viagem: searchObject.search },
+                ],
+                user_id: user.user_id,
+                active: true
+            };
+        }
+        const result = await this.orderRepository.findAndCountAll({
+            where: consulta,
             include: [{ model: this.passengersRepository }],
+            logging: console.log
         });
         return {
             count: (_a = result.count - 1) !== null && _a !== void 0 ? _a : 0,

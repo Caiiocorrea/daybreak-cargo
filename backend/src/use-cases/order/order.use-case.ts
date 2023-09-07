@@ -3,8 +3,7 @@ import Passengers from '../../frameworks/data-services/mysql/model/passengers.mo
 import Order from '../../frameworks/data-services/mysql/model/orders.model';
 import { CreateOrderDto, UpdateOrderDto } from '../../core/dtos';
 import { OrderEnum } from '../../core/enum/orderEnum';
-import { WhereOptions, Op } from 'sequelize';
-import moment from 'moment';
+import { Sequelize, Op } from 'sequelize';
 
 
 @Injectable()
@@ -15,12 +14,55 @@ export class OrderUseCases {
   ) { }
 
   async getOrder(searchObject: any, user: any) {
-    const result = await this.orderRepository.findAndCountAll({
-      where: {
-        numero_cap: searchObject.search,
+    console.log({ searchObject, user })
+    // if (!searchObject.search ||
+    //   !searchObject.date_one &&
+    //   !searchObject.date_two
+    // ) { throw new BadRequestException({ message: OrderEnum.notFound }) }
+
+    let consulta: any
+    if (searchObject.date_one && searchObject.date_two) {
+      consulta = {
+        [Op.or]: [
+          { id: searchObject.search },
+          { numero_cap: searchObject.search },
+          { centro_custo: searchObject.search },
+          { origem: searchObject.search },
+          { destino: searchObject.search },
+          { motorista: searchObject.search },
+          { empresa: searchObject.search },
+          { status: searchObject.search },
+          { hora_viagem: searchObject.search },
+        ],
+        data_viagem: {
+          [Op.gte]: searchObject.date_one,
+          [Op.lte]: searchObject.date_two,
+        },
         user_id: user.user_id,
-      },
+        active: true
+      }
+    } else {
+      consulta = {
+        [Op.or]: [
+          { id: searchObject.search },
+          { numero_cap: searchObject.search },
+          { centro_custo: searchObject.search },
+          { origem: searchObject.search },
+          { destino: searchObject.search },
+          { motorista: searchObject.search },
+          { empresa: searchObject.search },
+          { status: searchObject.search },
+          { hora_viagem: searchObject.search },
+        ],
+        user_id: user.user_id,
+        active: true
+      }
+    }
+
+    const result = await this.orderRepository.findAndCountAll({
+      where: consulta,
       include: [{ model: this.passengersRepository }],
+      logging: console.log
     });
 
     return {

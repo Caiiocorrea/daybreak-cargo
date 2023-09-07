@@ -21,9 +21,9 @@ async function bootstrap() {
       type: 'http',
       in: 'Header',
     }, 'access-token')
-    .addTag('status')
-    .addTag('auth')
-    .addTag('report')
+    .addTag('service')
+    // .addTag('auth')
+    // .addTag('report')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('documentation', app, document);

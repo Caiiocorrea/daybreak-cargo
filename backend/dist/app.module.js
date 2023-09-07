@@ -8,36 +8,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const _index_1 = require("./controllers/_index");
 const data_services_module_1 = require("./frameworks/data-services/data-services.module");
-const report_use_cases_module_1 = require("./use-cases/report/report-use-cases.module");
-const order_use_cases_module_1 = require("./use-cases/order/order-use-cases.module");
 const auth_use_cases_module_1 = require("./use-cases/auth/auth-use-cases.module");
-const user_use_cases_module_1 = require("./use-cases/user/user-use-cases.module");
 const logging_middleware_1 = require("./Middleware/logging.middleware");
-const report_controller_1 = require("./controllers/report.controller");
+const service_motoboxe_controller_1 = require("./controllers/service.motoboxe.controller");
+const order_use_cases_module_1 = require("./use-cases/conversation/order-use-cases.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer
             .apply(logging_middleware_1.LoggingMiddleware)
-            .exclude({ path: 'login', method: common_1.RequestMethod.POST })
-            .forRoutes(_index_1.UserController, _index_1.OrderController, report_controller_1.ReportController);
+            .exclude({ path: 'api/v1/taskbotmaster/whatsapp', method: common_1.RequestMethod.POST })
+            .forRoutes(service_motoboxe_controller_1.ServiceController);
     }
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            report_use_cases_module_1.ReportUseCasesModule,
-            order_use_cases_module_1.OrderUseCasesModule,
+            order_use_cases_module_1.ConversationUseCasesModule,
             auth_use_cases_module_1.AuthUseCasesModule,
             data_services_module_1.DataServicesModule,
-            user_use_cases_module_1.UserUseCasesModule,
         ],
         controllers: [
-            report_controller_1.ReportController,
-            _index_1.OrderController,
-            _index_1.UserController,
-            _index_1.AppController,
+            service_motoboxe_controller_1.ServiceController,
         ],
         providers: []
     })

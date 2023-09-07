@@ -16,7 +16,7 @@ import Order from "./orders.model";
 @Table({ tableName: "passengers" })
 export default class Passengers extends Model<Passengers> {
   @Column({
-    autoIncrement: true,
+    autoIncrement: false,
     defaultValue: DataType.UUIDV4,
     primaryKey: true,
     type: DataType.UUID,

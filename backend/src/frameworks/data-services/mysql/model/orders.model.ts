@@ -7,7 +7,6 @@ import {
     ForeignKey,
     HasMany,
     Model,
-    Scopes,
     Table,
     UpdatedAt
 } from "sequelize-typescript";
@@ -18,7 +17,7 @@ import User from "./users.model";
 @Table({ tableName: "orders" })
 export default class Order extends Model<Order> {
     @Column({
-        autoIncrement: true,
+        autoIncrement: false,
         defaultValue: DataType.UUIDV4,
         primaryKey: true,
         type: DataType.UUID,

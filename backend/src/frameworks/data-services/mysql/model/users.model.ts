@@ -15,7 +15,7 @@ import Vehicle from "./vehicles.model";
 @Table({ tableName: "users" })
 export default class User extends Model<User> {
   @Column({
-    autoIncrement: true,
+    autoIncrement: false,
     defaultValue: DataType.UUIDV4,
     primaryKey: true,
     type: DataType.UUID,

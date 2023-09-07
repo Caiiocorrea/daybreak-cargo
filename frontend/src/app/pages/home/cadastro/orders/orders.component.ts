@@ -72,7 +72,7 @@ export class OrdersComponent implements OnInit {
 	];
 
 	FabOptions = {
-		buttons: ['person_add'],
+		buttons: ['person_add', 'assessment'],
 	};
 
 	// 'assessment'

@@ -22,9 +22,7 @@ async function bootstrap() {
         type: 'http',
         in: 'Header',
     }, 'access-token')
-        .addTag('status')
-        .addTag('auth')
-        .addTag('report')
+        .addTag('service')
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('documentation', app, document);

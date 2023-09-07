@@ -16,7 +16,7 @@ let Order = class Order extends sequelize_typescript_1.Model {
 };
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        autoIncrement: true,
+        autoIncrement: false,
         defaultValue: sequelize_typescript_1.DataType.UUIDV4,
         primaryKey: true,
         type: sequelize_typescript_1.DataType.UUID,

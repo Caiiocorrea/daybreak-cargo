@@ -1,13 +1,9 @@
 // import { MongoDataServicesModule } from './mongo/mongo-data-services.module';
-import Passengers from './mysql/model/passengers.model';
-import Vehicle from './mysql/model/vehicles.model';
+import Conversation from './mysql/model/conversation.model';
 import { Sequelize } from 'sequelize-typescript';
-import Order from './mysql/model/orders.model';
-import User from './mysql/model/users.model';
 import { Module } from '@nestjs/common';
 
 @Module({
-  // imports: [MongoDataServicesModule],
   providers: [
     {
       provide: 'SEQUELIZE',
@@ -21,12 +17,13 @@ import { Module } from '@nestjs/common';
           database: process.env.MYSQL_DATABASE,
           logging: false,
         });
-        sequelize.addModels([User, Passengers, Vehicle, Order]);
-        await sequelize.sync();
+        sequelize.addModels([Conversation]);
+        await sequelize.sync({ force: false })
         return sequelize;
       }
     }
   ],
+  // imports: [MongoDataServicesModule],
   // exports: [MongoDataServicesModule],
 })
 export class DataServicesModule { }
