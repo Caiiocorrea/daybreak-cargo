@@ -6,8 +6,6 @@ import { ApiTags } from '@nestjs/swagger';
 @Controller('taskbotmaster/whatsapp')
 @ApiTags('service')
 export class ServiceController {
-  accountSid = 'AC1b07342a8044f37e62e25a6b4eb7c329';
-  authToken = 'c56e78282a1e784d81cb13d148cfcad0';
 
   constructor(
     private readonly conversationService: ConversationUseCases
