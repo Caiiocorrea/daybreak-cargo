@@ -1,6 +1,6 @@
-import Conversation from 'src/frameworks/data-services/mysql/model/conversation.model';
-import Declaration from 'src/frameworks/data-services/mysql/model/declaration.model';
-import { twilioConfiguration } from 'src/configuration';
+import Conversation from '../../frameworks/data-services/mysql/model/conversation.model';
+import Declaration from '../../frameworks/data-services/mysql/model/declaration.model';
+import { twilioConfiguration } from '../../configuration';
 import { Inject, Injectable } from '@nestjs/common';
 import moment from 'moment';
 
@@ -10,9 +10,7 @@ export class ConversationUseCases {
   accountSid = twilioConfiguration.accountSid;
   authToken = twilioConfiguration.authToken;
   from: string = twilioConfiguration.from;
-  client = require('twilio')(this.accountSid, this.authToken, {
-    lazyLoading: true,
-  })
+  client = require('twilio')(this.accountSid, this.authToken)
 
   constructor(
     @Inject('CONVERSATION_REPOSITORY')
