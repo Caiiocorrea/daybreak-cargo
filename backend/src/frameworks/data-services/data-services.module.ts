@@ -1,5 +1,6 @@
 // import { MongoDataServicesModule } from './mongo/mongo-data-services.module';
 import Conversation from './mysql/model/conversation.model';
+import Declaration from './mysql/model/declaration.model';
 import { Sequelize } from 'sequelize-typescript';
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
@@ -22,7 +23,7 @@ import { Module } from '@nestjs/common';
           database: process.env.MYSQL_DATABASE,
           logging: false,
         });
-        sequelize.addModels([Conversation]);
+        sequelize.addModels([Conversation, Declaration]);
         await sequelize.sync({ force: false })
         return sequelize;
       }
