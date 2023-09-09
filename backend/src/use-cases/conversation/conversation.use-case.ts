@@ -37,14 +37,14 @@ export class ConversationUseCases {
         limit: 1,
       })
 
-    let { Stage } = conversation
+    const Stage = conversation?.Stage || 'default'
 
-    console.log({ 
-      Name: payloadBD.ProfileName,
+    console.log({
+      Name: payloadBD?.ProfileName,
       WaId: payloadBD.WaId,
       Body: payloadApi.body,
       Stage: Stage,
-     })
+    })
 
     if ([
       'oi, tudo bem com você?', 'ola, tudo bem com você?', 'olá, tudo bem com você?',
@@ -89,6 +89,9 @@ export class ConversationUseCases {
         case 'handleHour':
           await this.handleHour(payloadApi, payloadBD)
           break;
+        case 'default':
+          await this.receivedMessage(payloadApi, payloadBD)
+          break;
         case 'finishConversation':
           await this.finishConversation(payloadApi, payloadBD)
           break;
@@ -122,14 +125,13 @@ export class ConversationUseCases {
   }
 
   async department(payloadApi: any, payloadBD: any) {
-    // console.log({ payloadBD })
-
     if (payloadApi.body === '1') {
-      payloadBD.Stage = 'commercial'
       await this.client.messages.create({
         ...payloadApi,
         body: `opção em desenvolvimento...`,
       })
+
+      await this.receivedMessage(payloadApi, payloadBD)
     }
     if (payloadApi.body === '2') {
       payloadBD.Stage = 'maintenance'
@@ -139,11 +141,12 @@ export class ConversationUseCases {
       })
     }
     if (payloadApi.body === '3') {
-      payloadBD.Stage = 'afterSales'
       await this.client.messages.create({
         ...payloadApi,
         body: `opção em desenvolvimento...`,
       })
+
+      await this.receivedMessage(payloadApi, payloadBD)
     }
 
     return await this.conversationRepository.create(payloadBD)
@@ -216,16 +219,14 @@ export class ConversationUseCases {
       attributes: ['Matricula', 'Data_Retoma'],
       limit: 1,
     }).then(async (dados) => {
-      const dataReturn = moment(dados['dataValues'].Data_Retoma).format('DD/MM/YYYY')
-      // console.log(dataReturn)
-
-      if (dados.Data_Retoma) {
+      if (dados) {
+        const dataReturn = moment(dados['dataValues']?.Data_Retoma).format('DD/MM/YYYY')
         payloadBD.Stage = 'requestCustomer'
         await this.client.messages.create({
           ...payloadApi,
           body: `${payloadBD.ProfileName.split(' ')[0]}, localizei o seu cadastro. De acordo com o veículo de matrícula ${dados.Matricula}, a última manutenção foi realizada em ${dataReturn}.\n\nDeseja confirmar essa data?\n1 - Sim\n2 - Não`,
         })
-      } else if (!dados?.Data_Retoma) {
+      } else {
         await this.client.messages.create({
           ...payloadApi,
           body: `Não encontramos nenhum veículo com essa matrícula.\nPor favor, verifique se a matrícula está correta e tente novamente.`,
